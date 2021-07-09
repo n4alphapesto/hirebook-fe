@@ -1,17 +1,22 @@
 import React from 'react';
+import Button from '@material-ui/core/Button';
+import PropTypes from 'prop-types';
 
-const Button = (props) => {
+
+const MaterialUIButton = ({buttonText, ...restOfProps}) => {
     return (
-        <button type="button">I'm Button</button>
-    );
+        <Button variant="contained" {...restOfProps}>{buttonText}</Button>
+    )
 }
 
-export default Button;
-
-Button.defaultProps = {
-
-}
-
-Button.propTypes = {
+MaterialUIButton.defaultProps = {
+    buttonText: 'Click Me'
 
 }
+
+MaterialUIButton.propTypes = {
+    buttonText: PropTypes.string
+}
+
+export {MaterialUIButton as Button }
+
