@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { AppBar, Toolbar, Tabs, Tab, makeStyles,} from '@material-ui/core';
+import { AppBar, Toolbar, Tabs, Tab, makeStyles } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -72,6 +72,7 @@ Navbar.defaultProps = {
 }
 
 Navbar.propTypes = {
+    navItems: PropTypes.object,
     
  
 }
