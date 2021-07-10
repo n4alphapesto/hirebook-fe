@@ -1,10 +1,13 @@
-.App {
-  text-align: center;
+/* --- set Global colors here --- */
+:root{
+  --whiteSmoke: whitesmoke;
+  --primary: #79d4fd;
+  --white: #FFF;
+  
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body{
+  background-color: whitesmoke;
 }
 
 @media (prefers-reduced-motion: no-preference) {
