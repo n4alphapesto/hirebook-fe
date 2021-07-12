@@ -1,12 +1,12 @@
 import './App.css';
 import { Provider } from 'react-redux';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 
 import store from './redux/store';
 import Routes from './Routes';
 
 // Added Lato fonts as default Font
-const theme = createMuiTheme({
+const theme = createTheme({
   typography: {
     fontFamily: [
       'Lato',

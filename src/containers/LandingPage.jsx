@@ -1,13 +1,21 @@
 import React from 'react';
+import { Container, Divider, Box } from '@material-ui/core';
 
+import Hero from '../components/Hero/Hero';
 import Mission from '../components/Mission/Mission';
-import TrustedCompanies from '../components/TrustedCompanies/TrustedCompanies';
+import Testimonial from '../components/Testimonial/Testimonial';
 
 const LandingPage = () => {
     return (
         <div>
-            <Mission />
-            <TrustedCompanies />
+            <Hero />
+            <Container maxWidth='lg'>
+                <Mission />
+                <Box my={10}>
+                    <Divider />
+                </Box>
+                <Testimonial />
+            </Container>
         </div>
     )
 }

@@ -13,7 +13,7 @@ const Mission = () => {
     const classes = useStyles();
 
     return (
-        <>
+        <Box mt={10}>
             <Grid container spacing={3} justifyContent='center'>
                 <Grid item xs={12} md={6} >
                     <Typography variant="h4" align="center" className={classes.boldText}>
@@ -24,7 +24,7 @@ const Mission = () => {
             <Grid container spacing={3} justifyContent='center' alignItems='center'>
                 <Grid item xs={12} md={6} >
                     <Typography variant="body2" align="center" >
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor!
+                        The rules we are following to develop the largest recruiting network.
                     </Typography>
                 </Grid>
             </Grid>
@@ -61,7 +61,7 @@ const Mission = () => {
                     </Box>
                 </Grid>
             </Grid>
-        </>
+        </Box>
     );
 }
 
@@ -101,7 +101,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Image = styled.img`
-    height: 150px;
+    height: 100px;
     width: auto;
     align-self: center;
 `

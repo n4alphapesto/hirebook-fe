@@ -1,5 +1,4 @@
 import React from 'react';
-import { Container } from '@material-ui/core';
 import { Route, Redirect } from 'react-router-dom';
 
 const RouteValidator = ({ component: Component, ...rest }) => {
@@ -11,11 +10,9 @@ const RouteValidator = ({ component: Component, ...rest }) => {
         <Route {...rest} render={matchProps => (
             redirectRoute ?
                 <Redirect push to={redirectRoute} /> :
-                <Container maxWidth="md">
-                    <div className="content">
-                        <Component {...matchProps} />
-                    </div>
-                </Container>
+                <div className="content">
+                    <Component {...matchProps} />
+                </div>
         )} />
     )
 };
