@@ -11,7 +11,6 @@ const Routes = () => {
     return (
         <div className="app-container">
              <Navbar />
-             <div style={{height: '100px'}}></div>
              <Router>
                 <Switch>
                     <RouteValidator exact path="/" component={LandingPage} />

@@ -4,6 +4,7 @@ import { Box, Grid, Typography, Link, makeStyles } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
+      textAlign: 'center',
     },
     title: {
         fontweight: 400, 

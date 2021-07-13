@@ -10,10 +10,8 @@ const RouteValidator = ({ component: Component, ...rest }) => {
         <Route {...rest} render={matchProps => (
             redirectRoute ?
                 <Redirect push to={redirectRoute} /> :
-                <div className={"layout ExternalLayout"}>
-                    <div className="content">
-                        <Component {...matchProps} />
-                    </div>
+                <div className="content">
+                    <Component {...matchProps} />
                 </div>
         )} />
     )

@@ -28,6 +28,7 @@ import uber from '../../assets/svg/uber.svg';
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
+        textAlign: 'center',
     }, 
     mainContainer: {
         display: 'flex',
@@ -112,7 +113,7 @@ function TrustedCompanies(){
     
     
     return (
-        <Box className={classes.root}>
+        <Box className={classes.root} >
             <Typography variant="h5">Companies who trust us</Typography>
             <Box className={classes.mainContainer} justifyContent="center">
                 <ArrowBackIosIcon className={classes.arrows} onClick={executeScrollLeft} />

@@ -148,9 +148,10 @@ const Navbar = ({navItems, ...restOfProps}) => {
     )
 }
 
+
+
 Navbar.defaultProps = {
     navItems: ['login', 'signup']
-
 }
 
 Navbar.propTypes = {
@@ -160,4 +161,5 @@ Navbar.propTypes = {
 }
 
 export default Navbar;
+
 
