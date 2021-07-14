@@ -4,7 +4,13 @@ import { Box, Grid, Typography, Link, makeStyles } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
+      paddingTop: theme.spacing(4),
+      paddingRight: theme.spacing(2),
+      paddingBottom: theme.spacing(10), 
+      paddingLeft: theme.spacing(2),
       textAlign: 'center',
+      backgroundColor: '#34495E', 
+      color: '#FFFFFF', 
     },
     title: {
         fontweight: 400, 
@@ -12,6 +18,10 @@ const useStyles = makeStyles((theme) => ({
     listOfItems: {
         display: 'flex',
         flexDirection: 'column', 
+        
+    }, 
+    links: {
+      color: '#C2C8CE',
     }
   }));
 
@@ -36,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
                                 key={i} 
                                 href="#" 
                                 onClick={preventDefault}
+                                className={classes.links}
                             >
                                 {`Jobs in ${location[0].toUpperCase() + location.slice(1, location.length)}`}
                             </Link>
@@ -54,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
                                 key={i} 
                                 href="#" 
                                 onClick={preventDefault}
+                                className={classes.links}
                             >
                                 {`${role} developer jobs`}
                             </Link>
@@ -71,6 +83,7 @@ const useStyles = makeStyles((theme) => ({
                                 key={i} 
                                 href="#" 
                                 onClick={preventDefault}
+                                className={classes.links}
                             >
                                 {`${item}`}
                             </Link>
@@ -88,6 +101,7 @@ const useStyles = makeStyles((theme) => ({
                                 key={i} 
                                 href="#" 
                                 onClick={preventDefault}
+                                className={classes.links}
                             >
                                 {`${page[0].toUpperCase() + page.slice(1, page.length)}`}
                             </Link>

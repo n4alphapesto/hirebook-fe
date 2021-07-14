@@ -73,7 +73,6 @@ function TrustedCompanies(){
     const logoWidth = useMediaQuery(theme.breakpoints.down('sm'))? 82: 164;
     const logoHeight = 164
     
-
     
     useEffect(() => {
         
@@ -132,7 +131,7 @@ function TrustedCompanies(){
                 </ImageList>
                 <ArrowForwardIosIcon className={classes.arrows} onClick={executeScrollRight} />
                     
-            </Box>
+            </Box>            
         </Box>
         
 
