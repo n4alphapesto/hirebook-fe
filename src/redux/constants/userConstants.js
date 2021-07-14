@@ -1,1 +1,12 @@
-export const SET_USER = 'SET_USER';
+export const LOGIN_START = 'LOGIN_START';
+export const LOGIN_FAILED = 'LOGIN_FAILED';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+
+export const SIGNUP_START = 'SIGNUP_START';
+export const SIGNUP_FAILED = 'SIGNUP_FAILED';
+export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
+
+
+export const VERIFY_START = 'VERIFY_START';
+export const VERIFY_FAILED = 'VERIFY_FAILED';
+export const VERIFY_SUCCESS = 'VERIFY_SUCCESS';

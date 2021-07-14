@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 
 import { Navbar, Footer, RouteValidator } from './common'
-import { LandingPage, LoginPage } from './containers';
+import { LandingPage } from './containers';
 
 
 
@@ -13,7 +13,8 @@ const Routes = () => {
                 <Navbar />
                 <Switch>
                     <RouteValidator exact path="/" component={LandingPage} />
-                    <RouteValidator path="/login" component={LoginPage} />
+                    {/* <RouteValidator path="/JobSeeker/Onboarding/:step" component={LandingPage} />
+                    <RouteValidator path="/JobSeeker/Onboarding/:step" component={LandingPage} /> */}
                 </Switch>
                 <Footer />
             </Router>
