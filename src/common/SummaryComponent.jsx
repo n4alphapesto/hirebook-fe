@@ -25,7 +25,7 @@ const SummaryComponent = ({data}) => {
                         <Typography>{jobSummary}</Typography>
                     </Grid>
                     <Grid item md={2}>
-                        <Button buttonText={"View"} />
+                        <Button>View</Button>
                         <Typography>Not Interested</Typography>
                     </Grid>
                 </Grid>

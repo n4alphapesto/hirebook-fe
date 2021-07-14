@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Hidden, AppBar, Toolbar, Box, Link, IconButton, Menu, MenuItem, makeStyles, Dialog, DialogTitle, DialogContent, DialogContentText } from '@material-ui/core';
+import { Hidden, AppBar, Toolbar, Box, Link, IconButton, Menu, MenuItem, makeStyles } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import logo from '../assets/svg/logo.svg';
@@ -20,43 +20,30 @@ const useStyles = makeStyles((theme) => ({
     },
     navlinks: {
         paddingRight: theme.spacing(10),
-    },
-    navlink: { 
-        margin: '20px',
-        padding: '20px 10px',
-        '&:hover': {
-        //    backgroundColor: '#3590fd',
-            color: 'black', 
-            borderBottom: '2px solid red' 
-        }
-        
+        '& > *': {
+            margin: '20px',
+            padding: '20px 10px',
+            '&:hover': {
+                //backgroundColor: '#3590fd',
+                color: 'black', 
+                borderBottom: '2px solid red' 
+            }
 
+        }
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
     }
+    
 }));
 
 
-const PopUpForm = ({openPopUp, handlePopUpClose}) => {
-    
-    return (
-        <Dialog
-            open={openPopUp}
-            onClose={handlePopUpClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-        >
-            <DialogTitle id="alert-dialog-title">Login/SignUp</DialogTitle>
-            <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                    Form comes here
-                </DialogContentText>
-            </DialogContent>
-        </Dialog>
-    )
-    
-}
 
 
-const Navbar = ({navItems, ...restOfProps}) => {
+
+
+
+const Navbar = ({children, ...restOfProps}) => {
     const classes = useStyles();
     
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -69,18 +56,6 @@ const Navbar = ({navItems, ...restOfProps}) => {
         setAnchorEl(null);
     };
 
-
-    const [openPopUp, setOpenPopUp] = React.useState(false);
-
-    const handlePopUpOpen = () => {
-        setOpenPopUp(true);
-    };
-
-    const handlePopUpClose = () => {
-        setOpenPopUp(false);
-    };
-
-
     return (
         <AppBar className={classes.root}>
             <Toolbar className={classes.content}>
@@ -89,8 +64,9 @@ const Navbar = ({navItems, ...restOfProps}) => {
                 </Link>
             
                 <Hidden mdDown>
-                    <Box className={classes.navlinks} aria-label={`navbar for ${navItems}`}>
-                        {
+                    <Box className={classes.navlinks} aria-label={`navbar `}>
+                        {children}
+                        {/*
                             navItems.map((el, i) => (
                                 <Link 
                                     key={i}
@@ -101,7 +77,7 @@ const Navbar = ({navItems, ...restOfProps}) => {
                                 >{el.toUpperCase()}</Link>
                                 )
                             )
-                        }
+                            */}
                     </Box>
                 </Hidden>
 
@@ -122,7 +98,8 @@ const Navbar = ({navItems, ...restOfProps}) => {
                         open={Boolean(anchorEl)}
                         onClose={handleClose}
                     >
-                        {
+                        {children.map((el, i) => <MenuItem key={i} onClick={handleClose}>{el}</MenuItem>)}
+                        {/*
                             navItems.map((el, i) => (
                                 <MenuItem key={i} >
                                     <Link   
@@ -134,12 +111,12 @@ const Navbar = ({navItems, ...restOfProps}) => {
                                 
                                 )
                             )
-                        }
+                        */}
                         
                     </Menu>
                 
                 </Hidden>
-                <PopUpForm openPopUp={openPopUp} handlePopUpClose={handlePopUpClose}/>
+                
             
             
             

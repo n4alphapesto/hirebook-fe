@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 
-import { Navbar, Footer, RouteValidator } from './common'
+import { RouteValidator } from './common'
 import { JobseekerDashboard, RecruiterDashboard, LandingPage, LoginPage, SignupPage } from './containers';
 
 
@@ -9,8 +9,7 @@ import { JobseekerDashboard, RecruiterDashboard, LandingPage, LoginPage, SignupP
 
 const Routes = () => {
     return (
-        <div className="app-container">
-             <Navbar />
+        <div className="app-container"> 
              <Router>
                 <Switch>
                     <RouteValidator exact path="/" component={LandingPage} />
@@ -20,7 +19,6 @@ const Routes = () => {
                     <RouteValidator path="/recruiter" component={RecruiterDashboard} />
                 </Switch> 
              </Router>
-             <Footer />
         </div>
     );
 }

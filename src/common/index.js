@@ -5,6 +5,7 @@ import Footer from './Footer';
 import Image from './Image';
 import ImageGrid from './ImageGrid';
 import Navbar from './Navbar';
+import PopUpComponent from './PopUpComponent';
 import StatsComponent from './StatsComponent';
 import SummaryComponent from './SummaryComponent';
 import RouteValidator from './RouteValidator';
@@ -17,6 +18,7 @@ export {
     Image, 
     ImageGrid, 
     Navbar, 
+    PopUpComponent,
     StatsComponent, 
     SummaryComponent, 
     RouteValidator, 
