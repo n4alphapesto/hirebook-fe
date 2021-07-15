@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 5,
     textAlign: "center",
   },
-  span_text: {
+  spanText: {
     fontSize: 12,
   },
   large: {
@@ -79,7 +79,7 @@ const Mission = () => {
             Mission
           </Typography>
 
-          <Box component="span" display="block" className={classes.span_text}>
+          <Box component="span" display="block" className={classes.spanText}>
             Unleash the potential of talent and be a bridge to a better world.
           </Box>
         </Grid>
@@ -89,7 +89,7 @@ const Mission = () => {
             Vision
           </Typography>
 
-          <Box component="span" display="block" className={classes.span_text}>
+          <Box component="span" display="block" className={classes.spanText}>
             To enable the discovery of opportunities by providing consistently
             superior recruitment solutions.
           </Box>
@@ -100,7 +100,7 @@ const Mission = () => {
             Values
           </Typography>
 
-          <Box component="span" display="block" className={classes.span_text}>
+          <Box component="span" display="block" className={classes.spanText}>
             To provide integrity, accountability, and enthusiasm in the
             recruitment process of ace talent.
           </Box>

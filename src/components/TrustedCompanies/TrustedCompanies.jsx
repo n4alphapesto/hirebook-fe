@@ -86,15 +86,13 @@ function TrustedCompanies() {
       if (direction === "r") {
         setScrolled((scrolled) => scrolled + logoWidth);
         scrollRef.current.scrollLeft += logoWidth;
-      }
-      if (direction === "l") {
+      } else if (direction === "l") {
         setScrolled((scrolled) => scrolled - logoWidth);
         scrollRef.current.scrollLeft -= logoWidth;
       }
       if (scrolled >= logoWidth * 12) {
         setDirection("l");
-      }
-      if (scrolled <= 0) {
+      } else if (scrolled <= 0) {
         setDirection("r");
       }
     }, 1000);
