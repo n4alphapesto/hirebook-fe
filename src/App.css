@@ -1,11 +1,9 @@
 /* --- set Global colors here --- */
-:root{
+:root {
   --whiteSmoke: whitesmoke;
   --primary: #79d4fd;
-  --white: #FFF;
-  
+  --white: #fff;
 }
-
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

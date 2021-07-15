@@ -5,9 +5,9 @@ import JobseekerDashboard from "./JobseekerDashboard";
 import RecruiterDashboard from "./RecruiterDashboard";
 
 export {
-    LandingPage,
-    LoginPage,
-    SignupPage,
-    JobseekerDashboard,
-    RecruiterDashboard,
-}
+  LandingPage,
+  LoginPage,
+  SignupPage,
+  JobseekerDashboard,
+  RecruiterDashboard,
+};

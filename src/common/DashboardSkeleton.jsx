@@ -42,7 +42,7 @@ const DashboardSkeleton = () => {
         <Skeleton variant="rect" width={4000} height={300} />
       </div>
     );
-}
+};
 
 
 export default DashboardSkeleton;

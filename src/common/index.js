@@ -1,4 +1,4 @@
-import {Button} from "./Button";
+import { Button } from "./Button";
 import DashboardSkeleton from "./DashboardSkeleton";
 import FilterComponent from "./FilterComponent";
 import Footer from "./Footer";
@@ -11,15 +11,15 @@ import SummaryComponent from "./SummaryComponent";
 import RouteValidator from "./RouteValidator";
 
 export {
-    Button, 
-    DashboardSkeleton, 
-    FilterComponent, 
-    Footer, 
-    Image, 
-    ImageGrid, 
-    Navbar, 
-    PopUpComponent,
-    StatsComponent, 
-    SummaryComponent, 
-    RouteValidator, 
+  Button,
+  DashboardSkeleton,
+  FilterComponent,
+  Footer,
+  Image,
+  ImageGrid,
+  Navbar,
+  PopUpComponent,
+  StatsComponent,
+  SummaryComponent,
+  RouteValidator,
 };

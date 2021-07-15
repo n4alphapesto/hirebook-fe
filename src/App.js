@@ -5,15 +5,10 @@ import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 import store from "./redux/store";
 import Routes from "./Routes";
 
-
-
 // Added Lato fonts as default Font
 const theme = createTheme({
   typography: {
-    fontFamily: [
-      "Lato",
-      "sans-serif"
-    ].join(","),
+    fontFamily: ["Lato", "sans-serif"].join(","),
   },
 });
 
