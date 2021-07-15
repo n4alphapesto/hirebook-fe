@@ -79,11 +79,11 @@ function TrustedCompanies(){
         const interval = setInterval(() => {
             //console.log(scrollRef.current.scrollLeft, scrolled, direction)
             if(direction === "r"){
-                setScrolled(scrolled => scrolled + logoWidth)
+                setScrolled((scrolled) => scrolled + logoWidth)
                 scrollRef.current.scrollLeft += logoWidth;
             } 
             if(direction === "l") {
-                setScrolled(scrolled => scrolled - logoWidth)
+                setScrolled((scrolled) => scrolled - logoWidth)
                 scrollRef.current.scrollLeft -= logoWidth;
             }  
             if(scrolled >= logoWidth*12 ) {

@@ -35,7 +35,7 @@ const Div = styled.div`
     }
 `;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     box: {
         height: "100%",
     },
