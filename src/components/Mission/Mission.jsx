@@ -9,6 +9,42 @@ import missionIcon from "../../assets/images/mission.png";
 
 import "./styles.css";
 
+const useStyles = makeStyles((theme) => ({
+  boldText: {
+    fontWeight: "bold",
+  },
+  root: {
+    flexGrow: 1,
+    marginTop: 12,
+  },
+  paper: {
+    width: 170,
+    textAlign: "center",
+    justifyContent: "center",
+  },
+  control: {
+    padding: theme.spacing(2),
+  },
+  listitem: {
+    fontSize: 13,
+    paddingTop: 5,
+    textAlign: "center",
+  },
+  span_text: {
+    fontSize: 12,
+  },
+  large: {
+    width: "100%",
+    height: theme.spacing(15),
+  },
+}));
+
+const Image = styled.img`
+  height: 100px;
+  width: auto;
+  align-self: center;
+`;
+
 const Mission = () => {
   const classes = useStyles();
 
@@ -75,39 +111,3 @@ const Mission = () => {
 };
 
 export default Mission;
-
-const useStyles = makeStyles((theme) => ({
-  boldText: {
-    fontWeight: "bold",
-  },
-  root: {
-    flexGrow: 1,
-    marginTop: 12,
-  },
-  paper: {
-    width: 170,
-    textAlign: "center",
-    justifyContent: "center",
-  },
-  control: {
-    padding: theme.spacing(2),
-  },
-  listitem: {
-    fontSize: 13,
-    paddingTop: 5,
-    textAlign: "center",
-  },
-  span_text: {
-    fontSize: 12,
-  },
-  large: {
-    width: "100%",
-    height: theme.spacing(15),
-  },
-}));
-
-const Image = styled.img`
-  height: 100px;
-  width: auto;
-  align-self: center;
-`;

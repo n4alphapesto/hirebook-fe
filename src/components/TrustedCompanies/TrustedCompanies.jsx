@@ -81,7 +81,7 @@ function TrustedCompanies() {
   const logoHeight = 164;
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const interval = setInterval(function () {
       //console.log(scrollRef.current.scrollLeft, scrolled, direction)
       if (direction === "r") {
         setScrolled((scrolled) => scrolled + logoWidth);

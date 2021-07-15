@@ -11,6 +11,20 @@ import {
 import ashwek from "../../assets/images/ashwek-pawar.jpg";
 import harsh from "../../assets/images/harsh-khandewal.jpg";
 
+const Img = styled.img`
+  height: auto;
+  width: 100%;
+  max-height: 300px;
+`;
+
+const useStyles = makeStyles((theme) => ({
+  textContainer: {
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "column",
+  },
+}));
+
 const Testimonial = () => {
   const classes = useStyles();
 
@@ -61,17 +75,3 @@ const Testimonial = () => {
 };
 
 export default Testimonial;
-
-const Img = styled.img`
-  height: auto;
-  width: 100%;
-  max-height: 300px;
-`;
-
-const useStyles = makeStyles((theme) => ({
-  textContainer: {
-    display: "flex",
-    justifyContent: "center",
-    flexDirection: "column",
-  },
-}));
