@@ -7,14 +7,14 @@ import valuesIcon from "../../assets/images/value.png";
 import visionIcon from "../../assets/images/vision.png";
 import missionIcon from "../../assets/images/mission.png";
 
-import './styles.css';
+import "./styles.css";
 
 const Mission = () => {
     const classes = useStyles();
 
     return (
         <Box mt={10}>
-            <Grid container spacing={3} justifyContent='center'>
+            <Grid container spacing={3} justifyContent="center">
                 <Grid item xs={12} md={6} >
                     <Typography variant="h4" align="center" className={classes.boldText}>
                         Our Goal, Vision, Mision
@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
         fontSize: 12
     },
     large: {
-        width: '100%',
+        width: "100%",
         height: theme.spacing(15),
     },
 

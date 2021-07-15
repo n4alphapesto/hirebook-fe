@@ -62,7 +62,7 @@ const Img = styled.img`
 `
 
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     textContainer: {
         display: "flex",
         justifyContent: "center",

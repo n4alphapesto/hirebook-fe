@@ -1,8 +1,8 @@
-import LandingPage from './LandingPage';
-import LoginPage from './LoginPage';
-import SignupPage from './SignupPage';
-import JobseekerDashboard from './JobseekerDashboard';
-import RecruiterDashboard from './RecruiterDashboard';
+import LandingPage from "./LandingPage";
+import LoginPage from "./LoginPage";
+import SignupPage from "./SignupPage";
+import JobseekerDashboard from "./JobseekerDashboard";
+import RecruiterDashboard from "./RecruiterDashboard";
 
 export {
     LandingPage,

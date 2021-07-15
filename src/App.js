@@ -1,9 +1,9 @@
-import './App.css';
-import { Provider } from 'react-redux';
-import { ThemeProvider, createTheme } from '@material-ui/core/styles';
+import "./App.css";
+import { Provider } from "react-redux";
+import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 
-import store from './redux/store';
-import Routes from './Routes';
+import store from "./redux/store";
+import Routes from "./Routes";
 
 
 
@@ -11,9 +11,9 @@ import Routes from './Routes';
 const theme = createTheme({
   typography: {
     fontFamily: [
-      'Lato',
-      'sans-serif'
-    ].join(','),
+      "Lato",
+      "sans-serif"
+    ].join(","),
   },
 });
 

@@ -10,19 +10,19 @@ import { Navbar, Footer } from "../common";
 
 const recruiterData = {
     applied: {
-        title: 'Jobs Posted', 
+        title: "Jobs Posted", 
         value: 36
     }, 
     saved: {
-        title: 'Hired', 
+        title: "Hired", 
         value: 14
     }, 
     viewed: {
-        title: 'In Progress', 
+        title: "In Progress", 
         value: 22
     },
     invitations: {
-        title: 'Scheduled', 
+        title: "Scheduled", 
         value: 5
     }
 }
@@ -30,12 +30,12 @@ const recruiterData = {
     
 
 const jobPostData = {
-    type: 'companyDetails', 
+    type: "companyDetails", 
     companyLogo: oracle,
-    companyName: 'oracle', 
-    jobTitle: 'Frontend Developer', 
-    jobLocation: 'Bangalore', 
-    datePosted: '7/12/2021', 
+    companyName: "oracle", 
+    jobTitle: "Frontend Developer", 
+    jobLocation: "Bangalore", 
+    datePosted: "7/12/2021", 
     jobSummary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 
 }

@@ -64,7 +64,7 @@ const Navbar = ({children, ...restOfProps}) => {
                 </Link>
             
                 <Hidden mdDown>
-                    <Box className={classes.navlinks} aria-label={`navbar `}>
+                    <Box className={classes.navlinks} aria-label={"navbar"}>
                         {children}
                         {/*
                             navItems.map((el, i) => (
