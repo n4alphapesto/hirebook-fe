@@ -1,11 +1,11 @@
-import React from 'react'
-import {Dialog, DialogContent } from '@material-ui/core'
+import React from "react";
+import {Dialog, DialogContent } from "@material-ui/core";
 
 const PopUpComponent = ({open, handleClose, children, restOfProps}) => {
     
     return (
         <Dialog
-            maxWidth='xs' 
+            maxWidth="xs" 
             fullWidth
             open={open}
             onClose={handleClose}
@@ -23,4 +23,4 @@ const PopUpComponent = ({open, handleClose, children, restOfProps}) => {
 
 
 
-export default PopUpComponent
+export default PopUpComponent;

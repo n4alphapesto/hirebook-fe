@@ -1,5 +1,5 @@
-import React from 'react'
-import {Grid, Card, CardContent, Typography, makeStyles } from '@material-ui/core';
+import React from "react"
+import {Grid, Card, CardContent, Typography, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,4 +35,4 @@ const StatsComponent = ({data}) => {
     )
 }
 
-export default StatsComponent
+export default StatsComponent;

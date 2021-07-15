@@ -1,11 +1,11 @@
-import React from 'react';
-import { Button, Link, Box, Grid, makeStyles } from '@material-ui/core';
+import React from "react";
+import { Button, Link, Box, Grid, makeStyles } from "@material-ui/core";
 
 
-import { StatsComponent, SummaryComponent } from '../common';
-import oracle from '../assets/svg/oracle.svg';
+import { StatsComponent, SummaryComponent } from "../common";
+import oracle from "../assets/svg/oracle.svg";
 
-import { Navbar, Footer, PopUpComponent } from '../common'
+import { Navbar, Footer } from "../common";
 
 
 const recruiterData = {
@@ -48,13 +48,13 @@ const useStyles = makeStyles((theme) => ({
     },
     button: {
         background: "#79d4fd",
-        '&:hover': {
+        "&:hover": {
             background: "#69d4fd"
         }
     }, 
     filterMenu: {
-        display: 'flex', 
-        flexDirection: 'row', 
+        display: "flex", 
+        flexDirection: "row", 
     },
      
     
@@ -69,14 +69,14 @@ const RecruiterDashboard = () => {
     return(
         <div className={classes.root}>
             <Navbar>
-                <Link underline='none' href={"postedjobs"}>POSTED JOBS</Link>
-                <Link underline='none' href={"profile"}>PROFILE</Link>
-                <Link underline='none' href={"/"}>SIGNOUT</Link>
+                <Link underline="none" href={"postedjobs"}>POSTED JOBS</Link>
+                <Link underline="none" href={"profile"}>PROFILE</Link>
+                <Link underline="none" href={"/"}>SIGNOUT</Link>
             </Navbar>
             <Box mt={8}>
                 <StatsComponent data={recruiterData} />
                 
-                <Grid container spacing={2} justifyContent='center'>        
+                <Grid container spacing={2} justifyContent="center">        
                     <Grid item xs={12} sm={6} md={9}>
                         <Button className={classes.button}>Create New Job Post</Button>
                         <SummaryComponent data={jobPostData}/>
@@ -91,4 +91,4 @@ const RecruiterDashboard = () => {
         )
 }
 
-export default RecruiterDashboard
+export default RecruiterDashboard;

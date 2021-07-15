@@ -1,5 +1,5 @@
-import React from 'react'
-import { Card, CardContent, Typography, FormControl, Radio, RadioGroup, FormControlLabel, makeStyles } from '@material-ui/core';
+import React from "react";
+import { Card, CardContent, Typography, FormControl, Radio, RadioGroup, FormControlLabel, makeStyles } from "@material-ui/core";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -41,4 +41,4 @@ const FilterComponent = ({title, options}) => {
     )
 }
 
-export default FilterComponent
+export default FilterComponent;

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import React from "react";
+import { Route, Redirect } from "react-router-dom";
 
 const RouteValidator = ({ component: Component, ...rest }) => {
     // const redirectRoute = UTILS.ui.limitedAccessController(rest);

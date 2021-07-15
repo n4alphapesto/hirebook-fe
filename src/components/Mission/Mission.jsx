@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
-import styled from 'styled-components';
-import { Typography, Box, makeStyles, Grid } from '@material-ui/core';
+import styled from "styled-components";
+import { Typography, Box, makeStyles, Grid } from "@material-ui/core";
 
 import valuesIcon from "../../assets/images/value.png";
 import visionIcon from "../../assets/images/vision.png";
@@ -21,7 +21,7 @@ const Mission = () => {
                     </Typography>
                 </Grid>
             </Grid>
-            <Grid container spacing={3} justifyContent='center' alignItems='center'>
+            <Grid container spacing={3} justifyContent="center" alignItems="center">
                 <Grid item xs={12} md={6} >
                     <Typography variant="body2" align="center" >
                         The rules we are following to develop the largest recruiting network.
@@ -29,9 +29,9 @@ const Mission = () => {
                 </Grid>
             </Grid>
 
-            <Grid container justifyContent='center' className={classes.root} spacing={8} mb={10}>
+            <Grid container justifyContent="center" className={classes.root} spacing={8} mb={10}>
                 <Grid item xs={12} sm={6} md={4} className={classes.paper}>
-                    <Image alt={'mission image'} src={missionIcon} />
+                    <Image alt={"mission image"} src={missionIcon} />
                     <Typography variant="h5" className={classes.boldText} gutterBottom>
                         Mission
                     </Typography>
@@ -41,7 +41,7 @@ const Mission = () => {
                     </Box>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} className={classes.paper}>
-                    <Image alt={'vision image'} src={visionIcon} />
+                    <Image alt={"vision image"} src={visionIcon} />
                     <Typography variant="h5" className={classes.boldText} gutterBottom>
                         Vision
                     </Typography>
@@ -51,7 +51,7 @@ const Mission = () => {
                     </Box>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} className={classes.paper}>
-                    <Image alt={'values image'} src={valuesIcon} />
+                    <Image alt={"values image"} src={valuesIcon} />
                     <Typography variant="h5" className={classes.boldText} gutterBottom>
                         Values
                     </Typography>
@@ -78,8 +78,8 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
         width: 170,
-        textAlign: 'center',
-        justifyContent: 'center'
+        textAlign: "center",
+        justifyContent: "center",
     },
     control: {
         padding: theme.spacing(2),
@@ -87,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
     listitem: {
         fontSize: 13,
         paddingTop: 5,
-        textAlign: 'center'
+        textAlign: "center",
 
     },
     span_text: {

@@ -1,5 +1,5 @@
-import React from 'react';
-import {ImageList, ImageListItem} from '@material-ui/core';
+import React from "react";
+import {ImageList, ImageListItem} from "@material-ui/core";
 //import PropTypes from 'prop-types';
 
 
@@ -38,5 +38,5 @@ ImageGrid.propTypes = {
 
 }
 */
-export default ImageGrid 
+export default ImageGrid;
 

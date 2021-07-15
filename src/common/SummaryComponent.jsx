@@ -1,7 +1,7 @@
-import React from 'react';
-import { Card, CardContent, Typography, Grid, makeStyles } from '@material-ui/core';
-import Image from './Image'
-import {Button} from './Button'
+import React from "react";
+import { Card, CardContent, Typography, Grid, makeStyles } from "@material-ui/core";
+import Image from "./Image";
+import {Button} from "./Button";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -15,7 +15,7 @@ const SummaryComponent = ({data}) => {
     return (
         <Card className={classes.root}>
             <CardContent>
-                <Grid container spacing={2} justifyContent='center'>
+                <Grid container spacing={2} justifyContent="center">
                     <Grid item md={2}>
                         <Image src={companyLogo} width={100} height={100} />
                     </Grid>
@@ -36,4 +36,4 @@ const SummaryComponent = ({data}) => {
 
 }
 
-export default SummaryComponent
+export default SummaryComponent;

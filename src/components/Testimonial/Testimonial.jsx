@@ -1,16 +1,16 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Container, Grid, Typography, Box, makeStyles } from '@material-ui/core';
+import React from "react";
+import styled from "styled-components";
+import { Container, Grid, Typography, Box, makeStyles } from "@material-ui/core";
 
-import ashwek from '../../assets/images/ashwek-pawar.jpg';
-import harsh from '../../assets/images/harsh-khandewal.jpg';
+import ashwek from "../../assets/images/ashwek-pawar.jpg";
+import harsh from "../../assets/images/harsh-khandewal.jpg";
 
 const Testimonial = () => {
 
     const classes = useStyles();
 
     return (
-        <Container maxWidth='md'>
+        <Container maxWidth="md">
             <Box my={5}>
                 <Grid container direction="row" spacing={4}>
                     <Grid item xs={12} sm={6}>
@@ -64,8 +64,8 @@ const Img = styled.img`
 
 const useStyles = makeStyles(theme => ({
     textContainer: {
-        display: 'flex',
-        justifyContent: 'center',
-        flexDirection: 'column'
+        display: "flex",
+        justifyContent: "center",
+        flexDirection: "column",
     }
 }))

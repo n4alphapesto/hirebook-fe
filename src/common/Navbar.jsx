@@ -1,39 +1,39 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { Hidden, AppBar, Toolbar, Box, Link, IconButton, Menu, MenuItem, makeStyles } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
+import { Hidden, AppBar, Toolbar, Box, Link, IconButton, Menu, MenuItem, makeStyles } from "@material-ui/core";
+import MenuIcon from "@material-ui/icons/Menu";
 
-import logo from '../assets/svg/logo.svg';
-import Image from './Image';
+import logo from "../assets/svg/logo.svg";
+import Image from "./Image";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        background: '#79d4fd',  
+        background: "#79d4fd",  
     },
     content: {
-        display: 'flex', 
-        justifyContent: 'space-between',
+        display: "flex", 
+        justifyContent: "space-between",
     }, 
     logo: {
         paddingLeft: theme.spacing(10),
     },
     navlinks: {
         paddingRight: theme.spacing(10),
-        '& > *': {
-            margin: '20px',
-            padding: '20px 10px',
-            '&:hover': {
+        "& > *": {
+            margin: "20px",
+            padding: "20px 10px",
+            "&:hover": {
                 //backgroundColor: '#3590fd',
-                color: 'black', 
-                borderBottom: '2px solid red' 
+                color: "black", 
+                borderBottom: "2px solid red", 
             }
 
         }
     },
     menuButton: {
         marginRight: theme.spacing(2),
-    }
+    },
     
 }));
 

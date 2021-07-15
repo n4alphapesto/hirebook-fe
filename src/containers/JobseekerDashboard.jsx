@@ -1,28 +1,28 @@
-import React from 'react';
-import {Hidden, Link, Box, Grid, makeStyles, Typography } from '@material-ui/core';
+import React from "react";
+import {Hidden, Link, Box, Grid, makeStyles, Typography } from "@material-ui/core";
 
-import FilterListIcon from '@material-ui/icons/FilterList';
+import FilterListIcon from "@material-ui/icons/FilterList";
 
-import { Navbar, Footer, PopUpComponent, StatsComponent, FilterComponent, SummaryComponent } from '../common';
-import oracle from '../assets/svg/oracle.svg';
+import { Navbar, Footer, StatsComponent, FilterComponent, SummaryComponent } from "../common";
+import oracle from "../assets/svg/oracle.svg";
 
 
 
 const candidateData = {
     applied: {
-        title: 'Applied Jobs', 
+        title: "Applied Jobs", 
         value: 6
     }, 
     saved: {
-        title: 'Saved Jobs', 
+        title: "Saved Jobs", 
         value: 6
     }, 
     viewed: {
-        title: 'Viewed Resume', 
+        title: "Viewed Resume", 
         value: 22
     },
     invitations: {
-        title: 'Invitations', 
+        title: "Invitations", 
         value: 5
     }
 }
@@ -30,12 +30,12 @@ const candidateData = {
     
 
 const jobPostData = {
-    type: 'companyDetails', 
+    type: "companyDetails", 
     companyLogo: oracle,
-    companyName: 'oracle', 
-    jobTitle: 'Frontend Developer', 
-    jobLocation: 'Bangalore', 
-    datePosted: '7/12/2021', 
+    companyName: "oracle", 
+    jobTitle: "Frontend Developer", 
+    jobLocation: "Bangalore", 
+    datePosted: "7/12/2021", 
     jobSummary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 
 }
@@ -47,8 +47,8 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1, 
     },
     filterMenu: {
-        display: 'flex', 
-        flexDirection: 'row', 
+        display: "flex", 
+        flexDirection: "row", 
     },
     filters: {
 
@@ -64,9 +64,9 @@ const JobseekerDashboard = () => {
     return(
         <div className={classes.root}>
             <Navbar>
-                <Link underline='none' href={"opportunities"}>OPPORTUNITIES</Link>
-                <Link underline='none' href={"profile"}>PROFILE</Link>
-                <Link underline='none' href={"/"}>SIGNOUT</Link>
+                <Link underline="none" href={"opportunities"}>OPPORTUNITIES</Link>
+                <Link underline="none" href={"profile"}>PROFILE</Link>
+                <Link underline="none" href={"/"}>SIGNOUT</Link>
             </Navbar>
             <Box mt={8}>
                 <Hidden mdUp>
@@ -100,4 +100,4 @@ const JobseekerDashboard = () => {
         )
 }
 
-export default JobseekerDashboard
+export default JobseekerDashboard;

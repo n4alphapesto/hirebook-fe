@@ -1,5 +1,5 @@
-import React from 'react';
-import { Box, Grid, Typography, Link, makeStyles } from '@material-ui/core';
+import React from "react";
+import { Box, Grid, Typography, Link, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -8,20 +8,20 @@ const useStyles = makeStyles((theme) => ({
       paddingRight: theme.spacing(2),
       paddingBottom: theme.spacing(10), 
       paddingLeft: theme.spacing(2),
-      textAlign: 'center',
-      backgroundColor: '#34495E', 
-      color: '#FFFFFF', 
+      textAlign: "center",
+      backgroundColor: "#34495E'", 
+      color: "#FFFFFF", 
     },
     title: {
         fontweight: 400, 
     }, 
     listOfItems: {
-        display: 'flex',
-        flexDirection: 'column', 
+        display: "flex",
+        flexDirection: "column", 
         
     }, 
     links: {
-      color: '#C2C8CE',
+      color: "#C2C8CE",
     }
   }));
 
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
             <Typography variant="h5" className={classes.title}>Jobs By Location</Typography>
             <div className={classes.listOfItems}>
                 {
-                    ['bangalore', 'gurgaon', 'hyderabad', 'mumbai'].map((location, i) => (
+                    ["bangalore", "gurgaon", "hyderabad", "mumbai"].map((location, i) => (
                             <Link 
                                 key={i} 
                                 href="#" 
@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
             <Typography variant="h5" className={classes.title}>Jobs By Function</Typography>
             <div className={classes.listOfItems}>
                 {
-                    ['Frontend', 'Backend', 'FullStack', 'Cloud'].map((role, i) => (
+                    ["Frontend", "Backend", "FullStack", "Cloud"].map((role, i) => (
                             <Link 
                                 key={i} 
                                 href="#" 
@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
             <Typography variant="h5" className={classes.title}>For Recruiters</Typography>
             <div className={classes.listOfItems}>
                 {
-                    ['Post your jobs', 'Success Stories'].map((item, i) => (
+                    ["Post your jobs", "Success Stories"].map((item, i) => (
                             <Link 
                                 key={i} 
                                 href="#" 
@@ -96,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
             <Typography variant="h5" className={classes.title}>hirebook</Typography>
             <div className={classes.listOfItems}>
                 {
-                    ['blog', 'about', 'privacy', 'terms'].map((page, i) => (
+                    ["blog", "about", "privacy", "terms"].map((page, i) => (
                             <Link 
                                 key={i} 
                                 href="#" 

@@ -1,14 +1,14 @@
-import React from 'react';
-import TrustedCompanies from '../components/TrustedCompanies/TrustedCompanies'
+import React from "react";
+import TrustedCompanies from "../components/TrustedCompanies/TrustedCompanies";
 
 
-import { Container, Divider, Box, Link, Typography } from '@material-ui/core';
+import { Container, Divider, Box, Link, Typography } from "@material-ui/core";
 
-import Hero from '../components/Hero/Hero';
-import Mission from '../components/Mission/Mission';
-import Testimonial from '../components/Testimonial/Testimonial';
+import Hero from "../components/Hero/Hero";
+import Mission from "../components/Mission/Mission";
+import Testimonial from "../components/Testimonial/Testimonial";
 
-import { Navbar, Footer, PopUpComponent } from '../common'
+import { Navbar, Footer, PopUpComponent } from "../common"
 
 const LandingPage = () => {
     const [openLogin, setOpenLogin] = React.useState(false);
@@ -33,8 +33,8 @@ const LandingPage = () => {
     return (
         <div>
             <Navbar>
-                <Link underline='none' onClick={handleOpenLogin}>LOGIN</Link>
-                <Link underline='none' onClick={handleOpenSignup}>SIGNUP</Link>
+                <Link underline="none" onClick={handleOpenLogin}>LOGIN</Link>
+                <Link underline="none" onClick={handleOpenSignup}>SIGNUP</Link>
             </Navbar>
             <PopUpComponent open={openLogin} handleClose={handleCloseLogin}>
                 <Typography>login component</Typography>
@@ -43,7 +43,7 @@ const LandingPage = () => {
                 <Typography>signup component</Typography>
             </PopUpComponent>
             <Hero />
-            <Container maxWidth='lg'>
+            <Container maxWidth="lg">
                 <Mission />
                 <Box my={10}>
                     <Divider />
