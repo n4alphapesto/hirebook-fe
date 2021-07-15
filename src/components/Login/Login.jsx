@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Grid, Box, Typography, TextField, Button, CircularProgress, makeStyles } from "@material-ui/core";
 import { login } from '../../redux/actions/auth';
 
-const Login = ({ loginAction, isLogging, user }) => {
+const Login = ({ loginAction, isLogging, closeDialog, user }) => {
     const classes = useStyles();
     const [email, _setEmail] = useState('');
     const [password, _setPassword] = useState('');
@@ -32,8 +32,7 @@ const Login = ({ loginAction, isLogging, user }) => {
                             <Box mt={5}>
                                 <Typography
                                     variant="subtitle2"
-                                    className={classes.label}
-                                >
+                                    className={classes.label}>
                                     Email Address
                                 </Typography>
                                 <TextField
@@ -76,6 +75,11 @@ const Login = ({ loginAction, isLogging, user }) => {
                                     <CircularProgress size={20} color="white" />
                                 }
                                 Login
+                            </Button>
+                        </Box>
+                        <Box mt={2}>
+                            <Button onClick={closeDialog} fullWidth variant="outlined" color="secondary"  >
+                                Cancel
                             </Button>
                         </Box>
 

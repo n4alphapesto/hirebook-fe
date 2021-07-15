@@ -58,12 +58,12 @@ const Navbar = ({ navItems, ...restOfProps }) => {
             </AppBar>
             <Dialog maxWidth='xs' fullWidth open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogContent>
-                    <Login />
+                    <Login closeDialog={handleClose} />
                 </DialogContent>
             </Dialog>
             <Dialog maxWidth='xs' fullWidth open={signupOpen} onClose={closeSignup} aria-labelledby="form-dialog-title">
                 <DialogContent>
-                    <Signup />
+                    <Signup closeDialog={closeSignup} />
                 </DialogContent>
             </Dialog>
         </>

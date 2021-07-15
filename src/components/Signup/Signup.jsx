@@ -14,7 +14,7 @@ import { register, verify } from '../../redux/actions/auth';
 
 import './style.css';
 
-const Signup = ({ isSigning, actions }) => {
+const Signup = ({ isSigning, actions, closeDialog }) => {
     const classes = useStyles();
     const [userType, _setUserType] = useState('jobseeker');
     const [name, _setName] = useState('');
@@ -88,6 +88,7 @@ const Signup = ({ isSigning, actions }) => {
                                 <TextField
                                     fullWidth
                                     required
+                                    autoFocus
                                     id="full_name"
                                     placeholder="Enter Your Name"
                                     size="small"
@@ -178,6 +179,11 @@ const Signup = ({ isSigning, actions }) => {
                             </Box>
                         </Grid>
                     }
+                    <Box mt={3}>
+                        <Button fullWidth variant="outlined" color="secondary" onClick={closeDialog}>
+                            Cancel
+                        </Button>
+                    </Box>
                 </Grid>
             </Grid>
         </Box>
