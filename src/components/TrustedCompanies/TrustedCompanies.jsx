@@ -99,13 +99,13 @@ function TrustedCompanies(){
 
     const executeScrollLeft = () => {
         //console.log(scrollRef.current.scrollLeft, direction)
-        setScrolled(scrolled => scrolled - logoWidth)
+        setScrolled((scrolled) => scrolled - logoWidth)
         scrollRef.current.scrollLeft -= logoWidth;  
     }
 
     const executeScrollRight = () => {
         //console.log(myRef.current.scrollLeft, direction)
-        setScrolled(scrolled => scrolled + logoWidth)
+        setScrolled((scrolled) => scrolled + logoWidth)
         scrollRef.current.scrollLeft += logoWidth;
          
     }
