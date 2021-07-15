@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(10),
     paddingLeft: theme.spacing(2),
     textAlign: "center",
-    backgroundColor: "#34495E'",
+    backgroundColor: "#34495E",
     color: "#FFFFFF",
   },
   title: {

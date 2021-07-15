@@ -81,18 +81,26 @@ function TrustedCompanies() {
   const logoHeight = 164;
 
   useEffect(() => {
-    const interval = setInterval(function () {
+    const interval = setInterval(() => {
       //console.log(scrollRef.current.scrollLeft, scrolled, direction)
       if (direction === "r") {
         setScrolled((scrolled) => scrolled + logoWidth);
         scrollRef.current.scrollLeft += logoWidth;
-      } else if (direction === "l") {
+      } else {
         setScrolled((scrolled) => scrolled - logoWidth);
         scrollRef.current.scrollLeft -= logoWidth;
       }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [direction, scrolled, logoWidth]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      //console.log(scrollRef.current.scrollLeft, scrolled, direction)
       if (scrolled >= logoWidth * 12) {
         setDirection("l");
-      } else if (scrolled <= 0) {
+      }
+      if (scrolled <= 0) {
         setDirection("r");
       }
     }, 1000);

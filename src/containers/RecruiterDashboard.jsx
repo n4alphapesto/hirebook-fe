@@ -74,10 +74,21 @@ const RecruiterDashboard = () => {
         <Grid container spacing={2} justifyContent="center">
           <Grid item xs={12} sm={6} md={9}>
             <Button className={classes.button}>Create New Job Post</Button>
-            <SummaryComponent data={jobPostData} />
-            <SummaryComponent data={jobPostData} />
-            <SummaryComponent data={jobPostData} />
-            <SummaryComponent data={jobPostData} />
+            <SummaryComponent
+              cardTitle={jobPostData.jobTitle}
+              cardSubTitle={jobPostData.jobLocation}
+              cardText={jobPostData.jobSummary}
+            />
+            <SummaryComponent
+              cardTitle={jobPostData.jobTitle}
+              cardSubTitle={jobPostData.jobLocation}
+              cardText={jobPostData.jobSummary}
+            />
+            <SummaryComponent
+              cardTitle={jobPostData.jobTitle}
+              cardSubTitle={jobPostData.jobLocation}
+              cardText={jobPostData.jobSummary}
+            />
           </Grid>
         </Grid>
       </Box>
