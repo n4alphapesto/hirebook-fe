@@ -1,28 +1,22 @@
-import React from 'react';
-import {ImageList, ImageListItem} from '@material-ui/core';
-import Image from './Image';
-import PropTypes from 'prop-types';
+import React from "react";
+import { ImageList, ImageListItem } from "@material-ui/core";
+//import PropTypes from 'prop-types';
 
-const ImageGrid = ({width, height, cols, rowHeight, imageData}) => {
-    return (
-        <ImageList sx={{ width: width, height: height }} cols={cols} rowHeight={rowHeight}>
-            {imageData.map((item) => (
-                <ImageListItem key={item.img}>
-                    <Image
-                        srcSet={
-                            `${item.img}?w=${item.width}&h=${item.height}&fit=crop&auto=format 1x,
-                            ${item.img}?w=${item.width}&h=${item.height}&fit=crop&auto=format&dpr=2 2x`
-                        }
-                        alt={item.altText}
-                        loading="lazy"
-                    />
-                </ImageListItem>
-            ))}
-        </ImageList>
-    )
-}
+const ImageGrid = ({ width, height, cols, rowHeight, children }) => {
+  return (
+    <ImageList
+      sx={{ width: width, height: height }}
+      cols={cols}
+      rowHeight={rowHeight}
+    >
+      {children.map((item, i) => {
+        return <ImageListItem key={i}>{item}</ImageListItem>;
+      })}
+    </ImageList>
+  );
+};
 
-ImageGrid.defaultProps = {
+/*ImageGrid.defaultProps = {
     width: 500, 
     height: 450, 
     cols: 4, 
@@ -38,5 +32,5 @@ ImageGrid.propTypes = {
     imageData: PropTypes.object,  
 
 }
-
-export default ImageGrid 
+*/
+export default ImageGrid;
