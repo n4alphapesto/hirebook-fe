@@ -7,8 +7,6 @@ import valuesIcon from "../../assets/images/value.png";
 import visionIcon from "../../assets/images/vision.png";
 import missionIcon from "../../assets/images/mission.png";
 
-import "./styles.css";
-
 const Mission = () => {
   const classes = useStyles();
 
