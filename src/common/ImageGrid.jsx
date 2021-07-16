@@ -1,25 +1,20 @@
-import React from 'react';
-import {ImageList, ImageListItem} from '@material-ui/core';
+import React from "react";
+import { ImageList, ImageListItem } from "@material-ui/core";
 //import PropTypes from 'prop-types';
 
-
-const ImageGrid = ({width, height, cols, rowHeight, children}) => {
-   
-    return (
-        
-            <ImageList sx={{ width: width, height: height }} cols={cols} rowHeight={rowHeight}>
-                {children.map((item, i) => {
-                    return (
-                        <ImageListItem key={i}>
-                            {item}
-                        </ImageListItem>
-
-                    )
-                })}
-                
-            </ImageList>
-    )
-}
+const ImageGrid = ({ width, height, cols, rowHeight, children }) => {
+  return (
+    <ImageList
+      sx={{ width: width, height: height }}
+      cols={cols}
+      rowHeight={rowHeight}
+    >
+      {children.map((item, i) => {
+        return <ImageListItem key={i}>{item}</ImageListItem>;
+      })}
+    </ImageList>
+  );
+};
 
 /*ImageGrid.defaultProps = {
     width: 500, 
@@ -38,5 +33,4 @@ ImageGrid.propTypes = {
 
 }
 */
-export default ImageGrid 
-
+export default ImageGrid;
