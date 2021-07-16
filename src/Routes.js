@@ -14,8 +14,6 @@ const Routes = () => {
                     <RouteValidator exact path="/" component={LandingPage} />
                     <RouteValidator exact path="/jobseeker/onboarding" component={JobSeekerOnboarding} />
                     <RouteValidator exact path="/recruiter/onboarding" component={RecruiterOnboarding} />
-                    {/* <RouteValidator path="/JobSeeker/Onboarding/:step" component={LandingPage} />
-                    <RouteValidator path="/JobSeeker/Onboarding/:step" component={LandingPage} /> */}
                 </Switch>
                 <Footer />
             </Router>

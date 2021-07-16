@@ -7,13 +7,8 @@ import Signup from '../components/Signup/Signup';
 
 const Navbar = ({ navItems, ...restOfProps }) => {
     const classes = useStyles();
-    const [value, setValue] = React.useState(0);
     const [open, setOpen] = React.useState(false);
     const [signupOpen, setSignupOpen] = React.useState(false);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
 
     const handleOpen = () => {
         setOpen(true);
@@ -39,8 +34,6 @@ const Navbar = ({ navItems, ...restOfProps }) => {
 
                     <Tabs
                         className={classes.navlinks}
-                        value={value}
-                        onChange={handleChange}
                         aria-label="simple tabs example"
                     >
                         <Tab

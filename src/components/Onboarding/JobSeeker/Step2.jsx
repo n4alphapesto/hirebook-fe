@@ -165,11 +165,11 @@ const Step2 = ({ back, next }) => {
 
                         <Grid item>
                             <Box mt={4} justifyContent="space-between" className={classes.buttonContainer}>
-                                <Button type="submit" onClick={handleBack} startIcon={<ArrowBackIcon />}>
+                                <Button size="large" type="submit" onClick={handleBack} startIcon={<ArrowBackIcon />}>
                                     Back
                                 </Button>
 
-                                <Button type="submit" onClick={handleNext} endIcon={<ArrowForwardIcon />} variant="outlined" color="primary"  >
+                                <Button size="large" type="submit" onClick={handleNext} endIcon={<ArrowForwardIcon />} variant="outlined" color="primary"  >
                                     Next
                                 </Button>
                             </Box>

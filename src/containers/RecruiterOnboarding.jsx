@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Grid, Paper, makeStyles } from '@material-ui/core';
 
-import { Step1 } from '../components/Onboarding/Recruiter';
+import { Step1, Step2 } from '../components/Onboarding/Recruiter';
 
 const RecruiterOnboarding = () => {
     const classes = useStyles();
@@ -31,8 +31,7 @@ const RecruiterOnboarding = () => {
                         {
                             {
                                 0: <Step1 next={next} />,
-                                // 1: <Step2 next={next} back={back} />,
-                                // 2: <Step3 back={back} finish={submitData} />
+                                1: <Step2 back={back} finish={submitData} />,
                             }[step]
                         }
                     </Paper>

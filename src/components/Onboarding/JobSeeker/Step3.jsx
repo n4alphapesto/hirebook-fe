@@ -80,11 +80,11 @@ const Step3 = ({ back, finish }) => {
 
                         <Grid item>
                             <Box mt={4} justifyContent="space-between" className={classes.buttonContainer}>
-                                <Button onClick={handleBack} endIcon={<ArrowBackIcon />} variant="outlined" color="primary"  >
+                                <Button size="large" onClick={handleBack} endIcon={<ArrowBackIcon />} variant="outlined" color="primary"  >
                                     Back
                                 </Button>
 
-                                <Button type="submit" onClick={handleSubmit} endIcon={<ArrowForwardIcon />} variant="outlined" color="primary"  >
+                                <Button size="large" type="submit" onClick={handleSubmit} endIcon={<ArrowForwardIcon />} variant="outlined" color="primary"  >
                                     Finish
                                 </Button>
                             </Box>

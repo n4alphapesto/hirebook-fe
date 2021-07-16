@@ -1,76 +1,45 @@
 import React, { useState } from 'react';
 import {
     FormControl,
-    FormControlLabel,
     MenuItem,
-    Radio,
     Select,
     Typography,
-    RadioGroup,
     OutlinedInput,
     InputAdornment,
     Grid,
     makeStyles,
     Button,
     Box,
-    IconButton,
     TextField
 } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-import AddIcon from '@material-ui/icons/Add';
+import { Autocomplete } from '@material-ui/lab';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
-import { randomNumber } from '../../../utils/common';
-
-const expertiseOptions = [
-    { value: 'fresher', label: 'Fresher' },
-    { value: 'intermediate', label: 'Intermediate' },
-    { value: 'expert', label: 'Expert' },
-]
+import { locations, randomNumber } from '../../../utils/common';
 
 const Step1 = ({ next }) => {
     const classes = useStyles();
-    const [experienceType, _setExperienceType] = useState('professional');
-    const [totalExperience, _setTotalExperince] = useState();
-    const [currentRole, _setCurrentRole] = useState(10);
-    const [skills, _setSkills] = useState([
-        { _id: randomNumber(4), title: '', expertiseLevel: 'fresher' },
-        { _id: randomNumber(4), title: '', expertiseLevel: 'fresher' },
-        { _id: randomNumber(4), title: '', expertiseLevel: 'fresher' },
-        { _id: randomNumber(4), title: '', expertiseLevel: 'fresher' }
-    ]);
+    const [companyName, _setCompanyName] = useState('');
+    const [userRole, _setUserRole] = useState();
+    const [mobileNo, _setMobileNo] = useState('');
+    const [companyLocations, _setCompanyLocations] = useState();
+    const [foundationYear, _setFoundationYear] = useState();
+    const [noOfEmployee, _setNoOfEmployee] = useState();
 
-    const addSkillsRow = () => _setSkills([...skills, { _id: randomNumber(4), title: '', expertiseLevel: 'fresher' }])
+    const getYearOptions = () => {
+        const now = new Date();
+        const year = now.getFullYear();
+        const yearOptions = [];
 
-    const removeSkillsRow = (_id) => {
-        const updatedSkills = skills.filter(skill => skill._id !== _id);
-
-        _setSkills(updatedSkills)
-    }
-
-    const handleSkillChange = ({ _id, key, value }) => {
-
-        let updatedSkills = skills.map(skill => {
-            if (skill._id === _id)
-                return { ...skill, [key]: value }
-
-            return skill
-        })
-
-        _setSkills(updatedSkills);
-    }
-
-
-    const handleNext = () => {
-        const data = {
-            experienceType,
-            totalExperience,
-            currentRole,
+        for (let i = year; i >= 1970; i--) {
+            yearOptions.push(<MenuItem value={i}>{i}</MenuItem>);
         }
 
-        data.skills = skills.filter(skill => skill.title);
+        return yearOptions;
+    }
 
-        next(data);
+    const handleNext = () => {
+        next();
     }
 
     return (
@@ -80,13 +49,13 @@ const Step1 = ({ next }) => {
                     variant="h4"
                     className="skill_form_titile"
                 >
-                    Step 1/3 : Add Your Skills
+                    Step 1/2: Quick Info
                 </Typography>
                 <Typography
                     variant="subtitle2"
                     className="skill_form_titile"
                 >
-                    We just need quick info of your expertiese.
+                    Hi, We just need quick info of your company.
                 </Typography>
             </Box>
 
@@ -94,68 +63,40 @@ const Step1 = ({ next }) => {
                 <Grid container direction="column">
                     <form>
                         <Grid item>
-                            <FormControl component="fieldset">
-                                <Typography
-                                    variant="subtitle2"
-                                    className={classes.label}>
-                                    Are You a working professional or fresher?
-                                </Typography>
-                                <RadioGroup value={experienceType} onChange={({ target }) => _setExperienceType(target.value)}>
-                                    <FormControlLabel
-                                        value="professional"
-                                        control={<Radio />}
-                                        label="I am a working professonal"
-                                    />
-                                    <FormControlLabel
-                                        value="fresher"
-                                        control={<Radio />}
-                                        label="I am a fresher"
-                                    />
-                                </RadioGroup>
-                            </FormControl>
-                        </Grid>
-
-                        <Grid item>
                             <Box mt={2}>
                                 <Typography
                                     variant="subtitle2"
                                     className={classes.label}>
-                                    How Many Years of experience do you have ? Dont't
-                                    include internships
+                                    Company Name?
                                 </Typography>
-                                <FormControl variant="outlined">
-                                    <OutlinedInput
-                                        id="outlined-adornment-weight"
-                                        value={totalExperience}
-                                        placeholder="e.g, 2.4"
-                                        endAdornment={<InputAdornment position="end">Years</InputAdornment>}
-                                        aria-describedby="outlined-weight-helper-text"
-                                        inputProps={{
-                                            'aria-label': 'experience',
-                                        }}
-                                        labelWidth={0}
-                                        onChange={({ target }) => _setTotalExperince(target.value)}
-                                    />
-                                </FormControl>
+                                <TextField
+                                    required
+                                    placeholder="Company Name"
+                                    type="text"
+                                    size="medium"
+                                    variant="outlined"
+                                    value={companyName}
+                                    onChange={({ target }) => _setCompanyName(target.value)}
+                                />
                             </Box>
                         </Grid>
 
                         <Grid item>
                             <Box mt={2}>
-                                <FormControl variant="outlined" >
-                                    <Typography
-                                        variant="subtitle2"
-                                        className={classes.label}>
-                                        Select Your Current role :
-                                    </Typography>
+                                <Typography
+                                    variant="subtitle2"
+                                    className={classes.label}>
+                                    Your Role
+                                </Typography>
+                                <FormControl variant="outlined">
                                     <Select
-                                        value={currentRole}
-                                        onChange={({ target }) => _setCurrentRole(target.value)}
-                                        labelId="demo-controlled-open-select-label"
-                                        id="demo-controlled-open-select">
-                                        <MenuItem value={10}>Full-Stack Developer</MenuItem>
-                                        <MenuItem value={20}>React Developer</MenuItem>
-                                        <MenuItem value={30}>NodeJs Developer</MenuItem>
+                                        fullWidth
+                                        required
+                                        value={userRole}
+                                        onChange={({ target }) => _setUserRole(target.value)}>
+                                        <MenuItem value={10}>Talent Acquistion Manager</MenuItem>
+                                        <MenuItem value={20}>Human Resource</MenuItem>
+                                        <MenuItem value={30}>CEO</MenuItem>
                                     </Select>
                                 </FormControl>
                             </Box>
@@ -166,65 +107,72 @@ const Step1 = ({ next }) => {
                                 <Typography
                                     variant="subtitle2"
                                     className={classes.label}>
-                                    Add up to 4 skills and how much expertise you have with each.
+                                    Mobile No
                                 </Typography>
-                                {
-                                    skills.map(skill =>
-                                        <Grid container spacing={2} key={skill._id} justifyContent="space-between">
-                                            <Grid item xs={5}>
-                                                <TextField
-                                                    fullWidth
-                                                    required
-                                                    id={"skill" + skill._id}
-                                                    placeholder="Skill"
-                                                    type="text"
-                                                    size="medium"
-                                                    variant="outlined"
-                                                    onChange={({ target }) => handleSkillChange({ _id: skill._id, key: 'title', value: target.value })}
-                                                />
-                                            </Grid>
+                                <FormControl variant="outlined">
+                                    <OutlinedInput
+                                        value={mobileNo}
+                                        placeholder="e.g, 2.4"
+                                        startAdornment={<InputAdornment position="start">+91</InputAdornment>}
+                                        inputProps={{
+                                            'aria-label': 'mobileNo',
+                                        }}
+                                        labelWidth={0}
+                                        onChange={({ target }) => _setMobileNo(target.value)}
+                                    />
+                                </FormControl>
+                            </Box>
+                        </Grid>
 
-                                            <Grid item xs={5}>
-                                                <FormControl fullWidth variant="outlined" >
-                                                    <Select
-                                                        value={skill.expertiseLevel}
-                                                        labelId="expertiseOptions"
-                                                        id="expertise"
-                                                        onChange={({ target }) => handleSkillChange({ _id: skill._id, key: 'expertiseLevel', value: target.value })}
-                                                    >
-                                                        {expertiseOptions.map(expOption =>
-                                                            <MenuItem value={expOption.value}>{expOption.label}</MenuItem>
-                                                        )}
-                                                    </Select>
+                        <Grid item>
+                            <Box mt={2}>
+                                <Typography
+                                    variant="subtitle2"
+                                    className={classes.label}>
+                                    Company Locations:
+                                </Typography>
+                                <Autocomplete
+                                    required
+                                    multiple
+                                    options={locations}
+                                    getOptionLabel={(option) => option.label}
+                                    defaultValue={companyLocations}
+                                    onChange={(e, value) => _setCompanyLocations(value)}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            variant="standard"
+                                            placeholder="Locations"
+                                        />
+                                    )}
+                                />
+                            </Box>
+                        </Grid>
 
-                                                </FormControl>
-                                            </Grid>
-                                            <Grid xs={2}>
-                                                <IconButton color="secondary" onClick={() => removeSkillsRow(skill._id)}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </Grid>
-                                        </Grid>
-                                    )
-                                }
+                        <Grid item>
+                            <Box mt={2}>
+                                <FormControl variant="outlined">
+                                    <Typography
+                                        variant="subtitle2"
+                                        className={classes.label}>
+                                        Foundation Year
+                                    </Typography>
+                                    <Select
+                                        required
+                                        value={foundationYear}
+                                        onChange={({ target }) => _setFoundationYear(target.value)}>
 
-                                <Box my={2}>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        className={classes.button}
-                                        startIcon={<AddIcon />}
-                                        onClick={addSkillsRow}
-                                    >
-                                        Add Skill
-                                    </Button>
-                                </Box>
+                                        {
+                                            getYearOptions().map(option => option)
+                                        }
+                                    </Select>
+                                </FormControl>
                             </Box>
                         </Grid>
 
                         <Grid item>
                             <Box mt={4} justifyContent="flex-end" className={classes.buttonContainer}>
-                                <Button onClick={handleNext} endIcon={<ArrowForwardIcon />} variant="outlined" color="primary"  >
+                                <Button size="large" onClick={handleNext} endIcon={<ArrowForwardIcon />} variant="outlined" color="primary"  >
                                     Next
                                 </Button>
                             </Box>

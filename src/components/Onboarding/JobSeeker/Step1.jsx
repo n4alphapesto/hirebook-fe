@@ -224,7 +224,7 @@ const Step1 = ({ next }) => {
 
                         <Grid item>
                             <Box mt={4} justifyContent="flex-end" className={classes.buttonContainer}>
-                                <Button onClick={handleNext} endIcon={<ArrowForwardIcon />} variant="outlined" color="primary"  >
+                                <Button size="large" onClick={handleNext} endIcon={<ArrowForwardIcon />} variant="outlined" color="primary"  >
                                     Next
                                 </Button>
                             </Box>
