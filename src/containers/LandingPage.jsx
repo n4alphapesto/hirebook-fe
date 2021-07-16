@@ -1,4 +1,7 @@
 import React from 'react';
+import TrustedCompanies from '../components/TrustedCompanies/TrustedCompanies'
+
+
 import { Container, Divider, Box } from '@material-ui/core';
 
 import Hero from '../components/Hero/Hero';
@@ -15,6 +18,7 @@ const LandingPage = () => {
                     <Divider />
                 </Box>
                 <Testimonial />
+                <TrustedCompanies />
             </Container>
         </div>
     )
