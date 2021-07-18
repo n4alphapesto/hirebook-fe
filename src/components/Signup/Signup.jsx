@@ -21,7 +21,7 @@ import "./style.css";
 
 const Signup = ({ isSigning, actions, closeDialog }) => {
   const classes = useStyles();
-  const [userType, _setUserType] = useState("jobseeker");
+  const [userType, _setUserType] = useState("JOBSEEKER");
   const [name, _setName] = useState("");
   const [email, _setEmail] = useState("");
   const [password, _setPassword] = useState("");
@@ -67,13 +67,13 @@ const Signup = ({ isSigning, actions, closeDialog }) => {
                     onChange={({ target }) => _setUserType(target.value)}
                   >
                     <FormControlLabel
-                      value="jobseeker"
-                      control={<Radio color="primary" />}
+                      value="JOBSEEKER"
+                      control={<Radio autoFocus color="primary" />}
                       label="Job Seeker"
                     />
 
                     <FormControlLabel
-                      value="recruiter"
+                      value="RECRUITER"
                       control={<Radio color="primary" />}
                       label="Recruiter"
                     />
@@ -165,6 +165,7 @@ const Signup = ({ isSigning, actions, closeDialog }) => {
               </Box>
               <Box mt={2} className={classes.otpContainer}>
                 <OtpInput
+                  shouldAutoFocus
                   inputStyle="inputStyle"
                   value={otp}
                   onChange={handleChange}

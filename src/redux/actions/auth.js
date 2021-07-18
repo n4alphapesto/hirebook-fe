@@ -11,13 +11,11 @@ export const login = (payload) => {
         return new Promise((resolve, reject) => {
             loginApi(payload)
                 .then(result => {
-                    console.log("11 login result 11", result);
                     localStorage.setItem("token", result?.data?.data?.token)
                     dispatch({ type: LOGIN_SUCCESS, payload: result?.data?.data })
                     resolve(result);
                 })
                 .catch(error => {
-                    console.log("11 login error 11", error);
                     dispatch({ type: LOGIN_FAILED, payload: error })
                     reject(error);
                 })
@@ -50,12 +48,10 @@ export const verify = (payload) => {
         return new Promise((resolve, reject) => {
             verifyOTPApi(payload)
                 .then(result => {
-                    console.log("11 register result 11", result);
                     dispatch({ type: VERIFY_SUCCESS })
                     resolve(result);
                 })
                 .catch(error => {
-                    console.log("11 regiuster error 11", error);
                     dispatch({ type: VERIFY_FAILED, payload: error })
                     reject(error);
                 })
