@@ -7,6 +7,7 @@ import {
   CircularProgress,
   TextareaAutosize,
   makeStyles,
+  TextField,
 } from "@material-ui/core";
 import { useSnackbar } from "notistack";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -17,8 +18,10 @@ const Step3 = ({ back, finish, initialData }) => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [resume, _setResume] = useState();
+  const [userPhoto, _setUserPhto] = useState();
   const [about, _setAbout] = useState("");
-  const [isUploading, _setIsUploading] = useState(false);
+  const [isResumeUploading, _setIsResumeUploading] = useState(false);
+  const [isProfilePicUploading, _setIsProfilePicUploading] = useState(false);
 
   useEffect(() => {
     if (initialData.resume) _setResume(initialData.resume);
@@ -29,8 +32,15 @@ const Step3 = ({ back, finish, initialData }) => {
   };
 
   const handleSubmit = () => {
-    if (!resume.length) {
+    if (!resume) {
       enqueueSnackbar("Please upload your resume.", { variant: "error" });
+      return;
+    }
+
+    if (!userPhoto) {
+      enqueueSnackbar("Please upload your Profile Picture.", {
+        variant: "error",
+      });
       return;
     }
 
@@ -38,14 +48,16 @@ const Step3 = ({ back, finish, initialData }) => {
       enqueueSnackbar("Please add about your self.", { variant: "error" });
       return;
     }
-    finish({ resume, about });
+    finish({ resume, about, userPhoto });
   };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = (e, key) => {
     if (!e.target.files[0]) return;
 
-    _setIsUploading(true);
-    
+    key === "resume"
+      ? _setIsResumeUploading(true)
+      : _setIsProfilePicUploading(true);
+
     const { files } = e.target;
     const formData = new FormData();
 
@@ -59,14 +71,21 @@ const Step3 = ({ back, finish, initialData }) => {
           `${files.length > 1 ? "Files" : "File"} Uploaded Successfully.`,
           { variant: "success" }
         );
-        _setResume(result.data.data?.[0]);
-        _setIsUploading(false);
+        if (key === "resume") {
+          result.data.data?.[0] && _setResume(result.data.data[0]);
+          _setIsResumeUploading(false);
+        } else {
+          result.data.data?.[0] && _setUserPhto(result.data.data[0]);
+          _setIsProfilePicUploading(false);
+        }
       })
       .catch((error) => {
         enqueueSnackbar(`Error uploading files. Please try again.`, {
           variant: "error",
         });
-        _setIsUploading(false);
+        key === "resume"
+          ? _setIsResumeUploading(false)
+          : _setIsProfilePicUploading(false);
       });
   };
 
@@ -85,14 +104,17 @@ const Step3 = ({ back, finish, initialData }) => {
         <Grid container direction="column">
           <form>
             <Grid item>
+              <Typography variant="subtitle2" className={classes.label}>
+                Upload Your Resume :
+              </Typography>
               <div className={classes.fileDropZone}>
                 <input
                   className={classes.fileInputControl}
-                  onChange={handleFileChange}
+                  onChange={(e) => handleFileChange(e, "resume")}
                   type="file"
                   accept="application/pdf, text/docx, image/jpeg, image/png"
                 />
-                {isUploading && (
+                {isResumeUploading && (
                   <div className={classes.loadingOverlay}>
                     <CircularProgress />
                   </div>
@@ -103,11 +125,33 @@ const Step3 = ({ back, finish, initialData }) => {
             <Grid item>
               <Box mt={2}>
                 <Typography variant="subtitle2" className={classes.label}>
+                  Upload Your Profile Picture :
+                </Typography>
+                <div className={classes.fileDropZone}>
+                  <input
+                    className={classes.fileInputControl}
+                    onChange={(e) => handleFileChange(e, "userPhoto")}
+                    type="file"
+                    accept="application/pdf, text/docx, image/jpeg, image/png"
+                  />
+                  {isProfilePicUploading && (
+                    <div className={classes.loadingOverlay}>
+                      <CircularProgress />
+                    </div>
+                  )}
+                </div>
+              </Box>
+            </Grid>
+
+            <Grid item>
+              <Box mt={2}>
+                <Typography variant="subtitle2" className={classes.label}>
                   Tell us about you:
                 </Typography>
-                <TextareaAutosize
+                <TextField
                   maxRows={7}
                   minRows={3}
+                  fullWidth
                   aria-label="aboutYou"
                   value={about}
                   onChange={({ target }) => _setAbout(target.value)}
