@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FormControl,
   FormControlLabel,
@@ -18,35 +18,57 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
+import { useSnackbar } from "notistack";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 
 import { randomNumber } from "../../../utils/common";
 
 const expertiseOptions = [
-  { value: "fresher", label: "Fresher" },
-  { value: "intermediate", label: "Intermediate" },
-  { value: "expert", label: "Expert" },
+  { value: "FRESHER", label: "Fresher" },
+  { value: "INTERMEDIATE", label: "Intermediate" },
+  { value: "EXPERIENCED", label: "Experienced" },
 ];
 
-const Step1 = ({ next }) => {
+const Step1 = ({ next, initialData }) => {
+  const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
-  const [experienceType, _setExperienceType] = useState("professional");
-  const [totalExperience, _setTotalExperince] = useState();
+  const [experienceType, _setExperienceType] = useState("PROFESSIONAL");
+  const [experience, _setTotalexperience] = useState();
   const [currentRole, _setCurrentRole] = useState(10);
   const [skills, _setSkills] = useState([
-    { _id: randomNumber(4), title: "", expertiseLevel: "fresher" },
-    { _id: randomNumber(4), title: "", expertiseLevel: "fresher" },
-    { _id: randomNumber(4), title: "", expertiseLevel: "fresher" },
-    { _id: randomNumber(4), title: "", expertiseLevel: "fresher" },
+    { _id: randomNumber(4), title: "", expertiseLevel: "FRESHER" },
   ]);
 
-  const addSkillsRow = () =>
+  useEffect(() => {
+    if (initialData.experienceType)
+      _setExperienceType(initialData.experienceType);
+    if (initialData.experience) _setTotalexperience(initialData.experience);
+    if (initialData.currentRole) _setCurrentRole(initialData.currentRole);
+    if (initialData.skills) {
+      const initialSkills = initialData.skills.map((skill) => ({
+        ...skill,
+        _id: randomNumber(4),
+      }));
+      _setSkills(initialSkills);
+    }
+  }, []);
+
+  const addSkillsRow = () => {
+    if (skills.length === 4)
+      return enqueueSnackbar("Maximum Skills Added", { variant: "error" });
+
     _setSkills([
       ...skills,
       { _id: randomNumber(4), title: "", expertiseLevel: "fresher" },
     ]);
+  };
 
   const removeSkillsRow = (_id) => {
+    if (skills.length === 1)
+      return enqueueSnackbar("You must have to add atlease one skill.", {
+        variant: "error",
+      });
+
     const updatedSkills = skills.filter((skill) => skill._id !== _id);
 
     _setSkills(updatedSkills);
@@ -63,13 +85,37 @@ const Step1 = ({ next }) => {
   };
 
   const handleNext = () => {
+    if (!experienceType)
+      return enqueueSnackbar("Experience Type is Required.", {
+        variant: "error",
+      });
+    if (!experience)
+      return enqueueSnackbar("Total Experience is Required.", {
+        variant: "error",
+      });
+    if (experience && (experience > 80 || experience < 0))
+      return enqueueSnackbar("Total Experience must be between 0 to 80.", {
+        variant: "error",
+      });
+    if (!currentRole)
+      return enqueueSnackbar("Current Role is Required.", { variant: "error" });
+    if (skills.filter((skill) => skill.title).length === 0)
+      return enqueueSnackbar("You mush add atleast one Skill.", {
+        variant: "error",
+      });
+
     const data = {
       experienceType,
-      totalExperience,
+      experience,
       currentRole,
     };
 
-    data.skills = skills.filter((skill) => skill.title);
+    data.skills = skills
+      .filter((skill) => skill.title)
+      .map((skill) => ({
+        title: skill.title,
+        expertiseLevel: skill.expertiseLevel,
+      }));
 
     next(data);
   };
@@ -98,12 +144,12 @@ const Step1 = ({ next }) => {
                   onChange={({ target }) => _setExperienceType(target.value)}
                 >
                   <FormControlLabel
-                    value="professional"
+                    value="PROFESSIONAL"
                     control={<Radio />}
                     label="I am a working professonal"
                   />
                   <FormControlLabel
-                    value="fresher"
+                    value="FRESHER"
                     control={<Radio />}
                     label="I am a fresher"
                   />
@@ -119,18 +165,18 @@ const Step1 = ({ next }) => {
                 </Typography>
                 <FormControl variant="outlined">
                   <OutlinedInput
-                    id="outlined-adornment-weight"
-                    value={totalExperience}
+                    value={experience}
                     placeholder="e.g, 2.4"
+                    max={80}
+                    type="number"
                     endAdornment={
                       <InputAdornment position="end">Years</InputAdornment>
                     }
-                    aria-describedby="outlined-weight-helper-text"
                     inputProps={{
                       "aria-label": "experience",
                     }}
                     labelWidth={0}
-                    onChange={({ target }) => _setTotalExperince(target.value)}
+                    onChange={({ target }) => _setTotalexperience(target.value)}
                   />
                 </FormControl>
               </Box>
@@ -143,6 +189,7 @@ const Step1 = ({ next }) => {
                     Select Your Current role :
                   </Typography>
                   <Select
+                    required
                     value={currentRole}
                     onChange={({ target }) => _setCurrentRole(target.value)}
                     labelId="demo-controlled-open-select-label"
@@ -177,6 +224,7 @@ const Step1 = ({ next }) => {
                         type="text"
                         size="medium"
                         variant="outlined"
+                        value={skill.title}
                         onChange={({ target }) =>
                           handleSkillChange({
                             _id: skill._id,
@@ -202,20 +250,25 @@ const Step1 = ({ next }) => {
                           }
                         >
                           {expertiseOptions.map((expOption) => (
-                            <MenuItem value={expOption.value}>
+                            <MenuItem
+                              key={expOption.value}
+                              value={expOption.value}
+                            >
                               {expOption.label}
                             </MenuItem>
                           ))}
                         </Select>
                       </FormControl>
                     </Grid>
-                    <Grid xs={2}>
-                      <IconButton
-                        color="secondary"
-                        onClick={() => removeSkillsRow(skill._id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
+                    <Grid item xs={2}>
+                      {skills.length > 1 && (
+                        <IconButton
+                          color="secondary"
+                          onClick={() => removeSkillsRow(skill._id)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      )}
                     </Grid>
                   </Grid>
                 ))}
@@ -224,6 +277,7 @@ const Step1 = ({ next }) => {
                   <Button
                     variant="contained"
                     color="primary"
+                    disabled={skills.length == 4}
                     className={classes.button}
                     startIcon={<AddIcon />}
                     onClick={addSkillsRow}

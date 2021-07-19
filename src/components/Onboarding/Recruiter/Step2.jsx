@@ -73,7 +73,7 @@ const Step2 = ({ finish, back }) => {
                   minRows={3}
                   aria-label="aboutCompany"
                   value={aboutCompany}
-                  onChange={({ target }) => _setAboutCompany(aboutCompany)}
+                  onChange={({ target }) => _setAboutCompany(target.value)}
                 />
               </Box>
             </Grid>

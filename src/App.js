@@ -1,6 +1,7 @@
 import './App.css';
 import { Provider } from 'react-redux';
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
+import { SnackbarProvider } from 'notistack';
 
 import store from './redux/store';
 import Routes from './Routes';
@@ -19,7 +20,9 @@ function App() {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <Routes />
+        <SnackbarProvider maxSnack={4}>
+          <Routes />
+        </SnackbarProvider>
       </ThemeProvider>
     </Provider>
   );

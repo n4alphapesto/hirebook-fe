@@ -6,6 +6,7 @@ import {
     VERIFY_FAILED,
     VERIFY_SUCCESS,
 } from '../constants/userConstants';
+import { ONBOARD_SUCCESS } from '../constants/onboarding';
 
 const initialState = {
     user: null,
@@ -41,6 +42,9 @@ export default function userReducer(state = initialState, action) {
             return { ...state, isVerifying: false, siginigErrorMsg: action.payload }
         case VERIFY_SUCCESS:
             return { ...state, isVerifying: false }
+
+        case ONBOARD_SUCCESS:
+            return { ...state, user: { ...state.user, ...action.payload } }
 
         default:
             return { ...state };

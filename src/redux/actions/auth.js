@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { loginApi, registerApi, verifyOTPApi } from '../../api/auth';
 import {
     LOGIN_FAILED, LOGIN_START, LOGIN_SUCCESS, SIGNUP_FAILED, SIGNUP_START, SIGNUP_SUCCESS, VERIFY_START,
@@ -7,7 +8,7 @@ import {
 
 export const login = (payload) => {
     return (dispatch) => {
-        dispatch({ type: LOGIN_START })
+        dispatch({ type: LOGIN_START });
         return new Promise((resolve, reject) => {
             loginApi(payload)
                 .then(result => {

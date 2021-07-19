@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { useSnackbar } from 'notistack';
 import {
   Grid,
   Box,
@@ -13,14 +14,45 @@ import {
 import { login } from "../../redux/actions/auth";
 
 const Login = ({ loginAction, isLogging, closeDialog, user }) => {
+  const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   const [email, _setEmail] = useState("");
   const [password, _setPassword] = useState("");
 
+  const redirectUser = data => {
+    let url;
+
+    if (data.userType === "JOBSEEKER") {
+      url = "/jobseeker";
+
+      if (!data.isOnboardingCompleted) {
+        url += "/onboarding"
+      }
+
+    } else {
+      url = "/recruiter";
+
+      if (!data.isOnboardingCompleted) {
+        url += "/onboarding"
+      }
+    }
+
+    window.location.href = url;
+  }
+
   const login = (e) => {
     e.preventDefault();
 
-    loginAction({ email, password });
+    loginAction({ email, password }).then(result => {
+      enqueueSnackbar('Login Successfully.', { variant: 'success' });
+
+      const data = result?.data?.data;
+
+      redirectUser(data);
+    }).catch(error => {
+      console.log(" --- error --- ", error);
+      enqueueSnackbar(error.message, { variant: 'error' })
+    });
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FormControl,
   MenuItem,
@@ -12,39 +12,67 @@ import {
   Button,
   makeStyles,
 } from "@material-ui/core";
+import { useSnackbar } from "notistack";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 
 import { locations, monthOptions } from "../../../utils/common";
 
-const Step2 = ({ back, next }) => {
+const Step2 = ({ back, next, initialData }) => {
+  const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   const [currentLocation, _setLocation] = useState(locations[0].value);
-  const [currentSalary, _setCurrentSalary] = useState();
+  const [currentCTC, _setCurrentCTC] = useState();
   const [noticePeriod, _setNoticePeriod] = useState(monthOptions[0].value);
-  const [preferedLocation, _setPreferedLocation] = useState([]);
+  const [openToWork, _setOpenToWork] = useState([]);
+
+  useEffect(() => {
+    if (initialData.currentLocation) _setLocation(initialData.currentLocation);
+    if (initialData.currentCTC) _setCurrentCTC(initialData.currentCTC);
+    if (initialData.noticePeriod) _setNoticePeriod(initialData.noticePeriod);
+    if (initialData.openToWork) {
+      const prefferedLocations = initialData.skills.map((loc) => {
+        locations.find((option) => option.value === loc);
+      });
+      _setOpenToWork(prefferedLocations);
+    }
+  }, []);
 
   const transformData = () => {
+    if (!currentLocation) {
+      enqueueSnackbar("Current Location is Required.", { variant: "error" });
+      return;
+    }
+    if (!openToWork.length) {
+      enqueueSnackbar("Please add preferred job locations.", {
+        variant: "error",
+      });
+      return;
+    }
+    if (!currentCTC) {
+      enqueueSnackbar("Current Salary is Required.", { variant: "error" });
+      return;
+    }
+    if (!noticePeriod) {
+      enqueueSnackbar("Notice Period is Required.", { variant: "error" });
+      return;
+    }
+
     const data = {
       currentLocation,
       noticePeriod,
-      currentSalary,
+      currentCTC,
+      openToWork: openToWork.map((location) => location.value),
     };
 
     return data;
   };
 
-  const handleBack = () => {
-    const data = transformData();
-
-    back(data);
-  };
-
   const handleNext = () => {
     const data = transformData();
 
-    next(data);
+    data && next(data);
   };
 
   return (
@@ -91,13 +119,13 @@ const Step2 = ({ back, next }) => {
                   multiple
                   options={locations}
                   getOptionLabel={(option) => option.label}
-                  defaultValue={preferedLocation}
-                  onChange={(e, value) => _setPreferedLocation(value)}
+                  defaultValue={openToWork}
+                  onChange={(e, value) => _setOpenToWork(value)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       variant="standard"
-                      placeholder="Favorites"
+                      placeholder="Locations"
                     />
                   )}
                 />
@@ -114,8 +142,9 @@ const Step2 = ({ back, next }) => {
                   <OutlinedInput
                     required
                     id="outlined-adornment-weight"
-                    value={currentSalary}
-                    onChange={({ target }) => _setCurrentSalary(target.value)}
+                    value={currentCTC}
+                    type="number"
+                    onChange={({ target }) => _setCurrentCTC(target.value)}
                     startAdornment={
                       <InputAdornment position="start">RS.</InputAdornment>
                     }
@@ -159,8 +188,7 @@ const Step2 = ({ back, next }) => {
               >
                 <Button
                   size="large"
-                  type="submit"
-                  onClick={handleBack}
+                  onClick={back}
                   startIcon={<ArrowBackIcon />}
                 >
                   Back
@@ -168,7 +196,6 @@ const Step2 = ({ back, next }) => {
 
                 <Button
                   size="large"
-                  type="submit"
                   onClick={handleNext}
                   endIcon={<ArrowForwardIcon />}
                   variant="outlined"

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
+import { useSnackbar } from 'notistack';
 import { bindActionCreators } from "redux";
 import {
   Grid,
@@ -21,6 +22,7 @@ import "./style.css";
 
 const Signup = ({ isSigning, actions, closeDialog }) => {
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
   const [userType, _setUserType] = useState("JOBSEEKER");
   const [name, _setName] = useState("");
   const [email, _setEmail] = useState("");
@@ -30,17 +32,30 @@ const Signup = ({ isSigning, actions, closeDialog }) => {
 
   const handleChange = (otp) => _setOTP(otp);
 
+  const redirectUser = data => {
+    let url = `/${data.userType.toLowercase()}/onboarding`;
+
+    window.location.href = url;
+  }
+
   const onSubmit = (e) => {
     e.preventDefault();
 
     actions.register({ email, password, name, userType }).then((result) => {
       _setShowOTP(true);
+      enqueueSnackbar("Signup Successfully.", { variant: 'success' })
+    }).catch(error => {
+      enqueueSnackbar("Signup Failed.", { variant: 'error' })
     });
   };
 
   const verifyOTP = () => {
     actions.verify({ email, otp }).then((result) => {
-      _setShowOTP(true);
+      enqueueSnackbar("Verified Successfully..", { variant: 'success' });
+      console.log("signup ", result.data);
+      redirectUser(result.data.data)
+    }).catch(error => {
+      enqueueSnackbar("Verification Failed..", { variant: 'error' })
     });
   };
 

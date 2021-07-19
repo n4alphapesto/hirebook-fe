@@ -1,47 +1,73 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Typography,
   Grid,
   Box,
   Button,
   CircularProgress,
+  TextareaAutosize,
   makeStyles,
 } from "@material-ui/core";
+import { useSnackbar } from "notistack";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
+import { uploadFileApi } from "../../../api/common";
 
-const Step3 = ({ back, finish }) => {
+const Step3 = ({ back, finish, initialData }) => {
   const classes = useStyles();
-  const [file, _setFile] = useState();
+  const { enqueueSnackbar } = useSnackbar();
+  const [resume, _setResume] = useState();
+  const [about, _setAbout] = useState("");
   const [isUploading, _setIsUploading] = useState(false);
 
-  const transformData = () => {
-    const data = {
-      fileId: file._id,
-    };
-
-    return data;
-  };
+  useEffect(() => {
+    if (initialData.resume) _setResume(initialData.resume);
+  }, []);
 
   const handleBack = () => {
-    // const data = transformData();
-
     back();
   };
 
   const handleSubmit = () => {
-    const data = transformData();
+    if (!resume.length) {
+      enqueueSnackbar("Please upload your resume.", { variant: "error" });
+      return;
+    }
 
-    finish(data);
+    if (!about) {
+      enqueueSnackbar("Please add about your self.", { variant: "error" });
+      return;
+    }
+    finish({ resume, about });
   };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = (e) => {
+    if (!e.target.files[0]) return;
+
     _setIsUploading(true);
+    
+    const { files } = e.target;
+    const formData = new FormData();
 
-    const file = event.target.files[0];
+    Array.from(files).forEach((file) => {
+      formData.append("files", file);
+    });
 
-    _setFile(file);
-    //TODO: Write Logic to File Upload
+    uploadFileApi(formData)
+      .then((result) => {
+        enqueueSnackbar(
+          `${files.length > 1 ? "Files" : "File"} Uploaded Successfully.`,
+          { variant: "success" }
+        );
+        _setResume(result.data.data?.[0]);
+        _setIsUploading(false);
+      })
+      .catch((error) => {
+        enqueueSnackbar(`Error uploading files. Please try again.`, {
+          variant: "error",
+        });
+        _setIsUploading(false);
+      });
   };
 
   return (
@@ -75,6 +101,21 @@ const Step3 = ({ back, finish }) => {
             </Grid>
 
             <Grid item>
+              <Box mt={2}>
+                <Typography variant="subtitle2" className={classes.label}>
+                  Tell us about you:
+                </Typography>
+                <TextareaAutosize
+                  maxRows={7}
+                  minRows={3}
+                  aria-label="aboutYou"
+                  value={about}
+                  onChange={({ target }) => _setAbout(target.value)}
+                />
+              </Box>
+            </Grid>
+
+            <Grid item>
               <Box
                 mt={4}
                 justifyContent="space-between"
@@ -92,10 +133,10 @@ const Step3 = ({ back, finish }) => {
 
                 <Button
                   size="large"
-                  type="submit"
                   onClick={handleSubmit}
                   endIcon={<ArrowForwardIcon />}
                   variant="outlined"
+                  disabled={!about || !resume}
                   color="primary"
                 >
                   Finish
