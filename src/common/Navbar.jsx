@@ -11,8 +11,14 @@ import {
   Menu,
   MenuItem,
   makeStyles,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
+import Login from "../components/Login/Login";
+import Signup from "../components/Signup/Signup";
 
 import logo from "../assets/svg/logo.svg";
 import Image from "./Image";
@@ -30,25 +36,60 @@ const useStyles = makeStyles((theme) => ({
   },
   navlinks: {
     paddingRight: theme.spacing(10),
-    "& > *": {
-      margin: "20px",
-      padding: "20px 10px",
-      "&:hover": {
-        //backgroundColor: '#3590fd',
-        color: "black",
-        borderBottom: "2px solid red",
-      },
-    },
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
+  navlink: {
+    margin: "20px",
+    padding: "20px 10px",
+    "&:hover": {
+      //    backgroundColor: '#3590fd',
+      color: "black",
+      borderBottom: "2px solid red",
+    },
   },
 }));
 
-const Navbar = ({ children, ...restOfProps }) => {
+const PopUpForm = ({ openPopUp, handlePopUpClose }) => {
+  return (
+    <Dialog
+      open={openPopUp}
+      onClose={handlePopUpClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">Login/SignUp</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          Form comes here
+        </DialogContentText>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const Navbar = ({ navItems, ...restOfProps }) => {
   const classes = useStyles();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const [isLoginOpen, _setIsLoginOpen] = React.useState(false);
+  const [isSignUpOpen, _setIsSignUpOpen] = React.useState(false);
+  const [openPopUp, setOpenPopUp] = React.useState(false);
+
+  const openLogin = () => {
+    _setIsLoginOpen(true);
+  };
+
+  const closeLogin = () => {
+    _setIsLoginOpen(false);
+  };
+
+  const openSignup = () => {
+    _setIsSignUpOpen(true);
+  };
+
+  const closeSignup = () => {
+    _setIsSignUpOpen(false);
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -56,6 +97,14 @@ const Navbar = ({ children, ...restOfProps }) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handlePopUpOpen = () => {
+    setOpenPopUp(true);
+  };
+
+  const handlePopUpClose = () => {
+    setOpenPopUp(false);
   };
 
   return (
@@ -66,20 +115,24 @@ const Navbar = ({ children, ...restOfProps }) => {
         </Link>
 
         <Hidden mdDown>
-          <Box className={classes.navlinks} aria-label={"navbar"}>
-            {children}
-            {/*
-                            navItems.map((el, i) => (
-                                <Link 
-                                    key={i}
-                                    className={classes.navlink}  
-                                    underline='none'
-                                    //href={`${el}`}
-                                    onClick={handlePopUpOpen}
-                                >{el.toUpperCase()}</Link>
-                                )
-                            )
-                            */}
+          <Box
+            className={classes.navlinks}
+            aria-label={`navbar for ${navItems}`}
+          >
+            <Link
+              className={classes.navlink}
+              underline="none"
+              onClick={openLogin}
+            >
+              {"LOGIN"}
+            </Link>
+            <Link
+              className={classes.navlink}
+              underline="none"
+              onClick={openSignup}
+            >
+              {"SIGNUP"}
+            </Link>
           </Box>
         </Hidden>
 
@@ -100,26 +153,50 @@ const Navbar = ({ children, ...restOfProps }) => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            {children.map((el, i) => (
-              <MenuItem key={i} onClick={handleClose}>
-                {el}
-              </MenuItem>
-            ))}
-            {/*
-                            navItems.map((el, i) => (
-                                <MenuItem key={i} >
-                                    <Link   
-                                        underline='none'
-                                        //href={`${el}`}
-                                        onClick={handlePopUpOpen} 
-                                    >{el.toUpperCase()}</Link>
-                                </MenuItem>
-                                
-                                )
-                            )
-                        */}
+            <MenuItem>
+              <Link
+                className={classes.navlink}
+                underline="none"
+                onClick={openLogin}
+              >
+                {"LOGIN"}
+              </Link>
+            </MenuItem>
+            <MenuItem>
+              <Link
+                className={classes.navlink}
+                underline="none"
+                onClick={openSignup}
+              >
+                {"SIGNUP"}
+              </Link>
+            </MenuItem>
           </Menu>
         </Hidden>
+        <PopUpForm openPopUp={openPopUp} handlePopUpClose={handlePopUpClose} />
+
+        <Dialog
+          maxWidth="xs"
+          fullWidth
+          open={isLoginOpen}
+          onClose={closeLogin}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogContent>
+            <Login closeDialog={closeLogin} />
+          </DialogContent>
+        </Dialog>
+        <Dialog
+          maxWidth="xs"
+          fullWidth
+          open={isSignUpOpen}
+          onClose={closeSignup}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogContent>
+            <Signup closeDialog={closeSignup} />
+          </DialogContent>
+        </Dialog>
       </Toolbar>
     </AppBar>
   );

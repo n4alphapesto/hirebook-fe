@@ -1,29 +1,25 @@
-import React from "react";
-import { BrowserRouter as Router, Switch } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
 
-import { RouteValidator } from "./common";
-import {
-  JobseekerDashboard,
-  RecruiterDashboard,
-  LandingPage,
-  LoginPage,
-  SignupPage,
-} from "./containers";
+import { Navbar, Footer, RouteValidator } from './common'
+import { LandingPage, JobSeekerOnboarding, RecruiterOnboarding, JobseekerDashboard, RecruiterDashboard } from './containers';
 
 const Routes = () => {
-  return (
-    <div className="app-container">
-      <Router>
-        <Switch>
-          <RouteValidator exact path="/" component={LandingPage} />
-          <RouteValidator path="/login" component={LoginPage} />
-          <RouteValidator path="/signup" component={SignupPage} />
-          <RouteValidator path="/jobseeker" component={JobseekerDashboard} />
-          <RouteValidator path="/recruiter" component={RecruiterDashboard} />
-        </Switch>
-      </Router>
-    </div>
-  );
-};
+    return (
+        <div className="app-container">
+            <Navbar />
+            <Router>
+                <Switch>
+                    <RouteValidator exact path="/" component={LandingPage} />
+                    <RouteValidator exact path="/jobseeker/onboarding" component={JobSeekerOnboarding} />
+                    <RouteValidator exact path="/recruiter/onboarding" component={RecruiterOnboarding} />
+                    <RouteValidator path="/jobseeker" component={JobseekerDashboard} />
+                    <RouteValidator path="/recruiter" component={RecruiterDashboard} />
+                </Switch>
+                <Footer />
+            </Router>
+        </div>
+    );
+}
 
 export default Routes;

@@ -1,13 +1,13 @@
-import LandingPage from "./LandingPage";
-import LoginPage from "./LoginPage";
-import SignupPage from "./SignupPage";
-import JobseekerDashboard from "./JobseekerDashboard";
-import RecruiterDashboard from "./RecruiterDashboard";
+import LandingPage from './LandingPage';
+import JobSeekerOnboarding from './JobSeekerOnboarding';
+import RecruiterOnboarding from './RecruiterOnboarding';
+import JobseekerDashboard from './JobseekerDashboard';
+import RecruiterDashboard from './RecruiterDashboard';
 
 export {
-  LandingPage,
-  LoginPage,
-  SignupPage,
-  JobseekerDashboard,
-  RecruiterDashboard,
-};
+    LandingPage,
+    JobseekerDashboard,
+    RecruiterDashboard,
+    JobSeekerOnboarding,
+    RecruiterOnboarding
+}
