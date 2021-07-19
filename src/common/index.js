@@ -9,6 +9,7 @@ import PopUpComponent from "./PopUpComponent";
 import StatsComponent from "./StatsComponent";
 import SummaryComponent from "./SummaryComponent";
 import RouteValidator from "./RouteValidator";
+import Emailer from "./Emailer";
 
 export {
   Button,
@@ -21,5 +22,6 @@ export {
   PopUpComponent,
   StatsComponent,
   SummaryComponent,
+  Emailer,
   RouteValidator,
 };

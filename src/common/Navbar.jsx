@@ -1,4 +1,6 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
+
 import PropTypes from "prop-types";
 
 import {
@@ -10,9 +12,12 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Typography,
   makeStyles,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
+
+import PopUpComponent from "./PopUpComponent";
 
 import logo from "../assets/svg/logo.svg";
 import Image from "./Image";
@@ -45,48 +50,97 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = ({ children, ...restOfProps }) => {
+const Navbar = () => {
   const classes = useStyles();
 
+  const [openLogin, setOpenLogin] = React.useState(false);
+  const [openSignup, setOpenSignup] = React.useState(false);
+
+  const handleOpenLogin = () => setOpenLogin(true);
+  const handleCloseLogin = () => setOpenLogin(false);
+  const handleOpenSignup = () => setOpenSignup(true);
+  const handleCloseSignup = () => setOpenSignup(false);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleClick = (event) => setAnchorEl(event.currentTarget);
+  const handleClose = () => setAnchorEl(null);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const navChildrenLanding = [];
+  navChildrenLanding[0] = (
+    <Link underline="none" onClick={handleOpenLogin}>
+      LOGIN
+    </Link>
+  );
+  navChildrenLanding[1] = (
+    <Link underline="none" onClick={handleOpenSignup}>
+      SIGNUP
+    </Link>
+  );
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const navChildrenRecruiter = ["POSTED JOBS", "PROFILE"].map((el, i) => (
+    <Link
+      key={i}
+      underline="none"
+      href={`/recruiter/${el.toLowerCase().split(" ").join("")}`}
+    >
+      {el}
+    </Link>
+  ));
+
+  const navChildrenJobseeker = ["OPPORTUNITIES", "PROFILE"].map((el, i) => (
+    <Link
+      key={i}
+      underline="none"
+      href={`/jobseeker/${el.toLowerCase().split(" ").join("")}`}
+    >
+      {el}
+    </Link>
+  ));
+  navChildrenRecruiter[2] = (
+    <Link href="/signout" underline="none">
+      LOG OUT
+    </Link>
+  );
+  navChildrenJobseeker[2] = (
+    <Link href="/signout" underline="none">
+      LOG OUT
+    </Link>
+  );
+
+  const location = useLocation();
+  console.log(location);
+  let navChildren;
+  console.log(location.pathname);
+  if (location.pathname.startsWith("/recruiter")) {
+    navChildren = navChildrenRecruiter;
+  } else if (location.pathname.startsWith("/jobseeker")) {
+    navChildren = navChildrenJobseeker;
+  } else if (location.pathname.startsWith("/signout")) {
+    navChildren = navChildrenLanding;
+  } else {
+    navChildren = navChildrenLanding;
+  }
 
   return (
     <AppBar className={classes.root}>
       <Toolbar className={classes.content}>
-        <Link href="/" className={classes.logo}>
+        <Link
+          href={`/${location.pathname.split("/")[1]}`}
+          className={classes.logo}
+        >
           <Image src={logo} width={164} />
         </Link>
 
         <Hidden mdDown>
           <Box className={classes.navlinks} aria-label={"navbar"}>
-            {children}
-            {/*
-                            navItems.map((el, i) => (
-                                <Link 
-                                    key={i}
-                                    className={classes.navlink}  
-                                    underline='none'
-                                    //href={`${el}`}
-                                    onClick={handlePopUpOpen}
-                                >{el.toUpperCase()}</Link>
-                                )
-                            )
-                            */}
+            {navChildren}
           </Box>
         </Hidden>
 
         <Hidden mdUp>
           <IconButton
             color="default"
-            aria-label="open drawer....."
+            aria-label="open menu"
             edge="end"
             onClick={handleClick}
             className={classes.menuButton}
@@ -100,26 +154,20 @@ const Navbar = ({ children, ...restOfProps }) => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            {children.map((el, i) => (
+            {navChildren.map((el, i) => (
               <MenuItem key={i} onClick={handleClose}>
                 {el}
               </MenuItem>
             ))}
-            {/*
-                            navItems.map((el, i) => (
-                                <MenuItem key={i} >
-                                    <Link   
-                                        underline='none'
-                                        //href={`${el}`}
-                                        onClick={handlePopUpOpen} 
-                                    >{el.toUpperCase()}</Link>
-                                </MenuItem>
-                                
-                                )
-                            )
-                        */}
           </Menu>
         </Hidden>
+
+        <PopUpComponent open={openLogin} handleClose={handleCloseLogin}>
+          <Typography>login component</Typography>
+        </PopUpComponent>
+        <PopUpComponent open={openSignup} handleClose={handleCloseSignup}>
+          <Typography>signup component</Typography>
+        </PopUpComponent>
       </Toolbar>
     </AppBar>
   );

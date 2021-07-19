@@ -1,8 +1,12 @@
 import LandingPage from "./LandingPage";
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
-import JobseekerDashboard from "./JobseekerDashboard";
-import RecruiterDashboard from "./RecruiterDashboard";
+import JobseekerDashboard from "./JobseekerDashboard/JobseekerDashboard";
+import RecruiterDashboard from "./RecruiterDashboard/RecruiterDashboard";
+import RecruiterJobPostForm from "./RecruiterDashboard/RecruiterJobPostForm";
+import RecruiterProfile from "./RecruiterDashboard/RecruiterProfile";
+import RecruiterJobPostDetails from "./RecruiterDashboard/RecruiterJobPostDetails";
+import RecruiterViewJobSeekerDetails from "./RecruiterDashboard/RecruiterViewJobSeekerDetails";
 
 export {
   LandingPage,
@@ -10,4 +14,8 @@ export {
   SignupPage,
   JobseekerDashboard,
   RecruiterDashboard,
+  RecruiterJobPostForm,
+  RecruiterProfile,
+  RecruiterJobPostDetails,
+  RecruiterViewJobSeekerDetails,
 };

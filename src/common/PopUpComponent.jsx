@@ -1,7 +1,7 @@
 import React from "react";
 import { Dialog, DialogContent } from "@material-ui/core";
 
-const PopUpComponent = ({ open, handleClose, children, restOfProps }) => {
+const PopUpComponent = ({ open, handleClose, children, ...restOfProps }) => {
   return (
     <Dialog
       maxWidth="xs"
