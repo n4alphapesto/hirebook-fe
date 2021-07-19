@@ -1,0 +1,7 @@
+.inputStyle {
+  flex: 1 1 auto;
+  margin: 0 0.5rem;
+  font-size: 2rem;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}

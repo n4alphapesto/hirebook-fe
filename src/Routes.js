@@ -1,5 +1,6 @@
-import React from "react";
-import { BrowserRouter as Router, Switch } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
+
 
 import { RouteValidator } from "./common";
 import {
@@ -24,6 +25,7 @@ const styles = {
 };
 
 const Routes = () => {
+
   return (
     <div className="app-container">
       <Router style={styles}>
@@ -76,5 +78,8 @@ const Routes = () => {
     </div>
   );
 };
+
+    
+
 
 export default Routes;

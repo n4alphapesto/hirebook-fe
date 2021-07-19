@@ -14,8 +14,14 @@ import {
   MenuItem,
   Typography,
   makeStyles,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
+import Login from "../components/Login/Login";
+import Signup from "../components/Signup/Signup";
 
 import PopUpComponent from "./PopUpComponent";
 
@@ -35,22 +41,21 @@ const useStyles = makeStyles((theme) => ({
   },
   navlinks: {
     paddingRight: theme.spacing(10),
-    "& > *": {
-      margin: "20px",
-      padding: "20px 10px",
-      "&:hover": {
-        //backgroundColor: '#3590fd',
-        color: "black",
-        borderBottom: "2px solid red",
-      },
-    },
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
+  navlink: {
+    margin: "20px",
+    padding: "20px 10px",
+    "&:hover": {
+      //    backgroundColor: '#3590fd',
+      color: "black",
+      borderBottom: "2px solid red",
+    },
   },
 }));
 
+
 const Navbar = () => {
+
   const classes = useStyles();
 
   const [openLogin, setOpenLogin] = React.useState(false);
@@ -65,6 +70,7 @@ const Navbar = () => {
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
+
   const navChildrenLanding = [];
   navChildrenLanding[0] = (
     <Link underline="none" onClick={handleOpenLogin}>
@@ -76,6 +82,7 @@ const Navbar = () => {
       SIGNUP
     </Link>
   );
+
 
   const navChildrenRecruiter = ["POSTED JOBS", "PROFILE"].map((el, i) => (
     <Link
@@ -121,6 +128,14 @@ const Navbar = () => {
     navChildren = navChildrenLanding;
   }
 
+  const handlePopUpOpen = () => {
+    setOpenPopUp(true);
+  };
+
+  const handlePopUpClose = () => {
+    setOpenPopUp(false);
+  };
+
   return (
     <AppBar className={classes.root}>
       <Toolbar className={classes.content}>
@@ -132,8 +147,10 @@ const Navbar = () => {
         </Link>
 
         <Hidden mdDown>
+
           <Box className={classes.navlinks} aria-label={"navbar"}>
             {navChildren}
+
           </Box>
         </Hidden>
 
@@ -154,6 +171,7 @@ const Navbar = () => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
+
             {navChildren.map((el, i) => (
               <MenuItem key={i} onClick={handleClose}>
                 {el}
@@ -168,6 +186,7 @@ const Navbar = () => {
         <PopUpComponent open={openSignup} handleClose={handleCloseSignup}>
           <Typography>signup component</Typography>
         </PopUpComponent>
+
       </Toolbar>
     </AppBar>
   );
