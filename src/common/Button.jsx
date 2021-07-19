@@ -1,11 +1,21 @@
 import React from "react";
-import { Button } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
 
-const MaterialUIButton = ({ buttonText, ...restOfProps }) => {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    background: "#79d4fd",
+    "&:hover": {
+      background: "#69d4fd",
+    },
+  },
+}));
+
+const MaterialUIButton = ({ children, ...restOfProps }) => {
+  const classes = useStyles();
   return (
-    <Button variant="contained" {...restOfProps}>
-      {buttonText}
+    <Button variant="contained" className={classes.root} {...restOfProps}>
+      {children}
     </Button>
   );
 };

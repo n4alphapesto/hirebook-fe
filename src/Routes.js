@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import { Navbar, Footer, RouteValidator } from './common'
 import { LandingPage, JobSeekerOnboarding, RecruiterOnboarding, JobseekerDashboard, RecruiterDashboard } from './containers';
 
-
 const Routes = () => {
     return (
         <div className="app-container">

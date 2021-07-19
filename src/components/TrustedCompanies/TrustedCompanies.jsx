@@ -47,10 +47,10 @@ const useStyles = makeStyles((theme) => ({
     width: "1185px",
   },
   logoImage: {
-    //border: '2px solid red',
+    //border: "2px solid red",
   },
   arrows: {
-    //border: '2px solid red',
+    //border: "2px solid red",
     height: "inherit",
   },
 }));
@@ -86,11 +86,17 @@ function TrustedCompanies() {
       if (direction === "r") {
         setScrolled((scrolled) => scrolled + logoWidth);
         scrollRef.current.scrollLeft += logoWidth;
-      }
-      if (direction === "l") {
+      } else {
         setScrolled((scrolled) => scrolled - logoWidth);
         scrollRef.current.scrollLeft -= logoWidth;
       }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [direction, scrolled, logoWidth]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      //console.log(scrollRef.current.scrollLeft, scrolled, direction)
       if (scrolled >= logoWidth * 12) {
         setDirection("l");
       }

@@ -1,9 +1,22 @@
 import React from "react";
-import { Hidden, Box, Grid, makeStyles, Typography } from "@material-ui/core";
+import {
+  Hidden,
+  Link,
+  Box,
+  Grid,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
 
 import FilterListIcon from "@material-ui/icons/FilterList";
 
-import { StatsComponent, FilterComponent, SummaryComponent } from "../common";
+import {
+  Navbar,
+  Footer,
+  StatsComponent,
+  FilterComponent,
+  SummaryComponent,
+} from "../common";
 import oracle from "../assets/svg/oracle.svg";
 
 const candidateData = {
@@ -52,6 +65,17 @@ const JobseekerDashboard = () => {
 
   return (
     <div className={classes.root}>
+      <Navbar>
+        <Link underline="none" href={"opportunities"}>
+          OPPORTUNITIES
+        </Link>
+        <Link underline="none" href={"profile"}>
+          PROFILE
+        </Link>
+        <Link underline="none" href={"/"}>
+          SIGNOUT
+        </Link>
+      </Navbar>
       <Box mt={8}>
         <Hidden mdUp>
           <Grid container justifyContent="center">
@@ -91,6 +115,7 @@ const JobseekerDashboard = () => {
           </Grid>
         </Grid>
       </Box>
+      <Footer />
     </div>
   );
 };

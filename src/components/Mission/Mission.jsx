@@ -7,6 +7,42 @@ import valuesIcon from "../../assets/images/value.png";
 import visionIcon from "../../assets/images/vision.png";
 import missionIcon from "../../assets/images/mission.png";
 
+const useStyles = makeStyles((theme) => ({
+  boldText: {
+    fontWeight: "bold",
+  },
+  root: {
+    flexGrow: 1,
+    marginTop: 12,
+  },
+  paper: {
+    width: 170,
+    textAlign: "center",
+    justifyContent: "center",
+  },
+  control: {
+    padding: theme.spacing(2),
+  },
+  listitem: {
+    fontSize: 13,
+    paddingTop: 5,
+    textAlign: "center",
+  },
+  spanText: {
+    fontSize: 12,
+  },
+  large: {
+    width: "100%",
+    height: theme.spacing(15),
+  },
+}));
+
+const Image = styled.img`
+  height: 100px;
+  width: auto;
+  align-self: center;
+`;
+
 const Mission = () => {
   const classes = useStyles();
 
@@ -41,7 +77,7 @@ const Mission = () => {
             Mission
           </Typography>
 
-          <Box component="span" display="block" className={classes.span_text}>
+          <Box component="span" display="block" className={classes.spanText}>
             Unleash the potential of talent and be a bridge to a better world.
           </Box>
         </Grid>
@@ -51,7 +87,7 @@ const Mission = () => {
             Vision
           </Typography>
 
-          <Box component="span" display="block" className={classes.span_text}>
+          <Box component="span" display="block" className={classes.spanText}>
             To enable the discovery of opportunities by providing consistently
             superior recruitment solutions.
           </Box>
@@ -62,7 +98,7 @@ const Mission = () => {
             Values
           </Typography>
 
-          <Box component="span" display="block" className={classes.span_text}>
+          <Box component="span" display="block" className={classes.spanText}>
             To provide integrity, accountability, and enthusiasm in the
             recruitment process of ace talent.
           </Box>
@@ -73,39 +109,3 @@ const Mission = () => {
 };
 
 export default Mission;
-
-const useStyles = makeStyles((theme) => ({
-  boldText: {
-    fontWeight: "bold",
-  },
-  root: {
-    flexGrow: 1,
-    marginTop: 12,
-  },
-  paper: {
-    width: 170,
-    textAlign: "center",
-    justifyContent: "center",
-  },
-  control: {
-    padding: theme.spacing(2),
-  },
-  listitem: {
-    fontSize: 13,
-    paddingTop: 5,
-    textAlign: "center",
-  },
-  span_text: {
-    fontSize: 12,
-  },
-  large: {
-    width: "100%",
-    height: theme.spacing(15),
-  },
-}));
-
-const Image = styled.img`
-  height: 100px;
-  width: auto;
-  align-self: center;
-`;

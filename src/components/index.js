@@ -1,6 +1,3 @@
+import TrustedCompanies from "./TrustedCompanies/TrustedCompanies";
 
-import TrustedCompanies from './TrustedCompanies/TrustedCompanies';
-
-export {
-    TrustedCompanies
-};
+export { TrustedCompanies };

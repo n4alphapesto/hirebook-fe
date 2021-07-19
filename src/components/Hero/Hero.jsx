@@ -5,6 +5,27 @@ import { Grid, Typography, Box, makeStyles } from "@material-ui/core";
 import HeroImage from "../../assets/images/hero-bg.png";
 import HeroImageSm from "../../assets/images/hero-bg-sm.jpg";
 
+const Div = styled.div`
+  background: url("${HeroImage}") no-repeat center;
+  height: auto;
+  min-height: 500px;
+  background-size: cover;
+
+  @media (max-width: 768px) {
+    background-image: url("${HeroImageSm}");
+  }
+`;
+
+const useStyles = makeStyles((theme) => ({
+  box: {
+    height: "100%",
+  },
+  gridContainer: {
+    minHeight: 500,
+    height: "auto",
+  },
+}));
+
 const Hero = () => {
   const classes = useStyles();
   return (
@@ -31,24 +52,3 @@ const Hero = () => {
 };
 
 export default Hero;
-
-const Div = styled.div`
-  background: url("${HeroImage}") no-repeat center;
-  height: auto;
-  min-height: 500px;
-  background-size: cover;
-
-  @media (max-width: 768px) {
-    background-image: url("${HeroImageSm}");
-  }
-`;
-
-const useStyles = makeStyles((theme) => ({
-  box: {
-    height: "100%",
-  },
-  gridContainer: {
-    minHeight: 500,
-    height: "auto",
-  },
-}));
