@@ -195,9 +195,15 @@ const Step1 = ({ next, initialData }) => {
                     labelId="demo-controlled-open-select-label"
                     id="demo-controlled-open-select"
                   >
-                    <MenuItem value={10}>Full-Stack Developer</MenuItem>
-                    <MenuItem value={20}>React Developer</MenuItem>
-                    <MenuItem value={30}>NodeJs Developer</MenuItem>
+                    <MenuItem value={"Full-Stack Developer"}>
+                      Full-Stack Developer
+                    </MenuItem>
+                    <MenuItem value={"React Developer"}>
+                      React Developer
+                    </MenuItem>
+                    <MenuItem value={"NodeJs Developer"}>
+                      NodeJs Developer
+                    </MenuItem>
                   </Select>
                 </FormControl>
               </Box>

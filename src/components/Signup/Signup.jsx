@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { useSnackbar } from 'notistack';
+import { useSnackbar } from "notistack";
 import { bindActionCreators } from "redux";
 import {
   Grid,
@@ -17,7 +17,7 @@ import {
 } from "@material-ui/core";
 import OtpInput from "react-otp-input";
 import { register, verify } from "../../redux/actions/auth";
-
+import { resendOTPApi } from "../../api/auth";
 import "./style.css";
 
 const Signup = ({ isSigning, actions, closeDialog }) => {
@@ -29,34 +29,54 @@ const Signup = ({ isSigning, actions, closeDialog }) => {
   const [password, _setPassword] = useState("");
   const [showOTP, _setShowOTP] = useState(false);
   const [otp, _setOTP] = useState(false);
+  const [isResendingOTP, _setIsResendingOTP] = useState(false);
 
   const handleChange = (otp) => _setOTP(otp);
 
-  const redirectUser = data => {
-    let url = `/${data.userType.toLowercase()}/onboarding`;
+  const redirectUser = (data) => {
+    let url = `/${userType.toLowerCase()}/onboarding`;
 
     window.location.href = url;
-  }
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
 
-    actions.register({ email, password, name, userType }).then((result) => {
-      _setShowOTP(true);
-      enqueueSnackbar("Signup Successfully.", { variant: 'success' })
-    }).catch(error => {
-      enqueueSnackbar("Signup Failed.", { variant: 'error' })
-    });
+    actions
+      .register({ email, password, name, userType })
+      .then((result) => {
+        _setShowOTP(true);
+        enqueueSnackbar("Signup Successfully.", { variant: "success" });
+      })
+      .catch((error) => {
+        enqueueSnackbar("Signup Failed.", { variant: "error" });
+      });
   };
 
   const verifyOTP = () => {
-    actions.verify({ email, otp }).then((result) => {
-      enqueueSnackbar("Verified Successfully..", { variant: 'success' });
-      console.log("signup ", result.data);
-      redirectUser(result.data.data)
-    }).catch(error => {
-      enqueueSnackbar("Verification Failed..", { variant: 'error' })
-    });
+    actions
+      .verify({ email, otp })
+      .then((result) => {
+        enqueueSnackbar("Verified Successfully..", { variant: "success" });
+        redirectUser();
+      })
+      .catch((error) => {
+        console.log(error);
+        enqueueSnackbar("Verification Failed..", { variant: "error" });
+      });
+  };
+
+  const handleResendOTP = () => {
+    _setIsResendingOTP(true);
+    resendOTPApi({ email })
+      .then((result) => {
+        enqueueSnackbar("OTP Sent.", { variant: "success" });
+        _setIsResendingOTP(false);
+      })
+      .catch((error) => {
+        enqueueSnackbar("Operation Failed.", { variant: "error" });
+        _setIsResendingOTP(false);
+      });
   };
 
   return (
@@ -176,7 +196,16 @@ const Signup = ({ isSigning, actions, closeDialog }) => {
                 </Typography>
               </Box>
               <Box align="right">
-                <Button color="primary">Resend OTP</Button>
+                <Button
+                  onClick={handleResendOTP}
+                  disabled={isResendingOTP}
+                  color="primary"
+                >
+                  {isResendingOTP && (
+                    <CircularProgress size={20} color="white" />
+                  )}
+                  Resend OTP
+                </Button>
               </Box>
               <Box mt={2} className={classes.otpContainer}>
                 <OtpInput

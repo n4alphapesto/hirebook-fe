@@ -9,10 +9,10 @@ import {
   TextField,
   CircularProgress,
 } from "@material-ui/core";
+import { useSnackbar } from "notistack";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
-
-import { randomNumber } from "../../../utils/common";
+import { uploadFileApi } from "../../../api/common";
 
 const expertiseOptions = [
   { value: "fresher", label: "Fresher" },
@@ -21,32 +21,96 @@ const expertiseOptions = [
 ];
 
 const Step2 = ({ finish, back }) => {
+  const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
-  const [aboutCompany, _setAboutCompany] = useState();
-  const [companyPhotos, _setCompanyPhotos] = useState();
+  const [aboutCompany, _setAboutCompany] = useState("");
+  const [website, _setWebsite] = useState();
   const [linkedInProfile, _setLinkedInProfile] = useState();
   const [twitterProfile, _setTwitterProfile] = useState();
   const [facebookProfile, _setFacebookProfile] = useState();
-  const [file, _setFile] = useState();
-  const [isUploading, _setIsUploading] = useState(false);
+  const [companyPhotos, _setCompanyPhotos] = useState([]);
+  const [companyLogo, _setCompnayLogo] = useState("");
+  const [isLogoUploading, _setIsLogoUploading] = useState(false);
+  const [isPhotosUploading, _setIsPhotosUploading] = useState(false);
 
-  const handleNext = () => {
-    const data = {};
+  const handleFinish = () => {
+    if (!aboutCompany)
+      return enqueueSnackbar("Please add about your compnay.", {
+        variant: "error",
+      });
+    if (!website)
+      return enqueueSnackbar("Please add about your compnay.", {
+        variant: "error",
+      });
+    if (!companyPhotos.length)
+      return enqueueSnackbar("Please upload your company photos.", {
+        variant: "error",
+      });
+    if (!companyLogo)
+      return enqueueSnackbar("Please upload your compnay logo.", {
+        variant: "error",
+      });
 
-    finish(data);
+    finish({
+      aboutCompany,
+      website,
+      linkedInProfile,
+      twitterProfile,
+      facebookProfile,
+      companyPhotos,
+      companyLogo,
+    });
   };
 
   const handleBack = () => {
     back();
   };
 
-  const handleFileChange = (event) => {
-    _setIsUploading(true);
+  const handleFileChange = (e, key) => {
+    if (!e.target.files[0]) return;
 
-    const file = event.target.files[0];
+    key === "companyLogo"
+      ? _setIsLogoUploading(true)
+      : _setIsPhotosUploading(true);
 
-    _setFile(file);
-    //TODO: Write Logic to File Upload
+    const { files } = e.target;
+    const formData = new FormData();
+
+    Array.from(files).forEach((file) => {
+      formData.append("files", file);
+    });
+
+    uploadFileApi(formData)
+      .then((result) => {
+        enqueueSnackbar(
+          `${files.length > 1 ? "Files" : "File"} Uploaded Successfully.`,
+          { variant: "success" }
+        );
+        if (key === "companyLogo") {
+          result.data.data?.[0] && _setCompnayLogo(result.data.data[0]);
+          key === "companyLogo"
+            ? _setIsLogoUploading(true)
+            : _setIsPhotosUploading(true);
+        } else {
+          _setCompanyPhotos(result.data.data);
+          key === "companyLogo"
+            ? _setIsLogoUploading(true)
+            : _setIsPhotosUploading(true);
+        }
+      })
+      .catch((error) => {
+        enqueueSnackbar(`Error uploading files. Please try again.`, {
+          variant: "error",
+        });
+        key === "companyLogo"
+          ? _setIsLogoUploading(true)
+          : _setIsPhotosUploading(true);
+      });
+  };
+
+  const isDisabled = () => {
+    console.log({ companyLogo, companyPhotos, aboutCompany });
+    return !companyLogo || !companyPhotos.length || !aboutCompany;
   };
 
   return (
@@ -60,128 +124,166 @@ const Step2 = ({ finish, back }) => {
         </Typography>
       </Box>
 
-      <Grid item>
+      <form>
         <Grid container direction="column">
-          <form>
-            <Grid item>
-              <Box mt={2}>
-                <Typography variant="subtitle2" className={classes.label}>
-                  About Company:
-                </Typography>
-                <TextareaAutosize
-                  maxRows={7}
-                  minRows={3}
-                  aria-label="aboutCompany"
-                  value={aboutCompany}
-                  onChange={({ target }) => _setAboutCompany(target.value)}
+          <Grid item>
+            <Box mt={2}>
+              <Typography variant="subtitle2" className={classes.label}>
+                About Company:
+              </Typography>
+              <TextField
+                maxRows={15}
+                multiline
+                fullWidth
+                aria-label="aboutCompany"
+                value={aboutCompany}
+                onChange={({ target }) => _setAboutCompany(target.value)}
+              />
+            </Box>
+          </Grid>
+
+          <Grid item>
+            <Box mt={2}>
+              <Typography variant="subtitle2" className={classes.label}>
+                Company Logo:
+              </Typography>
+              <div className={classes.fileDropZone}>
+                <input
+                  className={classes.fileInputControl}
+                  onChange={(e) => handleFileChange(e, "companyLogo")}
+                  type="file"
+                  accept="image/jpeg, image/png"
                 />
-              </Box>
-            </Grid>
+                {isLogoUploading && (
+                  <div className={classes.loadingOverlay}>
+                    <CircularProgress />
+                  </div>
+                )}
+              </div>
+            </Box>
+          </Grid>
 
-            <Grid item>
-              <Box mt={2}>
-                <Typography variant="subtitle2" className={classes.label}>
-                  LinkedIn Profile:
-                </Typography>
-                <TextField
-                  fullWidth
-                  required
-                  placeholder="https://linkedin.com/profile/"
-                  type="text"
-                  size="medium"
-                  variant="outlined"
-                  value={linkedInProfile}
-                  onChange={({ target }) => _setLinkedInProfile(target.value)}
+          <Grid item>
+            <Box mt={2}>
+              <Typography variant="subtitle2" className={classes.label}>
+                Company Photos:
+              </Typography>
+              <div className={classes.fileDropZone}>
+                <input
+                  className={classes.fileInputControl}
+                  multiple
+                  onChange={(e) => handleFileChange(e, "companyPhotos")}
+                  type="file"
+                  accept="image/jpeg, image/png"
                 />
-              </Box>
-            </Grid>
+                {isPhotosUploading && (
+                  <div className={classes.loadingOverlay}>
+                    <CircularProgress />
+                  </div>
+                )}
+              </div>
+            </Box>
+          </Grid>
 
-            <Grid item>
-              <Box mt={2}>
-                <Typography variant="subtitle2" className={classes.label}>
-                  Company Photos:
-                </Typography>
-                <div className={classes.fileDropZone}>
-                  <input
-                    className={classes.fileInputControl}
-                    multiple
-                    onChange={handleFileChange}
-                    type="file"
-                    accept="image/jpeg, image/png"
-                  />
-                  {isUploading && (
-                    <div className={classes.loadingOverlay}>
-                      <CircularProgress />
-                    </div>
-                  )}
-                </div>
-              </Box>
-            </Grid>
+          <Grid item xs={12} md={8}>
+            <Box mt={2}>
+              <Typography variant="subtitle2" className={classes.label}>
+                Compnay Website:
+              </Typography>
+              <TextField
+                fullWidth
+                required
+                type="text"
+                size="medium"
+                variant="outlined"
+                value={website}
+                onChange={({ target }) => _setWebsite(target.value)}
+              />
+            </Box>
+          </Grid>
 
-            <Grid item>
-              <Box mt={2}>
-                <Typography variant="subtitle2" className={classes.label}>
-                  Twitter Profile:
-                </Typography>
-                <TextField
-                  fullWidth
-                  required
-                  placeholder="https://twitter.com/profile/"
-                  type="text"
-                  size="medium"
-                  variant="outlined"
-                  value={twitterProfile}
-                  onChange={({ target }) => _setTwitterProfile(target.value)}
-                />
-              </Box>
-            </Grid>
+          <Grid item xs={12} md={8}>
+            <Box mt={2}>
+              <Typography variant="subtitle2" className={classes.label}>
+                LinkedIn Profile:
+              </Typography>
+              <TextField
+                fullWidth
+                required
+                placeholder="https://linkedin.com/profile/"
+                type="text"
+                size="medium"
+                variant="outlined"
+                value={linkedInProfile}
+                onChange={({ target }) => _setLinkedInProfile(target.value)}
+              />
+            </Box>
+          </Grid>
 
-            <Grid item>
-              <Box mt={2}>
-                <Typography variant="subtitle2" className={classes.label}>
-                  Facebook Profile:
-                </Typography>
-                <TextField
-                  fullWidth
-                  required
-                  placeholder="https://facebook.com/profile"
-                  type="text"
-                  size="medium"
-                  variant="outlined"
-                  value={facebookProfile}
-                  onChange={({ target }) => _setFacebookProfile(target.value)}
-                />
-              </Box>
-            </Grid>
+          <Grid item xs={12} md={8}>
+            <Box mt={2}>
+              <Typography variant="subtitle2" className={classes.label}>
+                Twitter Profile:
+              </Typography>
+              <TextField
+                fullWidth
+                required
+                placeholder="https://twitter.com/profile/"
+                type="text"
+                size="medium"
+                variant="outlined"
+                value={twitterProfile}
+                onChange={({ target }) => _setTwitterProfile(target.value)}
+              />
+            </Box>
+          </Grid>
 
-            <Grid item>
-              <Box
-                mt={4}
-                justifyContent="space-between"
-                className={classes.buttonContainer}
+          <Grid item xs={12} md={8}>
+            <Box mt={2}>
+              <Typography variant="subtitle2" className={classes.label}>
+                Facebook Profile:
+              </Typography>
+              <TextField
+                fullWidth
+                required
+                placeholder="https://facebook.com/profile"
+                type="text"
+                size="medium"
+                variant="outlined"
+                value={facebookProfile}
+                onChange={({ target }) => _setFacebookProfile(target.value)}
+              />
+            </Box>
+          </Grid>
+
+          <Grid item>
+            <Box
+              mt={4}
+              justifyContent="space-between"
+              className={classes.buttonContainer}
+            >
+              <Button
+                size="large"
+                type="submit"
+                onClick={handleBack}
+                startIcon={<ArrowBackIcon />}
               >
-                <Button
-                  size="large"
-                  type="submit"
-                  onClick={handleBack}
-                  startIcon={<ArrowBackIcon />}
-                >
-                  Back
-                </Button>
-                <Button
-                  size="large"
-                  onClick={handleNext}
-                  endIcon={<ArrowForwardIcon />}
-                  variant="outlined"
-                  color="primary"
-                >
-                  Finish
-                </Button>
-              </Box>
-            </Grid>
-          </form>
+                Back
+              </Button>
+              <Button
+                size="large"
+                onClick={handleFinish}
+                endIcon={<ArrowForwardIcon />}
+                variant="outlined"
+                color="primary"
+                disabled={isDisabled()}
+              >
+                Finish
+              </Button>
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
+      </form>
     </>
   );
 };
