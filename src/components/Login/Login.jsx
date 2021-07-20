@@ -21,7 +21,11 @@ const Login = ({ loginAction, isLogging, closeDialog, user }) => {
 
   const redirectUser = (data) => {
     let url;
-    console.log(data);
+
+    console.log({
+      userType: data.userType,
+      isOnboardingCompleted: data.isOnboardingCompleted,
+    });
     if (data.userType === "JOBSEEKER") {
       url = "/jobseeker";
 

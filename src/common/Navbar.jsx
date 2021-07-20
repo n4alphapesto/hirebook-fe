@@ -1,6 +1,6 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
 
+import { useLocation } from "react-router";
 import PropTypes from "prop-types";
 
 import {
@@ -12,7 +12,6 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Typography,
   makeStyles,
   Dialog,
   DialogTitle,
@@ -22,8 +21,7 @@ import {
 import MenuIcon from "@material-ui/icons/Menu";
 import Login from "../components/Login/Login";
 import Signup from "../components/Signup/Signup";
-
-import PopUpComponent from "./PopUpComponent";
+import { PopUpComponent } from ".";
 
 import logo from "../assets/svg/logo.svg";
 import Image from "./Image";
@@ -65,26 +63,37 @@ const useStyles = makeStyles((theme) => ({
 const Navbar = () => {
   const classes = useStyles();
 
-  const [openLogin, setOpenLogin] = React.useState(false);
-  const [openSignup, setOpenSignup] = React.useState(false);
-
-  const handleOpenLogin = () => setOpenLogin(true);
-  const handleCloseLogin = () => setOpenLogin(false);
-  const handleOpenSignup = () => setOpenSignup(true);
-  const handleCloseSignup = () => setOpenSignup(false);
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
+  const [isLoginOpen, _setIsLoginOpen] = React.useState(false);
+  const [isSignUpOpen, _setIsSignUpOpen] = React.useState(false);
+
+  const openLogin = () => {
+    _setIsLoginOpen(true);
+  };
+
+  const openSignUp = () => {
+    _setIsSignUpOpen(true);
+  };
+
+  const closeLogin = () => {
+    _setIsLoginOpen(false);
+  };
+
+  const closeSignUp = () => {
+    _setIsSignUpOpen(false);
+  };
+
   const navChildrenLanding = [];
   navChildrenLanding[0] = (
-    <Link underline="none" onClick={handleOpenLogin}>
+    <Link underline="none" onClick={openLogin}>
       LOGIN
     </Link>
   );
   navChildrenLanding[1] = (
-    <Link underline="none" onClick={handleOpenSignup}>
+    <Link underline="none" onClick={openSignUp}>
       SIGNUP
     </Link>
   );
@@ -134,10 +143,7 @@ const Navbar = () => {
   return (
     <AppBar className={classes.root}>
       <Toolbar className={classes.content}>
-        <Link
-          href={`/${location.pathname.split("/")[1]}`}
-          className={classes.logo}
-        >
+        <Link href="/" className={classes.logo}>
           <Image src={logo} width={164} />
         </Link>
 
@@ -150,7 +156,7 @@ const Navbar = () => {
         <Hidden mdUp>
           <IconButton
             color="default"
-            aria-label="open menu"
+            aria-label="open drawer....."
             edge="end"
             onClick={handleClick}
             className={classes.menuButton}
@@ -172,10 +178,10 @@ const Navbar = () => {
           </Menu>
         </Hidden>
 
-        <PopUpComponent open={openLogin} handleClose={handleCloseLogin}>
+        <PopUpComponent open={isLoginOpen} handleClose={closeLogin}>
           <Login />
         </PopUpComponent>
-        <PopUpComponent open={openSignup} handleClose={handleCloseSignup}>
+        <PopUpComponent open={isSignUpOpen} handleClose={closeSignUp}>
           <Signup />
         </PopUpComponent>
       </Toolbar>
