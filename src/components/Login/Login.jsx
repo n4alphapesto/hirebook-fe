@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { useSnackbar } from 'notistack';
+import { useSnackbar } from "notistack";
 import {
   Grid,
   Box,
@@ -19,40 +19,45 @@ const Login = ({ loginAction, isLogging, closeDialog, user }) => {
   const [email, _setEmail] = useState("");
   const [password, _setPassword] = useState("");
 
-  const redirectUser = data => {
+  const redirectUser = (data) => {
     let url;
 
+    console.log({
+      userType: data.userType,
+      isOnboardingCompleted: data.isOnboardingCompleted,
+    });
     if (data.userType === "JOBSEEKER") {
       url = "/jobseeker";
 
       if (!data.isOnboardingCompleted) {
-        url += "/onboarding"
+        url += "/onboarding";
       }
-
     } else {
       url = "/recruiter";
 
       if (!data.isOnboardingCompleted) {
-        url += "/onboarding"
+        url += "/onboarding";
       }
     }
 
     window.location.href = url;
-  }
+  };
 
   const login = (e) => {
     e.preventDefault();
 
-    loginAction({ email, password }).then(result => {
-      enqueueSnackbar('Login Successfully.', { variant: 'success' });
+    loginAction({ email, password })
+      .then((result) => {
+        enqueueSnackbar("Login Successfully.", { variant: "success" });
 
-      const data = result?.data?.data;
+        const data = result?.data?.data;
 
-      redirectUser(data);
-    }).catch(error => {
-      console.log(" --- error --- ", error);
-      enqueueSnackbar(error.message, { variant: 'error' })
-    });
+        redirectUser(data);
+      })
+      .catch((error) => {
+        console.log(" --- error --- ", error);
+        enqueueSnackbar(error.message, { variant: "error" });
+      });
   };
 
   return (

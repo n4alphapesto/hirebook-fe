@@ -1,6 +1,4 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
-
 import PropTypes from "prop-types";
 
 import {
@@ -12,7 +10,6 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Typography,
   makeStyles,
   Dialog,
   DialogTitle,
@@ -22,8 +19,6 @@ import {
 import MenuIcon from "@material-ui/icons/Menu";
 import Login from "../components/Login/Login";
 import Signup from "../components/Signup/Signup";
-
-import PopUpComponent from "./PopUpComponent";
 
 import logo from "../assets/svg/logo.svg";
 import Image from "./Image";
@@ -53,80 +48,56 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const PopUpForm = ({ openPopUp, handlePopUpClose }) => {
+  return (
+    <Dialog
+      open={openPopUp}
+      onClose={handlePopUpClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">Login/SignUp</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          Form comes here
+        </DialogContentText>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
-const Navbar = () => {
-
+const Navbar = ({ navItems, ...restOfProps }) => {
   const classes = useStyles();
 
-  const [openLogin, setOpenLogin] = React.useState(false);
-  const [openSignup, setOpenSignup] = React.useState(false);
-
-  const handleOpenLogin = () => setOpenLogin(true);
-  const handleCloseLogin = () => setOpenLogin(false);
-  const handleOpenSignup = () => setOpenSignup(true);
-  const handleCloseSignup = () => setOpenSignup(false);
-
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const handleClick = (event) => setAnchorEl(event.currentTarget);
-  const handleClose = () => setAnchorEl(null);
 
+  const [isLoginOpen, _setIsLoginOpen] = React.useState(false);
+  const [isSignUpOpen, _setIsSignUpOpen] = React.useState(false);
+  const [openPopUp, setOpenPopUp] = React.useState(false);
 
-  const navChildrenLanding = [];
-  navChildrenLanding[0] = (
-    <Link underline="none" onClick={handleOpenLogin}>
-      LOGIN
-    </Link>
-  );
-  navChildrenLanding[1] = (
-    <Link underline="none" onClick={handleOpenSignup}>
-      SIGNUP
-    </Link>
-  );
+  const openLogin = () => {
+    _setIsLoginOpen(true);
+  };
 
+  const closeLogin = () => {
+    _setIsLoginOpen(false);
+  };
 
-  const navChildrenRecruiter = ["POSTED JOBS", "PROFILE"].map((el, i) => (
-    <Link
-      key={i}
-      underline="none"
-      href={`/recruiter/${el.toLowerCase().split(" ").join("")}`}
-    >
-      {el}
-    </Link>
-  ));
+  const openSignup = () => {
+    _setIsSignUpOpen(true);
+  };
 
-  const navChildrenJobseeker = ["OPPORTUNITIES", "PROFILE"].map((el, i) => (
-    <Link
-      key={i}
-      underline="none"
-      href={`/jobseeker/${el.toLowerCase().split(" ").join("")}`}
-    >
-      {el}
-    </Link>
-  ));
-  navChildrenRecruiter[2] = (
-    <Link href="/signout" underline="none">
-      LOG OUT
-    </Link>
-  );
-  navChildrenJobseeker[2] = (
-    <Link href="/signout" underline="none">
-      LOG OUT
-    </Link>
-  );
+  const closeSignup = () => {
+    _setIsSignUpOpen(false);
+  };
 
-  const location = useLocation();
-  console.log(location);
-  let navChildren;
-  console.log(location.pathname);
-  if (location.pathname.startsWith("/recruiter")) {
-    navChildren = navChildrenRecruiter;
-  } else if (location.pathname.startsWith("/jobseeker")) {
-    navChildren = navChildrenJobseeker;
-  } else if (location.pathname.startsWith("/signout")) {
-    navChildren = navChildrenLanding;
-  } else {
-    navChildren = navChildrenLanding;
-  }
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const handlePopUpOpen = () => {
     setOpenPopUp(true);
@@ -139,25 +110,36 @@ const Navbar = () => {
   return (
     <AppBar className={classes.root}>
       <Toolbar className={classes.content}>
-        <Link
-          href={`/${location.pathname.split("/")[1]}`}
-          className={classes.logo}
-        >
+        <Link href="/" className={classes.logo}>
           <Image src={logo} width={164} />
         </Link>
 
         <Hidden mdDown>
-
-          <Box className={classes.navlinks} aria-label={"navbar"}>
-            {navChildren}
-
+          <Box
+            className={classes.navlinks}
+            aria-label={`navbar for ${navItems}`}
+          >
+            <Link
+              className={classes.navlink}
+              underline="none"
+              onClick={openLogin}
+            >
+              {"LOGIN"}
+            </Link>
+            <Link
+              className={classes.navlink}
+              underline="none"
+              onClick={openSignup}
+            >
+              {"SIGNUP"}
+            </Link>
           </Box>
         </Hidden>
 
         <Hidden mdUp>
           <IconButton
             color="default"
-            aria-label="open menu"
+            aria-label="open drawer....."
             edge="end"
             onClick={handleClick}
             className={classes.menuButton}
@@ -171,22 +153,50 @@ const Navbar = () => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-
-            {navChildren.map((el, i) => (
-              <MenuItem key={i} onClick={handleClose}>
-                {el}
-              </MenuItem>
-            ))}
+            <MenuItem>
+              <Link
+                className={classes.navlink}
+                underline="none"
+                onClick={openLogin}
+              >
+                {"LOGIN"}
+              </Link>
+            </MenuItem>
+            <MenuItem>
+              <Link
+                className={classes.navlink}
+                underline="none"
+                onClick={openSignup}
+              >
+                {"SIGNUP"}
+              </Link>
+            </MenuItem>
           </Menu>
         </Hidden>
+        <PopUpForm openPopUp={openPopUp} handlePopUpClose={handlePopUpClose} />
 
-        <PopUpComponent open={openLogin} handleClose={handleCloseLogin}>
-          <Typography>login component</Typography>
-        </PopUpComponent>
-        <PopUpComponent open={openSignup} handleClose={handleCloseSignup}>
-          <Typography>signup component</Typography>
-        </PopUpComponent>
-
+        <Dialog
+          maxWidth="xs"
+          fullWidth
+          open={isLoginOpen}
+          onClose={closeLogin}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogContent>
+            <Login closeDialog={closeLogin} />
+          </DialogContent>
+        </Dialog>
+        <Dialog
+          maxWidth="xs"
+          fullWidth
+          open={isSignUpOpen}
+          onClose={closeSignup}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogContent>
+            <Signup closeDialog={closeSignup} />
+          </DialogContent>
+        </Dialog>
       </Toolbar>
     </AppBar>
   );
