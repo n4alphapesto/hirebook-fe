@@ -1,41 +1,40 @@
-import API from '../utils/API';
+import API from "../utils/API";
 
 export const loginApi = (data) => {
-    const result = API({
-        method: 'post',
-        url: '/auth/login',
-        data
-    })
+  const result = API({
+    method: "post",
+    url: "/auth/login",
+    data,
+  });
 
-    return result;
-}
+  return result;
+};
 
 export const registerApi = (data) => {
-    const result = API({
-        method: 'post',
-        url: '/auth/register',
-        data
-    })
+  const result = API({
+    method: "post",
+    url: "/auth/register",
+    data,
+  });
 
-    return result;
-}
+  return result;
+};
 
 export const verifyOTPApi = (data) => {
-    const result = API({
-        method: 'post',
-        url: '/auth/verify-otp',
-        data
-    })
+  const result = API({
+    method: "post",
+    url: "/auth/verify-otp",
+    data,
+  });
 
-    return result;
-}
+  return result;
+};
 
-export const resendOTPApi = (data) => {
-    const result = API({
-        method: 'post',
-        url: '/auth/resend-verify-otp',
-        data
-    })
+export const getUserApi = (data) => {
+  const result = API({
+    method: "get",
+    url: "/api/getUser",
+  });
 
-    return result;
-}
+  return result;
+};
