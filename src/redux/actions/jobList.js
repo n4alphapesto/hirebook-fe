@@ -4,13 +4,13 @@ import {
   JOB_LIST_FAILED,
 } from "../constants/jobConstants";
 
-import { getJobListApi } from "../../api/common";
+import { getJobApi } from "../../api/common";
 
 export const getJobList = () => {
   return (dispatch) => {
     dispatch({ type: JOB_LIST_START });
     return new Promise((resolve, reject) => {
-      getJobListApi()
+      getJobApi()
         .then((result) => {
           dispatch({ type: JOB_LIST_SUCCESS });
           resolve(result);

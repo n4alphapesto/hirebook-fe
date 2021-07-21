@@ -19,10 +19,29 @@ export const getUserApi = () => {
   return result;
 };
 
-export const getJobListApi = () => {
+export const getJobApi = (data) => {
   const result = API({
     method: "get",
     url: "/job",
+    data,
+  });
+  return result;
+};
+
+export const getJobByIdApi = (data) => {
+  const result = API({
+    method: "get",
+    url: "/job/jobById",
+    data,
+  });
+  return result;
+};
+
+export const removeJobApi = (data) => {
+  const result = API({
+    method: "put",
+    url: "/job/jobById",
+    data
   });
   return result;
 };

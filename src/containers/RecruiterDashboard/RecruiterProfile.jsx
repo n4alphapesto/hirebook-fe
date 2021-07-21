@@ -17,7 +17,9 @@ import {
 } from "@material-ui/core";
 
 import { ImageGrid } from "../../common";
-import { recruiter } from "./recruiterData";
+//import { recruiter } from "./recruiterData";
+import { getUserApi } from "../../api/common";
+
 import EditIcon from "@material-ui/icons/Edit";
 
 import DoneIcon from "@material-ui/icons/Done";
@@ -72,6 +74,14 @@ const useStyles = makeStyles((theme) => ({
 const RecruiterProfile = () => {
   const classes = useStyles();
 
+  const [recruiter, setRecruiter] = useState();
+  useEffect(() => {
+    getUserApi().then((res) => {
+      console.log(res.data.data.recruiter);
+      setRecruiter(res.data.data.recruiter);
+    });
+  }, [recruiter]);
+
   const handleSubmit = () => {
     console.log("submitted");
   };
@@ -79,6 +89,7 @@ const RecruiterProfile = () => {
     <div className={classes.root}>
       <Card>
         <CardContent>
+          {JSON.stringify(recruiter)}
           <div className={classes.title}>
             <Typography variant="body2"></Typography>
             <IconButton>
@@ -87,16 +98,12 @@ const RecruiterProfile = () => {
               </Link>
             </IconButton>
           </div>
+          {/*
           <form onSubmit={handleSubmit}>
             <Grid container justifyContent="center" spacing={2}>
               <Grid item xs={12} md={4} className={classes.companyDetails}>
                 <Box className={classes.companyLogo}>
-                  <img
-                    src={recruiter.companyLogo.img}
-                    alt={"company logo"}
-                    width="100%"
-                    height={82}
-                  />
+                  <img src={""} alt={"company logo"} width="100%" height={82} />
                 </Box>
                 <Box>
                   <Typography variant="h6" className={classes.title}>
@@ -155,19 +162,7 @@ const RecruiterProfile = () => {
                     {recruiter.aboutCompany}
                   </Typography>
                 </Box>
-                <Box>
-                  {/*
-                  <TextareaAutosize
-                    aria-label="minimum height"
-                    minRows={15}
-                    fullWidth
-                    disabled
-                    label="details of job"
-                    value={recruiter.aboutCompany}
-                    className={classes.about}
-                  />
-                  */}
-                </Box>
+                <Box></Box>
                 <Box>
                   <Typography variant="h6" className={classes.title}>
                     Office Photos
@@ -183,7 +178,7 @@ const RecruiterProfile = () => {
                 </Box>
               </Grid>
             </Grid>
-          </form>
+                    </form>*/}
         </CardContent>
       </Card>
     </div>
@@ -206,3 +201,15 @@ export default RecruiterProfile;
   variant="outlined"
   className={classes.input}
 />*/
+
+/*
+                  <TextareaAutosize
+                    aria-label="minimum height"
+                    minRows={15}
+                    fullWidth
+                    disabled
+                    label="details of job"
+                    value={recruiter.aboutCompany}
+                    className={classes.about}
+                  />
+                  */

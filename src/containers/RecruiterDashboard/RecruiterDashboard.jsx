@@ -5,6 +5,7 @@ import {
   Box,
   List,
   ListItemText,
+  Typography,
   Grid,
   makeStyles,
 } from "@material-ui/core";
@@ -19,6 +20,8 @@ import {
 import JobPostForm from "./RecruiterJobPostForm";
 //import recruiterData from "./recruiterData";
 
+import { getUserApi, getJobApi, removeJobApi } from "../../api/common";
+import { getUser } from "../../redux/actions/user";
 import { getJobList } from "../../redux/actions/jobList";
 
 const defaultStats = [
@@ -26,12 +29,8 @@ const defaultStats = [
     title: "Jobs Posted",
     value: 0,
   },
-  /*{
-    title: "Vacancies",
-    value: 0,
-  },*/
   {
-    title: "Hired",
+    title: "Vacancies",
     value: 0,
   },
   {
@@ -45,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     marginLeft: "auto",
     marginRight: "auto",
-    marginTop: theme.spacing(10),
+    marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
     padding: theme.spacing(2),
     maxWidth: "1000px",
@@ -89,41 +88,56 @@ const RecruiterDashboard = () => {
   //const [posts, setPosts] = useState(recruiterData.posts);
   const [stats, setStats] = useState(defaultStats);
 
-  const [jobs, setJobs] = useState([]);
+  const [userId, setUserId] = useState("");
+  const [jobPosts, setJobPosts] = useState([
+    {
+      _id: "",
+      locations: [],
+      isDeleted: null,
+      title: "",
+      description: "",
+      skills: [],
+      vacancies: 0,
+      postedBy: "",
+      applicants: [],
+      createdAt: "",
+      updatedAt: "",
+    },
+  ]);
 
-  /*useEffect(() => {
-    const token = localStorage.getItem("token");
-    fetch("http://localhost:3000/api/getUser", {
-      headers: new Headers({
-        Authorization: `Bearer ${token}`,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => data.data)
-      .then((data) => {
-        setJobs(JSON.stringify(data));
-      });
-  }, [jobs]);*/
+  useEffect(() => {
+    getUserApi().then((res) => setUserId(res.data.data._id));
+  }, [userId]);
 
-  const getTotal = (posts, key) => {
-    return posts.reduce((acc, post) => {
-      acc = acc + post[key];
-      return acc;
-    }, 0);
+  useEffect(() => {
+    getJobApi({ postedBy: userId }).then((res) => {
+      let data = res.data.data.jobs;
+      console.log(data);
+      //data = data.filter((post) => post.isDeleted === false);
+      setJobPosts(data);
+    });
+  }, [userId]);
+
+  const deletePost = (id) => {
+    /*getJobByIdApi({ id }).then((res) => {
+      const data = res?.data?.data;
+      const newData = {
+        ...data,
+        isDeleted: true,
+      };
+      removeJobApi(newData);
+    });*/
   };
 
-  /*const deletePost = (id) => {
-    setPosts((posts) => {
-      return posts.filter((post) => post.id !== id);
-    });
-  };*/
-
-  /*useEffect(() => {
-    //let totalPosts = posts.length;
-    //let vacancies = getTotal(posts, "vacancies");
-    //let hired = getTotal(posts, "hired");
-    //let inProgress = getTotal(posts, "inProgress");
-    /*setStats([
+  useEffect(() => {
+    let totalPosts = jobPosts.length;
+    let vacancies = jobPosts
+      .map((post) => post.vacancies)
+      .reduce((acc, curr) => {
+        return acc + curr;
+      }, 0);
+    let inProgress = 0;
+    setStats([
       {
         title: "Jobs Posted",
         value: totalPosts,
@@ -133,15 +147,11 @@ const RecruiterDashboard = () => {
         value: vacancies,
       },
       {
-        title: "Hired",
-        value: hired,
-      },
-      {
         title: "In Progress",
         value: inProgress,
       },
     ]);
-  }, [posts]);*/
+  }, [jobPosts]);
 
   const handleOpenForm = () => setOpenForm(true);
   const handleCloseForm = () => setOpenForm(false);
@@ -154,15 +164,13 @@ const RecruiterDashboard = () => {
     handleCloseForm();
   };
 
-  const getJobList = () => {};
-
   return (
     <div className={classes.root}>
       <Box mt={8}>
-        <StatsComponent data={defaultStats} />
-
+        <StatsComponent data={stats} />
+        {/*JSON.stringify(userId)*/}
+        {/*JSON.stringify(jobPosts)*/}
         <Grid container spacing={2} justifyContent="center">
-          <p>{jobs}</p>
           <Grid item md={9}>
             <Link
               className={classes.createPostButton}
@@ -172,55 +180,35 @@ const RecruiterDashboard = () => {
             >
               Create New Job Post
             </Link>
-            {/*<PopUpComponent open={openForm} handleClose={handleCloseForm}>
-              <JobPostForm
-                submitForm={addNewPost}
-                cancelForm={handleCloseForm}
-              />
-  </PopUpComponent>*/}
-            {/*posts.map((post) => {
+
+            {jobPosts.map((post) => {
               return (
                 <SummaryComponent
                   key={post.id}
-                  cardTitle={post.role}
-                  cardSubTitle1={post.location}
-                  cardSubTitle2={`Posted on: ${post.datePosted}`}
+                  cardTitle={post.title}
+                  cardSubTitle1={
+                    <Typography>Vacancies: {post.vacancies}</Typography>
+                  }
+                  cardSubTitle2={`Posted on: ${new Date(
+                    post.createdAt
+                  ).toLocaleDateString()}`}
                 >
-                  <List className={classes.list}>
-                    <ListItemText
-                      className={classes.listItems}
-                    >{`Vacancies: ${post.vacancies}`}</ListItemText>
-                    <ListItemText
-                      className={classes.listItems}
-                    >{`Applied: ${post.applied}`}</ListItemText>
-                    <ListItemText
-                      className={classes.listItems}
-                    >{`Hired: ${post.hired}`}</ListItemText>
-                    <ListItemText
-                      className={classes.listItems}
-                    >{`Rejected: ${post.rejected}`}</ListItemText>
-                    <ListItemText
-                      className={classes.listItems}
-                    >{`In Progress: ${post.inProgress}`}</ListItemText>
-                  </List>
+                  <img src="" alt="" />
+                  <Typography>{post.description}</Typography>
                   <Link
                     className={classes.viewButton}
                     variant="button"
-                    href={`/recruiter/${post.id}`}
+                    href={`/recruiter/postedjobs/${post.id}`}
                     underline="none"
                   >
                     View
                   </Link>
-                  <Link
-                    className={classes.removePostLink}
-                    variant="inherit"
-                    onClick={() => deletePost(post.id)}
-                  >
+                  <Link className={classes.removePostLink} variant="inherit">
                     Remove Post
                   </Link>
                 </SummaryComponent>
               );
-            })*/}
+            })}
           </Grid>
         </Grid>
       </Box>
@@ -229,3 +217,52 @@ const RecruiterDashboard = () => {
 };
 
 export default RecruiterDashboard;
+
+/*useEffect(() => {
+    const token = localStorage.getItem("token");
+    fetch("http://localhost:3000/api/getUser", {
+      headers: new Headers({
+        Authorization: `Bearer ${token}`,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => data.data)
+      .then((data) => {
+        setUser(JSON.stringify(data));
+      });
+  }, [user]);*/
+
+/*useEffect(() => {
+    getJobListApi()
+      .then((res) => res.json())
+      .then((data) => data.data)
+      .then((data) => setJobs(data));
+  }, [jobs]);*/
+
+/*const getTotal = (posts, key) => {
+    return posts.reduce((acc, post) => {
+      acc = acc + post[key];
+      return acc;
+    }, 0);
+  };*/
+
+/*<PopUpComponent open={openForm} handleClose={handleCloseForm}>
+              <JobPostForm
+                submitForm={addNewPost}
+                cancelForm={handleCloseForm}
+              />
+  </PopUpComponent>*/
+
+/*useEffect(() => {
+    getJobApi().then((res) => {
+      const data = res.data.data.filter(
+        (postObj) => postObj.postedBy === user && postObj.isDeleted === false
+      );
+      setJobPosts(data);
+    });
+
+    getJobApi({ postedBy: user }).then((res) => {
+      const data = res?.data?.data;
+      setJobPosts(data);
+    });
+  }, [jobPosts, user]);*/

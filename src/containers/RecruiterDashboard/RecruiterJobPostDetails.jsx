@@ -15,7 +15,7 @@ import {
 } from "@material-ui/core";
 
 import { SummaryComponent, Emailer } from "../../common";
-//import recruiterData from "./recruiterData";
+import { getJobByIdApi } from "../../api/common";
 
 import {
   jobs,
@@ -74,14 +74,36 @@ const useStyles = makeStyles((theme) => ({
 
 const JobPostDetails = () => {
   const classes = useStyles();
-  //const params = useParams();
-  const params = "60bcffddc9068f6473ec271f";
+  const params = useParams();
+  const jobId = params.id;
+  //const jobId = "60f7995ae502ee11b6eeb3fc";
+  //console.log(jobId);
+  const [jobData, setJobData] = useState({
+    _id: "",
+    locations: [],
+    isDeleted: null,
+    title: "",
+    description: "",
+    skills: [],
+    vacancies: 0,
+    postedBy: "",
+    applicants: [],
+    createdAt: "",
+    updatedAt: "",
+  });
   const [openEmail, setOpenEmail] = useState(false);
 
-  const jobData = jobs.filter((post) => post._id.$oid === params)[0];
+  useEffect(() => {
+    getJobByIdApi({ id: jobId }).then((res) => {
+      const data = res.data;
+      console.log(data);
+      ///setJobData(data);
+    });
+  }, [jobId]);
+
   //console.log(jobData);
-  let candidates = jobApplicantsForPost.filter(
-    (el) => el.jobPostId === params
+  /*let candidates = jobApplicantsForPost.filter(
+    (el) => el.jobPostId === jobId
   )[0].candidates;
   console.log(candidates);
   candidates = candidates.map((item) => {
@@ -96,11 +118,13 @@ const JobPostDetails = () => {
     return { currentStatus };
   });
 
-  console.log(candidates);
+  console.log(candidates);*/
   return (
     <div className={classes.root}>
       <Card>
         <CardContent>
+          {jobId}
+          {JSON.stringify(jobData)}
           <Grid container justifyContent="left" spacing={2} direction="column">
             <Grid item xs={12} md={12}>
               <Typography variant="h3">{jobData.title}</Typography>
@@ -108,10 +132,11 @@ const JobPostDetails = () => {
                 {recruiter.locations[0]}
               </Typography>
               <Typography variant="subtitle2">
-                Number of people applied:{" "}
-                <span className={classes.bold}>
-                  {jobData.applicants.length}
-                </span>
+                Vacancies:
+                <span className={classes.bold}>{jobData.vacancies}</span>
+              </Typography>
+              <Typography variant="subtitle2">
+                Number of people applied: <span className={classes.bold}></span>
               </Typography>
             </Grid>
             <Grid item xs={12} md={12}>
@@ -119,25 +144,18 @@ const JobPostDetails = () => {
                 Required Skills
               </Typography>
               <Grid container justifyCentent="left" spacing={2} direction="row">
-                {jobData.skills.split(",").map((skill, i) => (
+                {/*jobData.skills.map((skill, i) => (
                   <Grid item key={i} className={classes.skill}>
-                    {skill}
+                    {skill.title}
                   </Grid>
-                ))}
+                ))*/}
               </Grid>
             </Grid>
             <Grid item xs={12} md={12} direction="row">
               <Typography variant="subtitle2">
                 Locations:{" "}
                 <span className={classes.bold}>
-                  {" "}
-                  {jobData.locationsAt
-                    .map(
-                      (item) =>
-                        allCities.filter((city) => city._id.$oid === item)[0]
-                          .title
-                    )
-                    .join(", ")}
+                  {/*jobData.locations.join(", ")*/}
                 </span>
               </Typography>
             </Grid>
