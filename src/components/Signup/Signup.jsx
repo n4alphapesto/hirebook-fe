@@ -209,6 +209,7 @@ const Signup = ({ isSigning, actions, closeDialog }) => {
               </Box>
               <Box mt={2} className={classes.otpContainer}>
                 <OtpInput
+                  autoFocus
                   shouldAutoFocus
                   inputStyle="inputStyle"
                   value={otp}
