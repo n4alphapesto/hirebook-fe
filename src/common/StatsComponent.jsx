@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     //margin: theme.spacing(2),
     //padding: theme.spacing(2),
-    border: "2px solid blue",
+    //border: "2px solid blue",
     display: "flex",
     flexWrap: "wrap",
     //width: "80%",
