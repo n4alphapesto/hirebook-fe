@@ -8,6 +8,8 @@ const API = axios.create({
 API.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
+
+    if (config.url === "/getUser" && !token) return false;
     if (!publicApiRoutes.includes(config.url)) {
       config.headers.authorization = `Bearer ${token}`;
     }
