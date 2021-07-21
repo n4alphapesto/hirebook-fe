@@ -4,7 +4,7 @@ const API = axios.create({
   baseURL: "http://localhost:3000/api/",
 });
 
-const publicRoutes = ["/auth/login", "/auth/register"];
+const publicRoutes = ["/auth/login", "/auth/register", "/getUser", "/job"];
 
 API.interceptors.request.use(
   (config) => {

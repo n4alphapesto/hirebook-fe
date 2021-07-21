@@ -30,10 +30,11 @@ export const verifyOTPApi = (data) => {
   return result;
 };
 
-export const getUserApi = (data) => {
+export const resendOTPApi = (data) => {
   const result = API({
-    method: "get",
-    url: "/api/getUser",
+    method: "post",
+    url: "/auth/resend-verify-otp",
+    data,
   });
 
   return result;

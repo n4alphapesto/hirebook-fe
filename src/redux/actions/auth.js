@@ -1,10 +1,5 @@
 import axios from "axios";
-import {
-  loginApi,
-  registerApi,
-  verifyOTPApi,
-  getUserApi,
-} from "../../api/auth";
+import { loginApi, registerApi, verifyOTPApi } from "../../api/auth";
 import {
   LOGIN_FAILED,
   LOGIN_START,
@@ -15,9 +10,6 @@ import {
   VERIFY_START,
   VERIFY_FAILED,
   VERIFY_SUCCESS,
-  GET_USER_START,
-  GET_USER_SUCCESS,
-  GET_USER_FAILED,
 } from "../constants/userConstants";
 
 export const login = (payload) => {
@@ -68,23 +60,6 @@ export const verify = (payload) => {
         })
         .catch((error) => {
           dispatch({ type: VERIFY_FAILED, payload: error });
-          reject(error);
-        });
-    });
-  };
-};
-
-export const getUser = (payload) => {
-  return (dispatch) => {
-    dispatch({ type: GET_USER_START });
-    return new Promise((resolve, reject) => {
-      getUserApi()
-        .then((result) => {
-          dispatch({ type: GET_USER_SUCCESS });
-          resolve(result);
-        })
-        .catch((error) => {
-          dispatch({ type: GET_USER_FAILED, payload: error });
           reject(error);
         });
     });
