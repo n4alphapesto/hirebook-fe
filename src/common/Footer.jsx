@@ -3,7 +3,6 @@ import { Box, Grid, Typography, Link, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
     paddingTop: theme.spacing(4),
     paddingRight: theme.spacing(2),
     paddingBottom: theme.spacing(10),

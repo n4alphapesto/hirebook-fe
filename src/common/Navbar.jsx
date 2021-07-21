@@ -86,6 +86,8 @@ const Navbar = () => {
     _setIsSignUpOpen(false);
   };
 
+  const removeToken = () => localStorage.removeItem("token");
+
   const navChildrenLanding = [];
   navChildrenLanding[0] = (
     <Link underline="none" onClick={openLogin}>
@@ -118,12 +120,12 @@ const Navbar = () => {
     </Link>
   ));
   navChildrenRecruiter[2] = (
-    <Link href="/signout" underline="none">
+    <Link href="/" onClick={removeToken} underline="none">
       LOG OUT
     </Link>
   );
   navChildrenJobseeker[2] = (
-    <Link href="/signout" underline="none">
+    <Link href="/" onClick={removeToken} underline="none">
       LOG OUT
     </Link>
   );

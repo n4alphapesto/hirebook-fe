@@ -8,11 +8,12 @@ import { getUserApi } from "../../api/common";
 
 export const getUser = () => {
   return (dispatch) => {
-    dispatch({ type: GET_USER_START });
+    // dispatch({ type: GET_USER_START });
     return new Promise((resolve, reject) => {
       getUserApi()
         .then((result) => {
-          dispatch({ type: GET_USER_SUCCESS });
+          // console.log(" user data ", result);
+          dispatch({ type: GET_USER_SUCCESS, payload: result.data.data });
           resolve(result);
         })
         .catch((error) => {

@@ -41,7 +41,7 @@ export const removeJobApi = (data) => {
   const result = API({
     method: "put",
     url: "/job/jobById",
-    data,
+    data
   });
   return result;
 };
