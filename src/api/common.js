@@ -13,7 +13,7 @@ export const uploadFileApi = (data) => {
 export const getUserApi = () => {
   const result = API({
     method: "get",
-    url: "/api/getUser",
+    url: "/getUser",
   });
 
   return result;
@@ -22,7 +22,7 @@ export const getUserApi = () => {
 export const getJobListApi = () => {
   const result = API({
     method: "get",
-    url: "/api/job",
+    url: "/job",
   });
   return result;
 };

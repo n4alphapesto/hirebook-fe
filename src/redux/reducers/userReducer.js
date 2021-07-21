@@ -24,6 +24,8 @@ const initialState = {
 
   isVerifying: false,
   verifyErrorMsg: false,
+
+  isUserLoading: true,
 };
 
 export default function userReducer(state = initialState, action) {
@@ -56,15 +58,15 @@ export default function userReducer(state = initialState, action) {
     case ONBOARD_SUCCESS:
       return { ...state, user: { ...state.user, ...action.payload } };
 
-    case GET_USER_START:
-      return { ...state, isUserLoading: true };
-    case GET_USER_FAILED:
+    // case GET_USER_START:
+    //   return { ...state, isUserLoading: true };
+    case GET_USER_SUCCESS:
       return {
         ...state,
         isUserLoading: false,
-        userData: { ...state.user, ...action.payload },
+        user: action.payload,
       };
-    case GET_USER_SUCCESS:
+    case GET_USER_FAILED:
       return { ...state, isUserLoading: false };
 
     default:
