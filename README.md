@@ -1,6 +1,6 @@
 ### hirebook-Frontend(UI)
 
-[![Author](https://img.shields.io/badge/author-@n4alpha-blue.svg)] ![GitHub repo size](https://img.shields.io/github/repo-size/avijsdev/mern-app). [![Build Status]]
+![Author](https://img.shields.io/badge/author-@n4alpha-blue.svg) ![GitHub repo size](https://img.shields.io/github/repo-size/avijsdev/mern-app). ![Build Status]
 
 ## Table of contents
 * [Introduction](#intro)
