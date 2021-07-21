@@ -13,16 +13,35 @@ export const uploadFileApi = (data) => {
 export const getUserApi = () => {
   const result = API({
     method: "get",
-    url: "/api/getUser",
+    url: "/getUser",
   });
 
   return result;
 };
 
-export const getJobListApi = () => {
+export const getJobApi = (data) => {
   const result = API({
     method: "get",
-    url: "/api/job",
+    url: "/job",
+    data,
+  });
+  return result;
+};
+
+export const getJobByIdApi = (data) => {
+  const result = API({
+    method: "get",
+    url: "/job/jobById",
+    data,
+  });
+  return result;
+};
+
+export const removeJobApi = (data) => {
+  const result = API({
+    method: "put",
+    url: "/job/jobById",
+    data,
   });
   return result;
 };
