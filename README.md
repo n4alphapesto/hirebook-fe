@@ -1,11 +1,11 @@
 ### hirebook-Frontend(UI)
 
-![Author](https://img.shields.io/badge/author-@n4alphapesto-blue.svg)
-![GitHub repo size](https://img.shields.io/github/repo-size/n4alphapesto/hirebook-frontend)
+![Author](https://img.shields.io/badge/author-@n4alphapesto-blue.svg?style=for-the-badge)
+![GitHub repo size](https://img.shields.io/github/repo-size/n4alphapesto/hirebook-frontend?style=for-the-badge)
 ![Contributors](https://img.shields.io/github/contributors/n4alphaPesto/hirebook-frontend.svg?style=for-the-badge)
 ![Forks](https://img.shields.io/github/forks/n4alphaPesto/hirebook-frontend.svg?style=for-the-badge)
-![Stargazers](https://img.shields.io/github/Stargazers/n4alphaPesto/hirebook-frontend.svg?style=for-the-badge)
-![Issues](https://img.shields.io/github/Issues/n4alphaPesto/hirebook-frontend.svg?style=for-the-badge)
+![Stargazers](https://img.shields.io/github/stars/n4alphapesto/hirebook-frontend.svg?style=for-the-badge)
+![Issues](https://img.shields.io/github/issues/n4alphapesto/hirebook-frontend.svg?style=for-the-badge)
 ![MIT License](https://img.shields.io/github/license/n4alphaPesto/hirebook-frontend.svg?style=for-the-badge)
 
 
