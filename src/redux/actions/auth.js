@@ -1,4 +1,3 @@
-import axios from "axios";
 import { loginApi, registerApi, verifyOTPApi } from "../../api/auth";
 import {
   LOGIN_FAILED,

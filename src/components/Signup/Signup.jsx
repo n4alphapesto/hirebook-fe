@@ -99,7 +99,10 @@ const Signup = ({ isSigning, actions, closeDialog }) => {
                     row
                     name="userType"
                     value={userType}
-                    onChange={({ target }) => _setUserType(target.value)}
+                    disabled={showOTP}
+                    onChange={({ target }) =>
+                      !showOTP && !isSigning && _setUserType(target.value)
+                    }
                   >
                     <FormControlLabel
                       value="JOBSEEKER"
@@ -126,13 +129,16 @@ const Signup = ({ isSigning, actions, closeDialog }) => {
                   fullWidth
                   required
                   autoFocus
+                  disabled={showOTP}
                   id="full_name"
                   placeholder="Enter Your Name"
                   size="small"
                   type="text"
                   variant="outlined"
                   className="form_input"
-                  onChange={({ target }) => _setName(target.value)}
+                  onChange={({ target }) =>
+                    !showOTP && !isSigning && _setName(target.value)
+                  }
                 />
               </Box>
             </Grid>
@@ -144,13 +150,16 @@ const Signup = ({ isSigning, actions, closeDialog }) => {
                 <TextField
                   fullWidth
                   required
+                  disabled={showOTP}
                   id="email_address"
                   placeholder="Enter Email Address"
                   size="small"
                   type="email"
                   variant="outlined"
                   className="form_input"
-                  onChange={({ target }) => _setEmail(target.value)}
+                  onChange={({ target }) =>
+                    !showOTP && !isSigning && _setEmail(target.value)
+                  }
                 />
               </Box>
             </Grid>
@@ -163,13 +172,16 @@ const Signup = ({ isSigning, actions, closeDialog }) => {
                 <TextField
                   fullWidth
                   required
+                  disabled={showOTP}
                   id="password"
                   placeholder="Enter Password"
                   type="password"
                   size="small"
                   variant="outlined"
                   className="form_input"
-                  onChange={({ target }) => _setPassword(target.value)}
+                  onChange={({ target }) =>
+                    !showOTP && !isSigning && _setPassword(target.value)
+                  }
                 />
               </Box>
             </Grid>
