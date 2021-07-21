@@ -1,13 +1,13 @@
 ### hirebook-Frontend(UI)
 
-[![GitHub repo size](https://img.shields.io/github/repo-size/avijsdev/mern-app)]
-[![Contributors][contributors-shield]][contributors-url]
-[![GitHub repo size][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![Author][author-shield]][author-url]
+![Author](https://img.shields.io/badge/author-@n4alphapesto-blue.svg)
+![GitHub repo size](https://img.shields.io/github/repo-size/n4alphapesto/hirebook-frontend)
+![Contributors](https://img.shields.io/github/contributors/n4alphaPesto/hirebook-frontend.svg?style=for-the-badge)
+![Forks](https://img.shields.io/github/forks/n4alphaPesto/hirebook-frontend.svg?style=for-the-badge)
+![Stargazers](https://img.shields.io/github/Stargazers/n4alphaPesto/hirebook-frontend.svg?style=for-the-badge)
+![Issues](https://img.shields.io/github/Issues/n4alphaPesto/hirebook-frontend.svg?style=for-the-badge)
+![MIT License](https://img.shields.io/github/license/n4alphaPesto/hirebook-frontend.svg?style=for-the-badge)
+
 
 ## Table of contents
 * [Introduction](#intro)
