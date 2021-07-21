@@ -19,6 +19,8 @@ import {
 import JobPostForm from "./RecruiterJobPostForm";
 //import recruiterData from "./recruiterData";
 
+import { getJobList } from "../../redux/actions/jobList";
+
 const defaultStats = [
   {
     title: "Jobs Posted",
@@ -87,6 +89,22 @@ const RecruiterDashboard = () => {
   //const [posts, setPosts] = useState(recruiterData.posts);
   const [stats, setStats] = useState(defaultStats);
 
+  const [jobs, setJobs] = useState([]);
+
+  /*useEffect(() => {
+    const token = localStorage.getItem("token");
+    fetch("http://localhost:3000/api/getUser", {
+      headers: new Headers({
+        Authorization: `Bearer ${token}`,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => data.data)
+      .then((data) => {
+        setJobs(JSON.stringify(data));
+      });
+  }, [jobs]);*/
+
   const getTotal = (posts, key) => {
     return posts.reduce((acc, post) => {
       acc = acc + post[key];
@@ -136,12 +154,15 @@ const RecruiterDashboard = () => {
     handleCloseForm();
   };
 
+  const getJobList = () => {};
+
   return (
     <div className={classes.root}>
       <Box mt={8}>
         <StatsComponent data={defaultStats} />
 
         <Grid container spacing={2} justifyContent="center">
+          <p>{jobs}</p>
           <Grid item md={9}>
             <Link
               className={classes.createPostButton}

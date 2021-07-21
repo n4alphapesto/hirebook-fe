@@ -21,7 +21,6 @@ const Login = ({ loginAction, isLogging, closeDialog, user }) => {
 
   const redirectUser = (data) => {
     let url;
-
     console.log({
       userType: data.userType,
       isOnboardingCompleted: data.isOnboardingCompleted,
@@ -51,7 +50,6 @@ const Login = ({ loginAction, isLogging, closeDialog, user }) => {
         enqueueSnackbar("Login Successfully.", { variant: "success" });
 
         const data = result?.data?.data;
-
         redirectUser(data);
       })
       .catch((error) => {

@@ -36,8 +36,8 @@ export const register = (payload) => {
     return new Promise((resolve, reject) => {
       registerApi(payload)
         .then((result) => {
-          console.log("11 register result 11", result);
           localStorage.setItem("token", result?.data?.data?.token);
+
           dispatch({ type: SIGNUP_SUCCESS });
           resolve(result);
         })
