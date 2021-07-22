@@ -1,7 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { useSnackbar } from "notistack";
 import {
   Grid,
   Box,
@@ -11,51 +9,41 @@ import {
   CircularProgress,
   makeStyles,
 } from "@material-ui/core";
-import { login } from "../../redux/actions/auth";
+import { login } from '../../ducks/user';
+import { setCookies } from '../../utils';
+import { useHistory } from "react-router-dom";
 
-const Login = ({ loginAction, isLogging, closeDialog, user }) => {
-  const { enqueueSnackbar } = useSnackbar();
+const useStyles = makeStyles((theme) => ({
+  label: {
+    fontWeight: "bold",
+  },
+}));
+
+const Login = ({ signIn, isLogging, closeDialog, userDetails }) => {
+  const history = useHistory();
   const classes = useStyles();
   const [email, _setEmail] = useState("");
   const [password, _setPassword] = useState("");
 
   const redirectUser = (data) => {
-    let url;
-    console.log({
-      userType: data.userType,
-      isOnboardingCompleted: data.isOnboardingCompleted,
-    });
-    if (data.userType === "JOBSEEKER") {
-      url = "/jobseeker";
-
-      if (!data.isOnboardingCompleted) {
-        url += "/onboarding";
-      }
-    } else {
-      url = "/recruiter";
-
-      if (!data.isOnboardingCompleted) {
-        url += "/onboarding";
-      }
-    }
-
-    window.location.href = url;
+    let userType = data.userType === "JOBSEEKER" ? 'jobseeker' : 'recruiter';
+    let finalRoute = data.isOnboardingCompleted ? `/${userType}` : `/${userType}/onboarding`;
+    history.push(finalRoute);
   };
+
+  useEffect(() => {
+    if (isLogging === 'done' && userDetails) {
+      setCookies('ssoToken', userDetails.token);
+      redirectUser(userDetails)
+    }
+  }, [isLogging])
 
   const login = (e) => {
     e.preventDefault();
-
-    loginAction({ email, password })
-      .then((result) => {
-        enqueueSnackbar("Login Successfully.", { variant: "success" });
-
-        const data = result?.data?.data;
-        redirectUser(data);
-      })
-      .catch((error) => {
-        console.log(" --- error --- ", error);
-        enqueueSnackbar(error.message, { variant: "error" });
-      });
+    signIn({
+      email,
+      password
+    });
   };
 
   return (
@@ -137,19 +125,14 @@ const Login = ({ loginAction, isLogging, closeDialog, user }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  user: state.userReducer.user,
-  isLogging: state.userReducer.isLogging,
+const mapStateToProps = state => ({
+  loginErrorMsg: state.user.loginErrorMsg,
+  isLogging: state.user.isLogging,
+  userDetails: state.user.userDetails
 });
-
-const mapDispatchToProps = (dispatch) => ({
-  loginAction: bindActionCreators(login, dispatch),
+const mapDispatchToProps = dispatch => ({
+  signIn(payload) {
+    dispatch(login(payload));
+  }
 });
-
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
-
-const useStyles = makeStyles((theme) => ({
-  label: {
-    fontWeight: "bold",
-  },
-}));

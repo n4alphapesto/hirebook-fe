@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React } from "react";
 import PopUpComponent from "./PopUpComponent";
 import {
   Typography,
@@ -68,16 +68,16 @@ const Emailer = ({ type, emailId, open, handleClose }) => {
                 />
               </>
             ) : (
-              <>
-                <Typography variant="subtitle2">Email:</Typography>
-                <TextField
-                  fullWidth
-                  required
-                  variant="outlined"
-                  value={emailId}
-                />
-              </>
-            )}
+                <>
+                  <Typography variant="subtitle2">Email:</Typography>
+                  <TextField
+                    fullWidth
+                    required
+                    variant="outlined"
+                    value={emailId}
+                  />
+                </>
+              )}
           </Grid>
           <Grid item xs={12} md={12}>
             <Grid item xs={12} md={12}>
@@ -95,11 +95,11 @@ const Emailer = ({ type, emailId, open, handleClose }) => {
                   />
                 </>
               ) : (
-                <>
-                  <Typography variant="subtitle2">Subject:</Typography>
-                  <TextField fullWidth required variant="outlined" />
-                </>
-              )}
+                  <>
+                    <Typography variant="subtitle2">Subject:</Typography>
+                    <TextField fullWidth required variant="outlined" />
+                  </>
+                )}
             </Grid>
           </Grid>
 

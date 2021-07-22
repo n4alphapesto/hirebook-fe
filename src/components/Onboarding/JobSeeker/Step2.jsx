@@ -33,7 +33,7 @@ const Step2 = ({ back, next, initialData }) => {
     if (initialData.noticePeriod) _setNoticePeriod(initialData.noticePeriod);
     if (initialData.openToWork) {
       const prefferedLocations = initialData.skills.map((loc) => {
-        locations.find((option) => option.value === loc);
+        return locations.find((option) => option.value === loc);
       });
       _setOpenToWork(prefferedLocations);
     }

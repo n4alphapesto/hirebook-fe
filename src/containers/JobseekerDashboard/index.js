@@ -1,53 +1,48 @@
 import React from "react";
 import {
-  Hidden,
-  Link,
-  Box,
-  Grid,
   makeStyles,
-  Typography,
 } from "@material-ui/core";
 
-import FilterListIcon from "@material-ui/icons/FilterList";
+//import FilterListIcon from "@material-ui/icons/FilterList";
 
-import {
-  Navbar,
-  Footer,
-  StatsComponent,
-  FilterComponent,
-  SummaryComponent,
-} from "../../common";
-import oracle from "../../assets/svg/oracle.svg";
+// import {
+//   Navbar,
+//   Footer,
+//   StatsComponent,
+//   FilterComponent,
+//   SummaryComponent,
+// } from "../../components/common";
+// import oracle from "../../assets/svg/oracle.svg";
 
-const candidateData = {
-  applied: {
-    title: "Applied Jobs",
-    value: 6,
-  },
-  saved: {
-    title: "Saved Jobs",
-    value: 6,
-  },
-  viewed: {
-    title: "Viewed Resume",
-    value: 22,
-  },
-  invitations: {
-    title: "Invitations",
-    value: 5,
-  },
-};
+// const candidateData = {
+//   applied: {
+//     title: "Applied Jobs",
+//     value: 6,
+//   },
+//   saved: {
+//     title: "Saved Jobs",
+//     value: 6,
+//   },
+//   viewed: {
+//     title: "Viewed Resume",
+//     value: 22,
+//   },
+//   invitations: {
+//     title: "Invitations",
+//     value: 5,
+//   },
+// };
 
-const jobPostData = {
-  type: "companyDetails",
-  companyLogo: oracle,
-  companyName: "oracle",
-  jobTitle: "Frontend Developer",
-  jobLocation: "Bangalore",
-  datePosted: "7/12/2021",
-  jobSummary:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-};
+// const jobPostData = {
+//   type: "companyDetails",
+//   companyLogo: oracle,
+//   companyName: "oracle",
+//   jobTitle: "Frontend Developer",
+//   jobLocation: "Bangalore",
+//   datePosted: "7/12/2021",
+//   jobSummary:
+//     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+// };
 
 const useStyles = makeStyles((theme) => ({
   root: {

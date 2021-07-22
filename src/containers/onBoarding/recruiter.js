@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { bindActionCreators } from "redux";
 import { Container, Grid, Paper, makeStyles } from "@material-ui/core";
-import { useSnackbar } from "notistack";
-import { onboardRecruiter } from "../redux/actions/onbaording";
 
-import { Step1, Step2 } from "../components/Onboarding/Recruiter";
+import { onBoardRecruiter } from "../../ducks/onboarding";
+import { Step1, Step2 } from "../../components/Onboarding/Recruiter";
 
-const RecruiterOnboarding = ({ onboardRecruiterAction }) => {
-  const { enqueueSnackbar } = useSnackbar();
+const useStyles = makeStyles((theme) => ({
+  stepContainer: {
+    background: "white",
+    padding: 20,
+    margin: "40px 0",
+    borderRadius: 5,
+  },
+}));
+
+const RecruiterOnboarding = ({ onBoardRecruiter, isOnboarding }) => {
   const classes = useStyles();
   const history = useHistory();
   const [data, _setData] = useState({});
@@ -24,21 +30,21 @@ const RecruiterOnboarding = ({ onboardRecruiterAction }) => {
     _setStep(step - 1);
   };
 
+
+  useEffect(() => {
+    if (isOnboarding === 'done') {
+      history.push("/recruiter");
+    }
+  }, [isOnboarding])
+
   const submitData = (step2Data) => {
     const finalData = { ...data, ...step2Data };
-
-    onboardRecruiterAction(finalData)
-      .then((result) => {
-        enqueueSnackbar("Profile saved.", { variant: "success" });
-        history.push("/recruiter");
-      })
-      .catch((error) => {
-        enqueueSnackbar("Error saving profile.", { variant: "error" });
-      });
+    onBoardRecruiter(finalData);
   };
 
   return (
     <Container maxWidth="lg">
+
       <Grid container justifyContent="center">
         <Grid item xs={12} sm={10} md={6}>
           <Paper elevation={3} className={classes.stepContainer}>
@@ -55,17 +61,12 @@ const RecruiterOnboarding = ({ onboardRecruiterAction }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  onboardRecruiterAction: bindActionCreators(onboardRecruiter, dispatch),
+const mapStateToProps = state => ({
+  isOnboarding: state.onBoard.isRecruiterOnBoarding
 });
-
-export default connect(null, mapDispatchToProps)(RecruiterOnboarding);
-
-const useStyles = makeStyles((theme) => ({
-  stepContainer: {
-    background: "white",
-    padding: 20,
-    margin: "40px 0",
-    borderRadius: 5,
-  },
-}));
+const mapDispatchToProps = dispatch => ({
+  onBoardRecruiter(payload) {
+    dispatch(onBoardRecruiter(payload));
+  }
+});
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(RecruiterOnboarding));

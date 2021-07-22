@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   Typography,
-  TextareaAutosize,
   Grid,
   makeStyles,
   Button,
@@ -12,13 +11,44 @@ import {
 import { useSnackbar } from "notistack";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
-import { uploadFileApi } from "../../../api/common";
+//import { uploadFileApi } from "../../../api/common";
 
-const expertiseOptions = [
-  { value: "fresher", label: "Fresher" },
-  { value: "intermediate", label: "Intermediate" },
-  { value: "expert", label: "Expert" },
-];
+const useStyles = makeStyles((theme) => ({
+  label: {
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+
+  buttonContainer: {
+    display: "flex",
+  },
+  fileDropZone: {
+    minHeight: 200,
+    width: "auto",
+    border: "2px dashed grey",
+    borderRadius: 5,
+    position: "relative",
+  },
+
+  fileInputControl: {
+    minHeight: 200,
+    height: "100%",
+    width: "100%",
+    opacity: 0,
+  },
+  loadingOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+    width: "100%",
+    background: "rgba(0,0,0,0.1)",
+  },
+}));
 
 const Step2 = ({ finish, back }) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -80,32 +110,32 @@ const Step2 = ({ finish, back }) => {
       formData.append("files", file);
     });
 
-    uploadFileApi(formData)
-      .then((result) => {
-        enqueueSnackbar(
-          `${files.length > 1 ? "Files" : "File"} Uploaded Successfully.`,
-          { variant: "success" }
-        );
-        if (key === "companyLogo") {
-          result.data.data?.[0] && _setCompnayLogo(result.data.data[0]);
-          key === "companyLogo"
-            ? _setIsLogoUploading(true)
-            : _setIsPhotosUploading(true);
-        } else {
-          _setCompanyPhotos(result.data.data);
-          key === "companyLogo"
-            ? _setIsLogoUploading(true)
-            : _setIsPhotosUploading(true);
-        }
-      })
-      .catch((error) => {
-        enqueueSnackbar(`Error uploading files. Please try again.`, {
-          variant: "error",
-        });
-        key === "companyLogo"
-          ? _setIsLogoUploading(true)
-          : _setIsPhotosUploading(true);
-      });
+    // uploadFileApi(formData)
+    //   .then((result) => {
+    //     enqueueSnackbar(
+    //       `${files.length > 1 ? "Files" : "File"} Uploaded Successfully.`,
+    //       { variant: "success" }
+    //     );
+    //     if (key === "companyLogo") {
+    //       result.data.data?.[0] && _setCompnayLogo(result.data.data[0]);
+    //       key === "companyLogo"
+    //         ? _setIsLogoUploading(true)
+    //         : _setIsPhotosUploading(true);
+    //     } else {
+    //       _setCompanyPhotos(result.data.data);
+    //       key === "companyLogo"
+    //         ? _setIsLogoUploading(true)
+    //         : _setIsPhotosUploading(true);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     enqueueSnackbar(`Error uploading files. Please try again.`, {
+    //       variant: "error",
+    //     });
+    //     key === "companyLogo"
+    //       ? _setIsLogoUploading(true)
+    //       : _setIsPhotosUploading(true);
+    //   });
   };
 
   const isDisabled = () => {
@@ -290,39 +320,3 @@ const Step2 = ({ finish, back }) => {
 
 export default Step2;
 
-const useStyles = makeStyles((theme) => ({
-  label: {
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-
-  buttonContainer: {
-    display: "flex",
-  },
-  fileDropZone: {
-    minHeight: 200,
-    width: "auto",
-    border: "2px dashed grey",
-    borderRadius: 5,
-    position: "relative",
-  },
-
-  fileInputControl: {
-    minHeight: 200,
-    height: "100%",
-    width: "100%",
-    opacity: 0,
-  },
-  loadingOverlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100%",
-    width: "100%",
-    background: "rgba(0,0,0,0.1)",
-  },
-}));

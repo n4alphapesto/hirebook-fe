@@ -7,22 +7,19 @@ import {
   Typography,
   TextField,
   Button,
-  IconButton,
-  Link,
-  InputAdornment,
   TextareaAutosize,
   makeStyles,
 } from "@material-ui/core";
 
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import DeleteIcon from "@material-ui/icons/Delete";
-import AddIcon from "@material-ui/icons/Add";
+// import DeleteIcon from "@material-ui/icons/Delete";
+// import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
 
-import { Navbar } from "../../common";
+//import { Navbar } from "../../components/common";
 
 //import recruiterData from "./recruiterData";
-import { allCities, allSkills, recruiter } from "./recruiterData";
+//import { allCities, allSkills } from "./recruiterData";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -140,7 +137,7 @@ const JobPostForm = ({ submitForm, closeForm }) => {
                 <Autocomplete
                   required
                   multiple
-                  options={allSkills.map((el) => el.title)}
+                  //options={allSkills.map((el) => el.title)}
                   //getOptionLabel={(option) => option.label}
                   //defaultValue={recruiter.locations[0]}
                   onChange={({ target }) => setLocation(target.value)}
@@ -148,7 +145,7 @@ const JobPostForm = ({ submitForm, closeForm }) => {
                     <TextField
                       {...params}
                       variant="standard"
-                      //placeholder={`Eg. ${recruiter.locations[0]}`}
+                    //placeholder={`Eg. ${recruiter.locations[0]}`}
                     />
                   )}
                 />
@@ -158,7 +155,7 @@ const JobPostForm = ({ submitForm, closeForm }) => {
                 <Autocomplete
                   required
                   multiple
-                  options={allCities.map((el) => el.title)}
+                  //options={allCities.map((el) => el.title)}
                   //getOptionLabel={(option) => option.label}
                   //defaultValue={recruiter.locations[0]}
                   onChange={({ target }) => setLocation(target.value)}
@@ -166,7 +163,7 @@ const JobPostForm = ({ submitForm, closeForm }) => {
                     <TextField
                       {...params}
                       variant="standard"
-                      //placeholder={`Eg. ${recruiter.locations[0]}`}
+                    //placeholder={`Eg. ${recruiter.locations[0]}`}
                     />
                   )}
                 />
@@ -264,6 +261,6 @@ export default JobPostForm;
               />
             </Grid>
           </Grid>
-          
-          
+
+
           */

@@ -1,3 +1,0 @@
-export const JOB_LIST_START = "GET_USER_START";
-export const JOB_LIST_FAILED = "GET_USER_FAILED";
-export const JOB_LIST_SUCCESS = "GET_USER_SUCCESS";

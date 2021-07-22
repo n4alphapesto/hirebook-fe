@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   Link,
@@ -6,25 +6,18 @@ import {
   CardContent,
   Grid,
   Button,
-  TextField,
   Avatar,
   Box,
   Typography,
-  TextareaAutosize,
   makeStyles,
 } from "@material-ui/core";
 
-import { PopUpComponent, Emailer } from "../../common";
-//import recruiterData from "./recruiterData";
+import { Emailer } from "../../components/common";
+import recruiterData from "./recruiterData";
 
 import {
-  jobs,
-  jobApplicantsForPost,
-  candidateStatus,
   users,
-  ashwekPawar,
-  recruiter,
-  allCities,
+  ashwekPawar
 } from "./recruiterData";
 
 const useStyles = makeStyles((theme) => ({
@@ -98,7 +91,7 @@ const JobseekerDetails = () => {
           <Grid container direction="row" spacing={2}>
             <Grid item xs={12} md={4}>
               <Avatar
-                alt={`${user.name}`}
+                // alt={`${user.name}`}
                 src={ashwekPawar}
                 className={classes.avatar}
               />

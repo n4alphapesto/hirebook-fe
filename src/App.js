@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 import { SnackbarProvider } from "notistack";
 
-import store from "./redux/store";
+import configStore from "./mainStore";
 import Routes from "./Routes";
 
 // Added Lato fonts as default Font
@@ -12,6 +12,8 @@ const theme = createTheme({
     fontFamily: ["Lato", "sans-serif"].join(","),
   },
 });
+
+const store = configStore();
 
 function App() {
   return (

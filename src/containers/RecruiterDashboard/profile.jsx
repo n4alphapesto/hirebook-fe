@@ -1,29 +1,14 @@
 import { React, useState, useEffect } from "react";
 import {
   Link,
-  Box,
   Typography,
-  TextField,
-  InputBase,
-  ImageList,
-  ImageListItem,
   IconButton,
-  InputAdornment,
-  TextareaAutosize,
-  Grid,
   Card,
   CardContent,
   makeStyles,
 } from "@material-ui/core";
-
-import { ImageGrid } from "../../common";
-//import { recruiter } from "./recruiterData";
-import { getUserApi } from "../../api/common";
-
+//import { getUserApi } from "../../api/common";
 import EditIcon from "@material-ui/icons/Edit";
-
-import DoneIcon from "@material-ui/icons/Done";
-import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,13 +59,13 @@ const useStyles = makeStyles((theme) => ({
 const RecruiterProfile = () => {
   const classes = useStyles();
 
-  const [recruiter, setRecruiter] = useState();
-  useEffect(() => {
-    getUserApi().then((res) => {
-      console.log(res.data.data.recruiter);
-      setRecruiter(res.data.data.recruiter);
-    });
-  }, [recruiter]);
+  // const [recruiter, setRecruiter] = useState();
+  // useEffect(() => {
+  //   // getUserApi().then((res) => {
+  //   //   console.log(res.data.data.recruiter);
+  //   //   setRecruiter(res.data.data.recruiter);
+  //   // });
+  // }, [recruiter]);
 
   const handleSubmit = () => {
     console.log("submitted");
@@ -89,7 +74,6 @@ const RecruiterProfile = () => {
     <div className={classes.root}>
       <Card>
         <CardContent>
-          {JSON.stringify(recruiter)}
           <div className={classes.title}>
             <Typography variant="body2"></Typography>
             <IconButton>
@@ -186,30 +170,3 @@ const RecruiterProfile = () => {
 };
 
 export default RecruiterProfile;
-
-/*
-<TextField
-  disabled={disabled}
-  value={recruiter.companyName.toUpperCase()}
-  InputProps={{
-    startAdornment: (
-      <InputAdornment position="start">
-        Company Name:
-      </InputAdornment>
-    ),
-  }}
-  variant="outlined"
-  className={classes.input}
-/>*/
-
-/*
-                  <TextareaAutosize
-                    aria-label="minimum height"
-                    minRows={15}
-                    fullWidth
-                    disabled
-                    label="details of job"
-                    value={recruiter.aboutCompany}
-                    className={classes.about}
-                  />
-                  */

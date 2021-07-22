@@ -11,7 +11,7 @@ import { useTheme } from "@material-ui/core/styles";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
-import Image from "../../common/Image";
+import Image from "../../components/common/Image";
 
 import twilio from "../../assets/svg/twilio.svg";
 import disney from "../../assets/svg/disney.svg";

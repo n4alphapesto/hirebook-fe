@@ -12,18 +12,14 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  makeStyles,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
+  makeStyles
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
-import Login from "../components/Login/Login";
-import Signup from "../components/Signup/Signup";
+import Login from "../../components/Login/Login";
+import Signup from "../../components/Signup/Signup";
 import { PopUpComponent } from ".";
 
-import logo from "../assets/svg/logo.svg";
+import logo from "../../assets/svg/logo.svg";
 import Image from "./Image";
 
 const useStyles = makeStyles((theme) => ({
@@ -86,7 +82,7 @@ const Navbar = () => {
     _setIsSignUpOpen(false);
   };
 
-  const removeToken = () => localStorage.removeItem("token");
+  const removeToken = () => localStorage.removeItem("token"); //need to improve  this
 
   const navChildrenLanding = [];
   navChildrenLanding[0] = (
@@ -199,4 +195,4 @@ Navbar.propTypes = {
   navItems: PropTypes.array,
 };
 
-export default Navbar;
+export default React.memo(Navbar);

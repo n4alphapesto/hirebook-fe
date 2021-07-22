@@ -283,7 +283,7 @@ const Step1 = ({ next, initialData }) => {
                   <Button
                     variant="contained"
                     color="primary"
-                    disabled={skills.length == 4}
+                    disabled={skills.length === 4}
                     className={classes.button}
                     startIcon={<AddIcon />}
                     onClick={addSkillsRow}

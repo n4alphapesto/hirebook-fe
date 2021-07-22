@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { useSnackbar } from "notistack";
-import { bindActionCreators } from "redux";
 import { Container, Grid, Paper, makeStyles } from "@material-ui/core";
-import { Step1, Step2, Step3 } from "../components/Onboarding/JobSeeker";
-import { onboardJobSeeker } from "../redux/actions/onbaording";
+import { Step1, Step2, Step3 } from "../../components/Onboarding/JobSeeker";
+import { onBoardJobSeeker } from "../../ducks/onboarding";
 
-const JobSeekerOnboarding = ({ onboardJobSeekerAction }) => {
-  const { enqueueSnackbar } = useSnackbar();
+const useStyles = makeStyles((theme) => ({
+  stepContainer: {
+    background: "white",
+    padding: 20,
+    margin: "40px 0",
+    borderRadius: 5,
+  },
+}));
+
+const JobSeekerOnboarding = ({ onBoardJobSeeker, isOnboarding }) => {
+  //const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
   const classes = useStyles();
   const [data, _setData] = useState({});
@@ -22,18 +29,14 @@ const JobSeekerOnboarding = ({ onboardJobSeekerAction }) => {
   const back = () => {
     _setStep(step - 1);
   };
-
+  useEffect(() => {
+    if (isOnboarding === 'done') {
+      history.push("/jobseeker");
+    }
+  }, [isOnboarding])
   const submitData = (step3Data) => {
     const finalData = { ...data, ...step3Data };
-
-    onboardJobSeekerAction(finalData)
-      .then((result) => {
-        enqueueSnackbar("Profile saved.", { variant: "success" });
-        history.push("/jobseeker");
-      })
-      .catch((error) => {
-        enqueueSnackbar("Error saving profile.", { variant: "error" });
-      });
+    onBoardJobSeeker(finalData);
   };
 
   return (
@@ -55,17 +58,13 @@ const JobSeekerOnboarding = ({ onboardJobSeekerAction }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  onboardJobSeekerAction: bindActionCreators(onboardJobSeeker, dispatch),
+const mapStateToProps = state => ({
+  isOnboarding: state.onBoard.isJobSeekerOnBoarding
 });
+const mapDispatchToProps = dispatch => ({
+  onBoardJobSeeker(payload) {
+    dispatch(onBoardJobSeeker(payload));
+  }
+});
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(JobSeekerOnboarding));
 
-export default connect(null, mapDispatchToProps)(JobSeekerOnboarding);
-
-const useStyles = makeStyles((theme) => ({
-  stepContainer: {
-    background: "white",
-    padding: 20,
-    margin: "40px 0",
-    borderRadius: 5,
-  },
-}));

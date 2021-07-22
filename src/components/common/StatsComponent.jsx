@@ -51,4 +51,4 @@ const StatsComponent = ({ data }) => {
   );
 };
 
-export default StatsComponent;
+export default React.memo(StatsComponent);

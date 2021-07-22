@@ -7,7 +7,6 @@ import {
   Grid,
   makeStyles,
 } from "@material-ui/core";
-import Image from "./Image";
 
 const useStyles = makeStyles((theme) => ({
   root: {

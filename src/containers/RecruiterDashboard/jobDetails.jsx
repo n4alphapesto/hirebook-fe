@@ -5,27 +5,18 @@ import {
   Card,
   CardContent,
   Grid,
-  Button,
   Avatar,
-  TextField,
-  TextareaAutosize,
-  Box,
   Typography,
   makeStyles,
 } from "@material-ui/core";
 
-import { SummaryComponent, Emailer } from "../../common";
-import { getJobByIdApi } from "../../api/common";
+import { SummaryComponent, Emailer } from "../../components/common";
+//import { getJobByIdApi } from "../../api/common";
 
-import {
-  jobs,
-  jobApplicantsForPost,
-  candidateStatus,
-  users,
-  ashwekPawar,
-  recruiter,
-  allCities,
-} from "./recruiterData";
+// import {
+//   ashwekPawar,
+//   recruiter,
+// } from "./recruiterData";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,13 +84,13 @@ const JobPostDetails = () => {
   });
   const [openEmail, setOpenEmail] = useState(false);
 
-  useEffect(() => {
-    getJobByIdApi({ id: jobId }).then((res) => {
-      const data = res.data;
-      console.log(data);
-      ///setJobData(data);
-    });
-  }, [jobId]);
+  // useEffect(() => {
+  //   getJobByIdApi({ id: jobId }).then((res) => {
+  //     const data = res.data;
+  //     console.log(data);
+  //     ///setJobData(data);
+  //   });
+  // }, [jobId]);
 
   //console.log(jobData);
   /*let candidates = jobApplicantsForPost.filter(
@@ -129,7 +120,7 @@ const JobPostDetails = () => {
             <Grid item xs={12} md={12}>
               <Typography variant="h3">{jobData.title}</Typography>
               <Typography variant="subtitle2">
-                {recruiter.locations[0]}
+                //.locations[0]}
               </Typography>
               <Typography variant="subtitle2">
                 Vacancies:
@@ -173,7 +164,7 @@ const JobPostDetails = () => {
               >
                 <Avatar
                   alt="ashwek Pawar"
-                  src={ashwekPawar}
+                  //src={ashwekPawar}
                   className={classes.avatar}
                 />
                 <Typography variant="h5">
