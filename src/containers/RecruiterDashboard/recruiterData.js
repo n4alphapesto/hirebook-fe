@@ -6,19 +6,45 @@ import companyPhoto4 from "../../assets/images/companyPhotos/companyPhoto4.JPG";
 import ashwekPawar from "../../assets/images/ashwekPawar.jpg";
 
 const allCities = [
-  { _id: { $oid: "60f12548e85b8fef99da7cc2" }, title: "banglore" },
-  { _id: { $oid: "60f125a1e85b8fef99da7cc4" }, title: "mumbai" },
-  { _id: { $oid: "60f1260c175643239aee9310" }, title: "pune" },
-  { _id: { $oid: "60f1260c175643239aee9312" }, title: "hyderabad" },
-  { _id: { $oid: "60f1260c175643239aee9311" }, title: "delhi" },
+  { title: "Banglore" },
+  { title: "Mumbai" },
+  { title: "Pune" },
+  { title: "Hyderabad" },
+  { title: "Delhi" },
 ];
 
+const FRESHER = "FRESHER";
+const INTERMEDIATE = "INTERMEDIATE";
+const EXPERIENCED = "EXPERIENCED";
+
 const allSkills = [
-  { _id: { $oid: "60f12548e85b8fef99da7cc2" }, title: "HTML" },
-  { _id: { $oid: "60f125a1e85b8fef99da7cc4" }, title: "CSS" },
-  { _id: { $oid: "60f1260c175643239aee9310" }, title: "Javascript" },
-  { _id: { $oid: "60f1260c175643239aee9312" }, title: "React" },
-  { _id: { $oid: "60f1260c175643239aee9311" }, title: "Node" },
+  { expertiseLevel: FRESHER, title: "HTML" },
+  { expertiseLevel: FRESHER, title: "CSS" },
+  { expertiseLevel: FRESHER, title: "Javascript" },
+  { expertiseLevel: FRESHER, title: "React" },
+  { expertiseLevel: FRESHER, title: "React Native" },
+  { expertiseLevel: FRESHER, title: "Redux" },
+  { expertiseLevel: FRESHER, title: "Vue" },
+  { expertiseLevel: FRESHER, title: "Angular" },
+  { expertiseLevel: FRESHER, title: "Nodejs" },
+  { expertiseLevel: FRESHER, title: "Python" },
+  { expertiseLevel: FRESHER, title: "C++" },
+  { expertiseLevel: FRESHER, title: "Java" },
+  { expertiseLevel: FRESHER, title: "Kotlin" },
+  { expertiseLevel: FRESHER, title: "Swift" },
+  { expertiseLevel: FRESHER, title: "Flutter" },
+  { expertiseLevel: FRESHER, title: "Go" },
+  { expertiseLevel: FRESHER, title: "Rust" },
+  { expertiseLevel: FRESHER, title: "MongoDB" },
+  { expertiseLevel: FRESHER, title: "Cassandra" },
+  { expertiseLevel: FRESHER, title: "SQL" },
+  { expertiseLevel: FRESHER, title: "postgreSQL" },
+  { expertiseLevel: FRESHER, title: "Firebase" },
+  { expertiseLevel: FRESHER, title: "AWS" },
+  { expertiseLevel: FRESHER, title: "GCP" },
+  { expertiseLevel: FRESHER, title: "Azure" },
+  { expertiseLevel: FRESHER, title: "REST API" },
+  { expertiseLevel: FRESHER, title: "GraphQL" },
 ];
 
 const candidateStatus = [
@@ -267,6 +293,9 @@ export {
   users,
   jobApplicantsForPost,
   recruiter,
+  FRESHER,
+  INTERMEDIATE,
+  EXPERIENCED,
 };
 
 /*

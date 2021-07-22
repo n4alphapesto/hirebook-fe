@@ -37,7 +37,17 @@ export const getJobByIdApi = (data) => {
   return result;
 };
 
-export const removeJobApi = (data) => {
+export const postNewJobApi = (data) => {
+  const result = API({
+    method: "post",
+    url: "/job",
+    data,
+  });
+
+  return result;
+};
+
+export const putJobApi = (data) => {
   const result = API({
     method: "put",
     url: "/job/jobById",

@@ -84,7 +84,6 @@ const useStyles = makeStyles((theme) => ({
 
 const RecruiterDashboard = () => {
   const classes = useStyles();
-  const [openForm, setOpenForm] = useState(false);
   //const [posts, setPosts] = useState(recruiterData.posts);
   const [stats, setStats] = useState(defaultStats);
 
@@ -107,25 +106,25 @@ const RecruiterDashboard = () => {
 
   useEffect(() => {
     getUserApi().then((res) => setUserId(res.data.data._id));
-  }, [userId]);
+  }, []);
 
   useEffect(() => {
     getJobApi({ postedBy: userId }).then((res) => {
       let data = res.data.data.jobs;
-      console.log(data);
-      //data = data.filter((post) => post.isDeleted === false);
+      //console.log(data);
       setJobPosts(data);
     });
   }, [userId]);
 
   const deletePost = (id) => {
+    console.log(`deleting post ${id}`);
     /*getJobByIdApi({ id }).then((res) => {
       const data = res?.data?.data;
       const newData = {
         ...data,
         isDeleted: true,
       };
-      removeJobApi(newData);
+      putJobApi(newData);
     });*/
   };
 
@@ -153,17 +152,6 @@ const RecruiterDashboard = () => {
     ]);
   }, [jobPosts]);
 
-  const handleOpenForm = () => setOpenForm(true);
-  const handleCloseForm = () => setOpenForm(false);
-
-  const addNewPost = (newPost) => {
-    //newPost.id = posts.length + 1;
-    //setPosts((posts) => {
-    //  return [...posts, newPost];
-    //});
-    handleCloseForm();
-  };
-
   return (
     <div className={classes.root}>
       <Box mt={8}>
@@ -181,34 +169,39 @@ const RecruiterDashboard = () => {
               Create New Job Post
             </Link>
 
-            {jobPosts.map((post) => {
-              return (
-                <SummaryComponent
-                  key={post.id}
-                  cardTitle={post.title}
-                  cardSubTitle1={
-                    <Typography>Vacancies: {post.vacancies}</Typography>
-                  }
-                  cardSubTitle2={`Posted on: ${new Date(
-                    post.createdAt
-                  ).toLocaleDateString()}`}
-                >
-                  <img src="" alt="" />
-                  <Typography>{post.description}</Typography>
-                  <Link
-                    className={classes.viewButton}
-                    variant="button"
-                    href={`/recruiter/postedjobs/${post.id}`}
-                    underline="none"
+            {jobPosts.map(
+              (post) =>
+                !post.isDeleted && (
+                  <SummaryComponent
+                    key={post.id}
+                    cardTitle={post.title}
+                    cardSubTitle1={
+                      <Typography>Vacancies: {post.vacancies}</Typography>
+                    }
+                    cardSubTitle2={`Posted on: ${new Date(
+                      post.createdAt
+                    ).toLocaleDateString()}`}
                   >
-                    View
-                  </Link>
-                  <Link className={classes.removePostLink} variant="inherit">
-                    Remove Post
-                  </Link>
-                </SummaryComponent>
-              );
-            })}
+                    <img src="" alt="" />
+                    <Typography>{post.description}</Typography>
+                    <Link
+                      className={classes.viewButton}
+                      variant="button"
+                      href={`/recruiter/postedjobs/${post.id}`}
+                      underline="none"
+                    >
+                      View
+                    </Link>
+                    <Link
+                      className={classes.removePostLink}
+                      variant="inherit"
+                      onClick={() => deletePost(post.id)}
+                    >
+                      Remove Post
+                    </Link>
+                  </SummaryComponent>
+                )
+            )}
           </Grid>
         </Grid>
       </Box>

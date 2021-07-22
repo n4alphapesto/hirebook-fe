@@ -94,7 +94,9 @@ const JobPostDetails = () => {
   const [openEmail, setOpenEmail] = useState(false);
 
   useEffect(() => {
-    getJobByIdApi({ id: jobId }).then((res) => {
+    console.log(typeof jobId);
+    let id = jobId;
+    getJobByIdApi({ id }).then((res) => {
       const data = res.data;
       console.log(data);
       ///setJobData(data);

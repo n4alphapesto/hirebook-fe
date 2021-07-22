@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import {
   Box,
   Card,
@@ -11,6 +11,7 @@ import {
   Link,
   InputAdornment,
   TextareaAutosize,
+  Snackbar,
   makeStyles,
 } from "@material-ui/core";
 
@@ -22,7 +23,15 @@ import CloseIcon from "@material-ui/icons/Close";
 import { Navbar } from "../../common";
 
 //import recruiterData from "./recruiterData";
-import { allCities, allSkills, recruiter } from "./recruiterData";
+import {
+  allCities,
+  allSkills,
+  FRESHER,
+  INTERMEDIATE,
+  EXPERIENCED,
+  recruiter,
+} from "./recruiterData";
+import { postNewJobApi, getUserApi } from "../../api/common";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,40 +68,66 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const JobPostForm = ({ submitForm, closeForm }) => {
+const JobPostForm = () => {
   const classes = useStyles();
+  const [user, setUser] = useState({});
+  const [openNotification, setOpenNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
   const [title, setTitle] = useState("");
-  const [location, setLocation] = useState("");
+  const [locations, setLocations] = useState([{ title: "" }]);
   const [vacancies, setVacancies] = useState(1);
-  const [skills, setSkills] = useState("");
+  const [skills, setSkills] = useState([
+    { title: "", expertiseLevel: FRESHER },
+  ]);
   const [description, setDescription] = useState("");
-  //const [cost, setCost] = useState(0);
-  //const [owner, setOwner] = useState("");
-  //const [email, setEmail] = useState("");
 
+  useEffect(() => {
+    getUserApi().then((res) => setUser(res.data.data));
+    //console.log(user);
+  }, []);
+
+  const handleCloseNotification = () => {
+    setOpenNotification(false);
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
     const today = new Date();
     const newPost = {
+      isDeleted: false,
       title,
-      location, // new one
+      locations, // new one
       vacancies, // new one
       skills,
       description,
-      //cost,
-      //owner,
-      //email,
       date: today,
       status: "Active",
       createdAt: today,
       updatedAt: today,
       applicants: [],
+      postedBy: user._id,
     };
-    submitForm(newPost);
-  };
-
-  const handleCancel = () => {
-    closeForm();
+    //console.log(newPost);
+    postNewJobApi(newPost)
+      .then((data) => {
+        console.log(data);
+        setNotificationMessage("Form Submitted succesfully!");
+        handleCloseNotification();
+        setTitle("");
+        setVacancies(1);
+        setSkills([{ expertiseLevel: "", title: "" }]);
+        setLocations([{ title: "" }]);
+        setDescription("");
+      })
+      .catch((err) => {
+        console.log(err);
+        setNotificationMessage("Sorry...Form not submitted");
+        handleCloseNotification();
+        setTitle("");
+        setVacancies(1);
+        setSkills([{ expertiseLevel: "", title: "" }]);
+        setLocations([{ title: "" }]);
+        setDescription("");
+      });
   };
 
   return (
@@ -104,6 +139,35 @@ const JobPostForm = ({ submitForm, closeForm }) => {
               Create A New Job Post
             </Typography>
           </Box>
+          <Snackbar
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            open={openNotification}
+            autoHideDuration={5000}
+            onClose={handleCloseNotification}
+            message={notificationMessage}
+            action={
+              <>
+                <Button
+                  color="secondary"
+                  size="small"
+                  onClick={handleCloseNotification}
+                >
+                  UNDO
+                </Button>
+                <IconButton
+                  size="small"
+                  aria-label="close"
+                  color="inherit"
+                  onClick={handleCloseNotification}
+                >
+                  <CloseIcon fontSize="small" />
+                </IconButton>
+              </>
+            }
+          />
 
           <form onSubmit={handleSubmit}>
             <Grid
@@ -140,10 +204,13 @@ const JobPostForm = ({ submitForm, closeForm }) => {
                 <Autocomplete
                   required
                   multiple
-                  options={allSkills.map((el) => el.title)}
-                  //getOptionLabel={(option) => option.label}
+                  options={allSkills}
+                  getOptionLabel={(option) => option.title}
                   //defaultValue={recruiter.locations[0]}
-                  onChange={({ target }) => setLocation(target.value)}
+                  onChange={({ target }, newValue) => {
+                    //console.log(target.value, newValue);
+                    setSkills(newValue);
+                  }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -158,10 +225,12 @@ const JobPostForm = ({ submitForm, closeForm }) => {
                 <Autocomplete
                   required
                   multiple
-                  options={allCities.map((el) => el.title)}
-                  //getOptionLabel={(option) => option.label}
+                  options={allCities}
+                  getOptionLabel={(option) => option.title}
                   //defaultValue={recruiter.locations[0]}
-                  onChange={({ target }) => setLocation(target.value)}
+                  onChange={({ target }, newValue) =>
+                    setLocations(newValue.map((loc) => loc.title))
+                  }
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -186,9 +255,7 @@ const JobPostForm = ({ submitForm, closeForm }) => {
                     "Job details, description, requirements, responsibilities"
                   }
                   className={classes.description}
-                  onChange={({ target }) =>
-                    setDescription(Number(target.value))
-                  }
+                  onChange={({ target }) => setDescription(target.value)}
                 />
               </Grid>
             </Grid>
@@ -204,7 +271,14 @@ const JobPostForm = ({ submitForm, closeForm }) => {
                 </Button>
               </Grid>
               <Grid item xs={12} md={8}>
-                <Button color="secondary" className={classes.button}>
+                <Button
+                  color="secondary"
+                  className={classes.button}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.location.href = "/recruiter/postedjobs";
+                  }}
+                >
                   Discard
                   <CloseIcon />
                 </Button>
