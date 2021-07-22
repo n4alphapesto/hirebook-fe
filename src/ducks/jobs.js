@@ -1,7 +1,5 @@
 import { call, put, select } from 'redux-saga/effects';
 import axios from 'axios';
-// import { useSnackbar } from "notistack";
-// const { enqueueSnackbar } = useSnackbar();
 
 import CONST from '../utils/constants';
 //User Actions
@@ -29,6 +27,12 @@ export const APPLY_JOB = {
     ON_ERROR: 'APPLY_JOB_ERROR'
 }
 
+export const GET_JOB_APPLICANT = {
+    ON_REQUEST: 'GET_JOB_APPLICANT_REQUEST',
+    ON_SUCCESS: 'GET_JOB_APPLICANT_SUCCESS',
+    ON_ERROR: 'GET_JOB_APPLICANT_ERROR'
+}
+
 const initialState = {
     jobList: [],
     jobsFetching: false,
@@ -36,7 +40,9 @@ const initialState = {
     isApplying: false,
     isJobPosting: false,
     crJob: {},
-    fetchingCrJob: false
+    fetchingCrJob: false,
+    crJobApplicant: {},
+    isjobApFetching: false
 };
 export default function jobReducer(state = initialState, action) {
     const { type, payload } = action;
@@ -65,6 +71,12 @@ export default function jobReducer(state = initialState, action) {
             return { ...state, fetchingCrJob: 'done', crJob: payload };
         case GET_JOB_BY_ID.ON_ERROR:
             return { ...state, fetchingCrJob: false, crJob: {} };
+        case GET_JOB_APPLICANT.ON_REQUEST:
+            return { ...state, isjobApFetching: true, crJobApplicant: {} };
+        case GET_JOB_APPLICANT.ON_SUCCESS:
+            return { ...state, isjobApFetching: 'done', crJobApplicant: payload };
+        case GET_JOB_APPLICANT.ON_ERROR:
+            return { ...state, isjobApFetching: false, crJobApplicant: {} };
         default:
             return { ...state };
     }
@@ -74,6 +86,13 @@ export default function jobReducer(state = initialState, action) {
 export function getJobs(payload) {
     return {
         type: GET_JOB.ON_REQUEST,
+        payload
+    };
+}
+
+export function getJobApplicant(payload) {
+    return {
+        type: GET_JOB_APPLICANT.ON_REQUEST,
         payload
     };
 }
@@ -186,5 +205,25 @@ export function* applyJobApi({ payload }) {
         });
     } catch (e) {
         yield put({ type: APPLY_JOB.ON_ERROR, payload: e.response });
+    }
+}
+
+export function* jobApplicantApi({ payload }) {
+    const options = {
+        jobId: payload
+    }
+    try {
+        const response = yield call(axios, {
+            method: 'POST',
+            url: `${CONST.BASE_URL + CONST.JOB_URL.JOB_APPLICANT}`,
+            data: options
+        });
+        const data = response.data?.data;
+        yield put({
+            type: GET_JOB_APPLICANT.ON_SUCCESS,
+            payload: data
+        });
+    } catch (e) {
+        yield put({ type: GET_JOB_APPLICANT.ON_ERROR, payload: e.response });
     }
 }

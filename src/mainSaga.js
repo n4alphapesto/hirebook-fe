@@ -14,10 +14,12 @@ import {
     GET_JOB_BY_ID,
     ADD_JOB,
     APPLY_JOB,
+    GET_JOB_APPLICANT,
     getJobsApi,
     getJobByIdApi,
     applyJobApi,
-    addJobApi
+    addJobApi,
+    jobApplicantApi
 } from './ducks/jobs';
 import {
     JOBSEEKER_ONBOARD,
@@ -38,4 +40,5 @@ export default function* mainSaga() {
     yield takeEvery(JOBSEEKER_ONBOARD.ON_REQUEST, seekerOnBoardApi);
     yield takeEvery(RECRUITER_ONBOARD.ON_REQUEST, recruitOnBoardApi);
     yield takeEvery(UPLOAD.ON_REQUEST, uploadApi);
+    yield takeEvery(GET_JOB_APPLICANT.ON_REQUEST, jobApplicantApi);
 }

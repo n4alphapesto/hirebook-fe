@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 
 import { SummaryComponent, Emailer } from "../../components/common";
-import { getJobById } from '../../ducks/jobs'
+import { getJobApplicant } from '../../ducks/jobs'
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -58,14 +58,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const JobPostDetails = ({ jobData, isFetching, getJobById }) => {
+const JobPostDetails = ({ jobData, isFetching, getJobApplicant }) => {
   const classes = useStyles();
   const params = useParams();
   const jobId = params.id;
   const [openEmail, setOpenEmail] = useState(false);
 
   useEffect(() => {
-    getJobById(jobId);
+    getJobApplicant(jobId);
   }, []);
 
   return (
@@ -103,7 +103,7 @@ const JobPostDetails = ({ jobData, isFetching, getJobById }) => {
               </Typography>
               <Typography variant="body2">{jobData.description}</Typography>
             </Grid>
-            <Grid item xs={12} md={12} justifyContent="center">
+            <Grid item xs={12} md={12} >
               {jobData?.applicants?.length === 0 && 'No Applicants applied for this job.'}
               {jobData?.applicants?.map(applicant => {
                 return <SummaryComponent
@@ -121,7 +121,7 @@ const JobPostDetails = ({ jobData, isFetching, getJobById }) => {
                     Interview Status: <span>{applicant.status}</span>
                   </Typography>
                   <Link
-                    href={`/recruiter/candidates/${applicant.id}`}
+                    href={`/recruiter/candidates/${applicant?.candidate?._id}`}
                     className={classes.viewButton}
                     variant="button"
                     underline="none"
@@ -151,12 +151,12 @@ const JobPostDetails = ({ jobData, isFetching, getJobById }) => {
   );
 };
 const mapStateToProps = state => ({
-  jobData: state.jobs.crJob,
-  isFetching: state.jobs.fetchingCrJob
+  jobData: state.jobs.crJobApplicant,
+  isFetching: state.jobs.isjobApFetching
 });
 const mapDispatchToProps = dispatch => ({
-  getJobById(payload) {
-    dispatch(getJobById(payload));
+  getJobApplicant(payload) {
+    dispatch(getJobApplicant(payload));
   }
 });
 export default connect(mapStateToProps, mapDispatchToProps)(JobPostDetails);

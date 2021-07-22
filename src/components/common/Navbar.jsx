@@ -83,7 +83,7 @@ const Navbar = () => {
     _setIsSignUpOpen(false);
   };
 
-  const removeToken = () => setCookies('ssoToken', null);
+  const removeToken = () => { } //setCookies('ssoToken', '');
 
   const navChildrenLanding = [];
   navChildrenLanding[0] = (
