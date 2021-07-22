@@ -17,13 +17,13 @@ const RouteValidator = ({ component: Component, userDetails, ...rest }) => {
   return (<Route
     {...rest}
     render={(matchProps) =>
-      redirectUrl ? (
-        <Redirect push to={redirectUrl} />
-      ) : (
-          <div className="content">
-            <Component {...matchProps} />
-          </div>
-        )
+    // redirectUrl ? (
+    //   <Redirect push to={redirectUrl} />
+    // ) : (
+    (<div className="content">
+      <Component {...matchProps} />
+    </div>
+    )
     }
   />)
 };

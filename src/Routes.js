@@ -9,7 +9,7 @@ import {
   RecruiterJobPostForm,
   RecruiterProfile,
   RecruiterJobPostDetails,
-  RecruiterViewJobSeekerDetails,
+  JobDetail,
   RecruiterOnboarding,
   JobSeekerOnboarding,
 } from "./containers";
@@ -24,9 +24,9 @@ const Routes = () => {
           <RouteValidator exact path="/jobseeker/onboarding" component={JobSeekerOnboarding} />
           <RouteValidator exact path="/recruiter/onboarding" component={RecruiterOnboarding} />
           <RouteValidator exact path="/recruiter" component={RecruiterDashboard} />
-          <RouteValidator exact path="/recruiter/postedjobs" component={RecruiterDashboard} />
-          <RouteValidator exact path="/recruiter/postedjobs/:id" component={RecruiterJobPostDetails} />
-          <RouteValidator path="/recruiter/candidates/:id" component={RecruiterViewJobSeekerDetails} />
+          <RouteValidator exact path="/recruiter/postedjobs" component={JobDetail} />
+          <RouteValidator exact path="/recruiter/postedjobs/:id" component={JobDetail} />
+          {/* <RouteValidator path="/recruiter/candidates/:id" component={RecruiterViewJobSeekerDetails} /> */}
           <RouteValidator path="/recruiter/profile" component={RecruiterProfile} />
           <RouteValidator path="/recruiter/createNewPost" component={RecruiterJobPostForm} />
           <RouteValidator path="/signout" component={LandingPage} />

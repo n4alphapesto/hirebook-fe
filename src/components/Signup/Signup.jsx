@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Signup = ({ isSigning, isVerifying, register, resendOtp, verify, resendingOtp, closeDialog }) => {
+const Signup = ({ isSigning, isVerifying, register, resendOtp, verify, resendingOtp, handleClose }) => {
   const classes = useStyles();
   const [userType, _setUserType] = useState("JOBSEEKER");
   const [name, _setName] = useState("");
@@ -248,7 +248,7 @@ const Signup = ({ isSigning, isVerifying, register, resendOtp, verify, resending
               fullWidth
               variant="outlined"
               color="secondary"
-              onClick={closeDialog}
+              onClick={handleClose}
             >
               Cancel
             </Button>

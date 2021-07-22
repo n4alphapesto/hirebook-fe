@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { connect } from "react-redux";
 import {
   Link,
   Card,
@@ -11,13 +12,7 @@ import {
 } from "@material-ui/core";
 
 import { SummaryComponent, Emailer } from "../../components/common";
-//import { getJobByIdApi } from "../../api/common";
-
-// import {
-//   ashwekPawar,
-//   recruiter,
-// } from "./recruiterData";
-
+import { getJobById } from '../../ducks/jobs'
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -63,128 +58,85 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const JobPostDetails = () => {
+const JobPostDetails = ({ jobData, isFetching, getJobById }) => {
   const classes = useStyles();
   const params = useParams();
   const jobId = params.id;
-  //const jobId = "60f7995ae502ee11b6eeb3fc";
-  //console.log(jobId);
-  const [jobData, setJobData] = useState({
-    _id: "",
-    locations: [],
-    isDeleted: null,
-    title: "",
-    description: "",
-    skills: [],
-    vacancies: 0,
-    postedBy: "",
-    applicants: [],
-    createdAt: "",
-    updatedAt: "",
-  });
   const [openEmail, setOpenEmail] = useState(false);
 
-  // useEffect(() => {
-  //   getJobByIdApi({ id: jobId }).then((res) => {
-  //     const data = res.data;
-  //     console.log(data);
-  //     ///setJobData(data);
-  //   });
-  // }, [jobId]);
+  useEffect(() => {
+    getJobById(jobId);
+  }, []);
 
-  //console.log(jobData);
-  /*let candidates = jobApplicantsForPost.filter(
-    (el) => el.jobPostId === jobId
-  )[0].candidates;
-  console.log(candidates);
-  candidates = candidates.map((item) => {
-    //let candidateData = users.filter(user => user.jobseeker._id === item)
-    let currentStatus = candidateStatus.filter(
-      (el) => el._id.$oid === item.status
-    )[0].title;
-    let candidateData = users.filter(
-      (el) => el.jobseeker._id === el.candidate
-    )[0];
-    console.log(candidateData);
-    return { currentStatus };
-  });
-
-  console.log(candidates);*/
   return (
     <div className={classes.root}>
       <Card>
         <CardContent>
-          {jobId}
-          {JSON.stringify(jobData)}
           <Grid container justifyContent="left" spacing={2} direction="column">
             <Grid item xs={12} md={12}>
               <Typography variant="h3">{jobData.title}</Typography>
               <Typography variant="subtitle2">
-                //.locations[0]}
+                {jobData?.locations?.join(',  ')}
               </Typography>
               <Typography variant="subtitle2">
-                Vacancies:
-                <span className={classes.bold}>{jobData.vacancies}</span>
+                <span className={classes.bold}>{` Vacancies: ${jobData.vacancies}`}</span>
               </Typography>
               <Typography variant="subtitle2">
-                Number of people applied: <span className={classes.bold}></span>
+                <span className={classes.bold}>{` Number of people applied: ${jobData?.applicants?.length}`}</span>
               </Typography>
             </Grid>
             <Grid item xs={12} md={12}>
               <Typography variant="h5" className={classes.title}>
-                Required Skills
+                {`Required Skills`}
               </Typography>
               <Grid container justifyCentent="left" spacing={2} direction="row">
-                {/*jobData.skills.map((skill, i) => (
+                {jobData?.skills?.map((skill, i) => (
                   <Grid item key={i} className={classes.skill}>
-                    {skill.title}
+                    {`${skill.title} : ${skill.expertiseLevel}`}
                   </Grid>
-                ))*/}
+                ))}
               </Grid>
-            </Grid>
-            <Grid item xs={12} md={12} direction="row">
-              <Typography variant="subtitle2">
-                Locations:{" "}
-                <span className={classes.bold}>
-                  {/*jobData.locations.join(", ")*/}
-                </span>
-              </Typography>
             </Grid>
             <Grid item xs={12} md={12}>
               <Typography variant="h5" className={classes.title}>
-                Job Description
+                {`Job Description`}
               </Typography>
               <Typography variant="body2">{jobData.description}</Typography>
             </Grid>
             <Grid item xs={12} md={12} justifyContent="center">
-              <SummaryComponent
-                cardTitle={"Ashwek Pawar"}
-                cardSubtitle1={""}
-                cardSubtitle2={""}
-              >
-                <Avatar
-                  alt="ashwek Pawar"
-                  //src={ashwekPawar}
-                  className={classes.avatar}
-                />
-                <Typography variant="h5">
-                  Interview Status: <span>InProgress</span>
-                </Typography>
-                <Link
-                  href="/recruiter/candidates/1"
-                  className={classes.viewButton}
-                  variant="button"
-                  underline="none"
+              {jobData?.applicants?.length === 0 && 'No Applicants applied for this job.'}
+              {jobData?.applicants?.map(applicant => {
+                return <SummaryComponent
+                  cardTitle={applicant.name}
+                  cardSubtitle1={""}
+                  cardSubtitle2={""}
+                  key={applicant.name}
                 >
-                  View
+                  <Avatar
+                    alt={applicant.name}
+                    src={applicant.img}
+                    className={classes.avatar}
+                  />
+                  <Typography variant="h5">
+                    Interview Status: <span>{applicant.status}</span>
+                  </Typography>
+                  <Link
+                    href={`/recruiter/candidates/${applicant.id}`}
+                    className={classes.viewButton}
+                    variant="button"
+                    underline="none"
+                  >
+                    View
                 </Link>
-                <Link
-                  className={classes.rejectButton}
-                  onClick={() => setOpenEmail(true)}
-                >
-                  Reject
+                  <Link
+                    className={classes.rejectButton}
+                    onClick={() => setOpenEmail(true)}
+                  >
+                    Reject
                 </Link>
-              </SummaryComponent>
+                </SummaryComponent>
+              })}
+
             </Grid>
           </Grid>
           <Emailer
@@ -198,5 +150,13 @@ const JobPostDetails = () => {
     </div>
   );
 };
-
-export default JobPostDetails;
+const mapStateToProps = state => ({
+  jobData: state.jobs.crJob,
+  isFetching: state.jobs.fetchingCrJob
+});
+const mapDispatchToProps = dispatch => ({
+  getJobById(payload) {
+    dispatch(getJobById(payload));
+  }
+});
+export default connect(mapStateToProps, mapDispatchToProps)(JobPostDetails);

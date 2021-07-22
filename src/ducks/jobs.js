@@ -35,6 +35,8 @@ const initialState = {
     recruitStats: CONST.DEFAULT_RECRUITER_STATS,
     isApplying: false,
     isJobPosting: false,
+    crJob: {},
+    fetchingCrJob: false
 };
 export default function jobReducer(state = initialState, action) {
     const { type, payload } = action;
@@ -57,6 +59,12 @@ export default function jobReducer(state = initialState, action) {
             return { ...state, isJobPosting: 'done' };
         case ADD_JOB.ON_ERROR:
             return { ...state, isJobPosting: false };
+        case GET_JOB_BY_ID.ON_REQUEST:
+            return { ...state, fetchingCrJob: true, crJob: {} };
+        case GET_JOB_BY_ID.ON_SUCCESS:
+            return { ...state, fetchingCrJob: 'done', crJob: payload };
+        case GET_JOB_BY_ID.ON_ERROR:
+            return { ...state, fetchingCrJob: false, crJob: {} };
         default:
             return { ...state };
     }
@@ -105,11 +113,11 @@ export function* getJobsApi({ payload }) {
         const data = response.data?.data;
         let recruitStats = [{
             title: "Jobs Posted",
-            value: data.length,
+            value: data.count,
         },
         {
             title: "Vacancies",
-            value: data.reduce((aux, cr) => aux + cr.vacancies, 0),
+            value: data?.jobs?.reduce((aux, cr) => aux + cr.vacancies, 0),
         },
         {
             title: "In Progress",
@@ -118,7 +126,7 @@ export function* getJobsApi({ payload }) {
         yield put({
             type: GET_JOB.ON_SUCCESS,
             payload: {
-                data,
+                data: data.jobs,
                 recruitStats
             }
         });
@@ -132,7 +140,7 @@ export function* getJobByIdApi({ payload }) {
     try {
         const response = yield call(axios, {
             method: 'GET',
-            url: `${CONST.BASE_URL + CONST.JOB_URL.JOB_BY_ID + payload.jobId}`
+            url: `${CONST.BASE_URL + CONST.JOB_URL.JOB_BY_ID + payload}`
         });
         const data = response.data?.data;
         yield put({

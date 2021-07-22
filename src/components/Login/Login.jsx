@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Login = ({ signIn, isLogging, closeDialog, userDetails }) => {
+const Login = ({ signIn, isLogging, handleClose, userDetails }) => {
   const history = useHistory();
   const classes = useStyles();
   const [email, _setEmail] = useState("");
@@ -34,6 +34,7 @@ const Login = ({ signIn, isLogging, closeDialog, userDetails }) => {
   useEffect(() => {
     if (isLogging === 'done' && userDetails) {
       setCookies('ssoToken', userDetails.token);
+      handleClose(false);
       redirectUser(userDetails)
     }
   }, [isLogging])
@@ -106,7 +107,7 @@ const Login = ({ signIn, isLogging, closeDialog, userDetails }) => {
             </Box>
             <Box mt={2}>
               <Button
-                onClick={closeDialog}
+                onClick={handleClose}
                 fullWidth
                 variant="outlined"
                 color="secondary"

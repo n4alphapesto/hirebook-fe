@@ -21,6 +21,7 @@ import { PopUpComponent } from ".";
 
 import logo from "../../assets/svg/logo.svg";
 import Image from "./Image";
+import { setCookies } from '../../utils'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -82,7 +83,7 @@ const Navbar = () => {
     _setIsSignUpOpen(false);
   };
 
-  const removeToken = () => localStorage.removeItem("token"); //need to improve  this
+  const removeToken = () => setCookies('ssoToken', null);
 
   const navChildrenLanding = [];
   navChildrenLanding[0] = (
@@ -177,10 +178,10 @@ const Navbar = () => {
         </Hidden>
 
         <PopUpComponent open={isLoginOpen} handleClose={closeLogin}>
-          <Login />
+          <Login handleClose={closeLogin} />
         </PopUpComponent>
         <PopUpComponent open={isSignUpOpen} handleClose={closeSignUp}>
-          <Signup />
+          <Signup handleClose={closeSignUp} />
         </PopUpComponent>
       </Toolbar>
     </AppBar>

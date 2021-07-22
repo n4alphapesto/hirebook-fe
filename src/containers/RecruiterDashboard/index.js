@@ -64,24 +64,13 @@ const useStyles = makeStyles((theme) => ({
 const RecruiterDashboard = ({ getJobs, jobList, jobsFetching, recruitStats, isJobPosting }) => {
   const classes = useStyles();
   const [openForm, setOpenForm] = useState(false);
-  debugger;
   useEffect(() => {
     getJobs();
   }, []);
 
   const deletePost = (id) => {
-    /*getJobByIdApi({ id }).then((res) => {
-      const data = res?.data?.data;
-      const newData = {
-        ...data,
-        isDeleted: true,
-      };
-      removeJobApi(newData);
-    });*/
+
   };
-
-
-  //const handleOpenForm = () => setOpenForm(true);
   const handleCloseForm = () => setOpenForm(false);
 
   // const addNewPost = (newPost) => {
