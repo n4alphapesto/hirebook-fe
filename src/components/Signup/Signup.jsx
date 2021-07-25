@@ -16,6 +16,7 @@ import {
 import OtpInput from "react-otp-input";
 import { register, resendOtp, verify } from "../../ducks/user";
 import "./style.css";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   label: {
@@ -28,7 +29,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Signup = ({ isSigning, isVerifying, register, resendOtp, verify, resendingOtp, handleClose }) => {
+const Signup = ({
+  isSigning,
+  isVerifying,
+  register,
+  resendOtp,
+  verify,
+  resendingOtp,
+  handleClose,
+}) => {
+  const history = useHistory();
   const classes = useStyles();
   const [userType, _setUserType] = useState("JOBSEEKER");
   const [name, _setName] = useState("");
@@ -36,32 +46,25 @@ const Signup = ({ isSigning, isVerifying, register, resendOtp, verify, resending
   const [password, _setPassword] = useState("");
   const [showOTP, _setShowOTP] = useState(false);
   const [otp, _setOTP] = useState(false);
-  const [isResendingOTP, _setIsResendingOTP] = useState(false);
 
   const handleChange = (otp) => _setOTP(otp);
 
   const redirectUser = (data) => {
     let url = `/${userType.toLowerCase()}/onboarding`;
-    window.location.href = url;
+    history.push(url);
   };
 
   useEffect(() => {
-    if (isSigning === 'done') {
+    if (isSigning === "done") {
       _setShowOTP(true);
     }
-  }, [isSigning])
+  }, [isSigning]);
 
   useEffect(() => {
-    if (isVerifying === 'done') {
+    if (isVerifying === "done") {
       redirectUser();
     }
   }, [isVerifying]);
-
-  useEffect(() => {
-    if (resendingOtp === 'done') {
-      _setIsResendingOTP(false);
-    }
-  }, [resendingOtp]);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -73,7 +76,6 @@ const Signup = ({ isSigning, isVerifying, register, resendOtp, verify, resending
   };
 
   const handleResendOTP = () => {
-    _setIsResendingOTP(true);
     resendOtp({ email });
   };
 
@@ -192,7 +194,9 @@ const Signup = ({ isSigning, isVerifying, register, resendOtp, verify, resending
                 variant="contained"
                 color="primary"
               >
-                {isSigning && <CircularProgress size={20} color="white" />}
+                {isSigning === true && (
+                  <CircularProgress size={20} color="white" />
+                )}
                 Signup
               </Button>
             </Box>
@@ -208,12 +212,10 @@ const Signup = ({ isSigning, isVerifying, register, resendOtp, verify, resending
               <Box align="right">
                 <Button
                   onClick={handleResendOTP}
-                  disabled={isResendingOTP}
+                  disabled={resendingOtp}
                   color="primary"
                 >
-                  {isResendingOTP && (
-                    <CircularProgress size={20} color="white" />
-                  )}
+                  {resendingOtp && <CircularProgress size={20} color="white" />}
                   Resend OTP
                 </Button>
               </Box>
@@ -259,12 +261,12 @@ const Signup = ({ isSigning, isVerifying, register, resendOtp, verify, resending
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isSigning: state.user.isSinging,
   isVerifying: state.user.isVerifying,
-  resendingOtp: state.user.resendingOtp
+  resendingOtp: state.user.resendingOtp,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   register(payload) {
     dispatch(register(payload));
   },

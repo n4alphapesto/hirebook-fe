@@ -121,7 +121,7 @@ function TrustedCompanies() {
 
   return (
     <Box className={classes.root}>
-      <Typography variant="h5">Companies who trust us</Typography>
+      <Typography variant="h4">Companies who trust us</Typography>
       <Box className={classes.mainContainer} justifyContent="center">
         <ArrowBackIosIcon
           className={classes.arrows}

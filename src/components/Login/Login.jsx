@@ -9,8 +9,8 @@ import {
   CircularProgress,
   makeStyles,
 } from "@material-ui/core";
-import { login } from '../../ducks/user';
-import { setCookies } from '../../utils';
+import { login } from "../../ducks/user";
+import { setCookies } from "../../utils";
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -26,24 +26,26 @@ const Login = ({ signIn, isLogging, handleClose, userDetails }) => {
   const [password, _setPassword] = useState("");
 
   const redirectUser = (data) => {
-    let userType = data.userType === "JOBSEEKER" ? 'jobseeker' : 'recruiter';
-    let finalRoute = data.isOnboardingCompleted ? `/${userType}` : `/${userType}/onboarding`;
+    let userType = data.userType === "JOBSEEKER" ? "jobseeker" : "recruiter";
+    let finalRoute = data.isOnboardingCompleted
+      ? `/${userType}`
+      : `/${userType}/onboarding`;
     history.push(finalRoute);
   };
 
   useEffect(() => {
-    if (isLogging === 'done' && userDetails) {
-      setCookies('ssoToken', userDetails.token);
+    if (isLogging === "done" && userDetails) {
+      setCookies("ssoToken", userDetails.token);
       handleClose(false);
-      redirectUser(userDetails)
+      redirectUser(userDetails);
     }
-  }, [isLogging])
+  }, [isLogging]);
 
   const login = (e) => {
     e.preventDefault();
     signIn({
       email,
-      password
+      password,
     });
   };
 
@@ -115,10 +117,6 @@ const Login = ({ signIn, isLogging, handleClose, userDetails }) => {
                 Cancel
               </Button>
             </Box>
-
-            <Box mt={1} align="center">
-              <Button color="primary">Forgot Your Password?</Button>
-            </Box>
           </form>
         </Grid>
       </Grid>
@@ -126,14 +124,14 @@ const Login = ({ signIn, isLogging, handleClose, userDetails }) => {
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   loginErrorMsg: state.user.loginErrorMsg,
   isLogging: state.user.isLogging,
-  userDetails: state.user.userDetails
+  userDetails: state.user.userDetails,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   signIn(payload) {
     dispatch(login(payload));
-  }
+  },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

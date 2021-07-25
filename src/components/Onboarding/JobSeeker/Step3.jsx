@@ -51,31 +51,35 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Step3 = ({ back, finish, initialData, upload, isUploading, uploadErrMsg }) => {
+const Step3 = ({
+  back,
+  finish,
+  initialData,
+  upload,
+  resume_Status,
+  userPhoto_Status,
+  resume_Msg,
+  userPhoto_Msg,
+  isSaving,
+}) => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [resume, _setResume] = useState();
-  const [userPhoto, _setUserPhto] = useState();
+  const [userPhoto, _setUserPhoto] = useState();
   const [about, _setAbout] = useState("");
-  const [isResumeUploading, _setIsResumeUploading] = useState(false);
-  const [isProfilePicUploading, _setIsProfilePicUploading] = useState(false);
-  const [fileKey, setFileKey] = useState(null);
 
   useEffect(() => {
     if (initialData.resume) _setResume(initialData.resume);
+    if (initialData.userPhoto) _setResume(initialData.userPhoto);
   }, []);
 
   useEffect(() => {
-    if (isUploading === 'done') {
-      if (fileKey === 'resume') {
-        _setResume(null);
-        _setIsResumeUploading(false);
-      } else {
-        _setUserPhto(null);
-        _setIsProfilePicUploading(false);
-      }
-    }
-  }, [isUploading]);
+    if (resume_Status === "done") _setResume(resume_Msg[0]);
+  }, [resume_Status]);
+
+  useEffect(() => {
+    if (userPhoto_Status === "done") _setUserPhoto(userPhoto_Msg[0]);
+  }, [userPhoto_Status]);
 
   const handleBack = () => {
     back();
@@ -104,40 +108,13 @@ const Step3 = ({ back, finish, initialData, upload, isUploading, uploadErrMsg })
   const handleFileChange = (e, key) => {
     if (!e.target.files[0]) return;
 
-    key === "resume"
-      ? _setIsResumeUploading(true)
-      : _setIsProfilePicUploading(true);
-
     const { files } = e.target;
     const formData = new FormData();
 
     Array.from(files).forEach((file) => {
       formData.append("files", file);
     });
-    upload(formData);
-    setFileKey(key);
-    // uploadFileApi(formData)
-    //   .then((result) => {
-    //     enqueueSnackbar(
-    //       `${files.length > 1 ? "Files" : "File"} Uploaded Successfully.`,
-    //       { variant: "success" }
-    //     );
-    //     if (key === "resume") {
-    //       result.data.data?.[0] && _setResume(result.data.data[0]);
-    //       _setIsResumeUploading(false);
-    //     } else {
-    //       result.data.data?.[0] && _setUserPhto(result.data.data[0]);
-    //       _setIsProfilePicUploading(false);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     enqueueSnackbar(`Error uploading files. Please try again.`, {
-    //       variant: "error",
-    //     });
-    //     key === "resume"
-    //       ? _setIsResumeUploading(false)
-    //       : _setIsProfilePicUploading(false);
-    //   });
+    upload({ formData, key });
   };
 
   return (
@@ -165,7 +142,7 @@ const Step3 = ({ back, finish, initialData, upload, isUploading, uploadErrMsg })
                   type="file"
                   accept="application/pdf, text/docx, image/jpeg, image/png"
                 />
-                {isResumeUploading && (
+                {resume_Status === true && (
                   <div className={classes.loadingOverlay}>
                     <CircularProgress />
                   </div>
@@ -185,7 +162,7 @@ const Step3 = ({ back, finish, initialData, upload, isUploading, uploadErrMsg })
                     type="file"
                     accept="application/pdf, text/docx, image/jpeg, image/png"
                   />
-                  {isProfilePicUploading && (
+                  {userPhoto_Status === true && (
                     <div className={classes.loadingOverlay}>
                       <CircularProgress />
                     </div>
@@ -234,6 +211,7 @@ const Step3 = ({ back, finish, initialData, upload, isUploading, uploadErrMsg })
                   disabled={!about || !resume}
                   color="primary"
                 >
+                  {isSaving === true && <CircularProgress color="white" />}
                   Finish
                 </Button>
               </Box>
@@ -245,14 +223,15 @@ const Step3 = ({ back, finish, initialData, upload, isUploading, uploadErrMsg })
   );
 };
 
-const mapStateToProps = state => ({
-  isUploading: state.upload.isUploading,
-  uploadErrMsg: state.upload.uploadErrMsg
+const mapStateToProps = (state) => ({
+  resume_Status: state.upload.resume_Status,
+  userPhoto_Status: state.upload.userPhoto_Status,
+  resume_Msg: state.upload.resume_Msg,
+  userPhoto_Msg: state.upload.userPhoto_Msg,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   upload(payload) {
     dispatch(upload(payload));
-  }
+  },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Step3));
-

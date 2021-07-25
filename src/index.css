@@ -17,10 +17,7 @@ code {
   font-family: "Lato";
   font-style: normal;
   font-weight: 400;
-  src: url("./assets/fonts/lato-v17-latin-regular.eot"); /* IE9 Compat Modes */
   src: local(""),
-    url("./assets/fonts/lato-v17-latin-regular.eot?#iefix")
-      format("embedded-opentype"),
     /* IE6-IE8 */ url("./assets/fonts/lato-v17-latin-regular.woff2")
       format("woff2"),
     /* Super Modern Browsers */
@@ -29,4 +26,18 @@ code {
       format("truetype"),
     /* Safari, Android, iOS */
       url("./assets/fonts/lato-v17-latin-regular.svg#Lato") format("svg"); /* Legacy iOS */
+}
+
+@font-face {
+  font-family: "JosefinSans-Medium";
+  src: url("./assets/fonts/JosefinSans-Medium.woff2") format("woff2"),
+    url("./assets/fonts/JosefinSans-Medium.woff") format("woff"),
+    url("./assets/fonts/JosefinSans-Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Arvo-Regular";
+  src: url("./assets/fonts/Arvo-Regular.woff2") format("woff2"),
+    url("./assets/fonts/Arvo-Regular.woff") format("woff"),
+    url("./assets/fonts/Arvo-Regular.ttf") format("truetype");
 }

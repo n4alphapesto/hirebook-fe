@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Container, Grid, Paper, makeStyles } from "@material-ui/core";
 
-import { onBoardRecruiter } from "../../ducks/onboarding";
+import { saveRecruiter } from "../../ducks/user";
 import { Step1, Step2 } from "../../components/Onboarding/Recruiter";
 
 const useStyles = makeStyles((theme) => ({
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RecruiterOnboarding = ({ onBoardRecruiter, isOnboarding }) => {
+const RecruiterOnboarding = ({ saveRecruiter, isSaving }) => {
   const classes = useStyles();
   const history = useHistory();
   const [data, _setData] = useState({});
@@ -30,28 +30,28 @@ const RecruiterOnboarding = ({ onBoardRecruiter, isOnboarding }) => {
     _setStep(step - 1);
   };
 
-
   useEffect(() => {
-    if (isOnboarding === 'done') {
+    if (isSaving === "done") {
       history.push("/recruiter");
     }
-  }, [isOnboarding])
+  }, [isSaving]);
 
   const submitData = (step2Data) => {
     const finalData = { ...data, ...step2Data };
-    onBoardRecruiter(finalData);
+    saveRecruiter(finalData);
   };
 
   return (
     <Container maxWidth="lg">
-
       <Grid container justifyContent="center">
         <Grid item xs={12} sm={10} md={6}>
           <Paper elevation={3} className={classes.stepContainer}>
             {
               {
                 0: <Step1 next={next} initialData={data} />,
-                1: <Step2 back={back} finish={submitData} />,
+                1: (
+                  <Step2 back={back} finish={submitData} isSaving={isSaving} />
+                ),
               }[step]
             }
           </Paper>
@@ -61,12 +61,16 @@ const RecruiterOnboarding = ({ onBoardRecruiter, isOnboarding }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  isOnboarding: state.onBoard.isRecruiterOnBoarding
+const mapStateToProps = (state) => ({
+  isSaving: state.user.isSavingRecruiterProfile,
+  errorMsg: state.user.saveRecruiterProfileMsg,
 });
-const mapDispatchToProps = dispatch => ({
-  onBoardRecruiter(payload) {
-    dispatch(onBoardRecruiter(payload));
-  }
+const mapDispatchToProps = (dispatch) => ({
+  saveRecruiter(payload) {
+    dispatch(saveRecruiter(payload));
+  },
 });
-export default connect(mapStateToProps, mapDispatchToProps)(React.memo(RecruiterOnboarding));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(React.memo(RecruiterOnboarding));

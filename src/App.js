@@ -9,7 +9,15 @@ import Routes from "./Routes";
 // Added Lato fonts as default Font
 const theme = createTheme({
   typography: {
-    fontFamily: ["Lato", "sans-serif"].join(","),
+    fontFamily: ["Arvo-Regular", "sans-serif"].join(","),
+  },
+  palette: {
+    white: {
+      main: "#FFFFFF",
+    },
+    text: {
+      primary: "#333366",
+    },
   },
 });
 

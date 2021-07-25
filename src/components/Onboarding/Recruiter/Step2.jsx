@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Typography,
   Grid,
@@ -8,10 +8,11 @@ import {
   TextField,
   CircularProgress,
 } from "@material-ui/core";
+import { connect } from "react-redux";
 import { useSnackbar } from "notistack";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
-//import { uploadFileApi } from "../../../api/common";
+import { upload } from "../../../ducks/upload";
 
 const useStyles = makeStyles((theme) => ({
   label: {
@@ -50,7 +51,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Step2 = ({ finish, back }) => {
+const Step2 = ({
+  finish,
+  back,
+  upload,
+  companyLogo_Status,
+  companyPhotos_Status,
+  companyLogo_Msg,
+  companyPhotos_Msg,
+  isSaving,
+}) => {
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   const [aboutCompany, _setAboutCompany] = useState("");
@@ -60,8 +70,18 @@ const Step2 = ({ finish, back }) => {
   const [facebookProfile, _setFacebookProfile] = useState();
   const [companyPhotos, _setCompanyPhotos] = useState([]);
   const [companyLogo, _setCompnayLogo] = useState("");
-  const [isLogoUploading, _setIsLogoUploading] = useState(false);
-  const [isPhotosUploading, _setIsPhotosUploading] = useState(false);
+
+  useEffect(() => {
+    if (companyPhotos_Status === "done") {
+      _setCompanyPhotos(companyPhotos_Msg);
+    }
+  }, [companyPhotos_Status]);
+
+  useEffect(() => {
+    if (companyLogo_Status === "done") {
+      _setCompnayLogo(companyLogo_Msg[0]);
+    }
+  }, [companyLogo_Status]);
 
   const handleFinish = () => {
     if (!aboutCompany)
@@ -99,10 +119,6 @@ const Step2 = ({ finish, back }) => {
   const handleFileChange = (e, key) => {
     if (!e.target.files[0]) return;
 
-    key === "companyLogo"
-      ? _setIsLogoUploading(true)
-      : _setIsPhotosUploading(true);
-
     const { files } = e.target;
     const formData = new FormData();
 
@@ -110,36 +126,10 @@ const Step2 = ({ finish, back }) => {
       formData.append("files", file);
     });
 
-    // uploadFileApi(formData)
-    //   .then((result) => {
-    //     enqueueSnackbar(
-    //       `${files.length > 1 ? "Files" : "File"} Uploaded Successfully.`,
-    //       { variant: "success" }
-    //     );
-    //     if (key === "companyLogo") {
-    //       result.data.data?.[0] && _setCompnayLogo(result.data.data[0]);
-    //       key === "companyLogo"
-    //         ? _setIsLogoUploading(true)
-    //         : _setIsPhotosUploading(true);
-    //     } else {
-    //       _setCompanyPhotos(result.data.data);
-    //       key === "companyLogo"
-    //         ? _setIsLogoUploading(true)
-    //         : _setIsPhotosUploading(true);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     enqueueSnackbar(`Error uploading files. Please try again.`, {
-    //       variant: "error",
-    //     });
-    //     key === "companyLogo"
-    //       ? _setIsLogoUploading(true)
-    //       : _setIsPhotosUploading(true);
-    //   });
+    upload({ formData, key });
   };
 
   const isDisabled = () => {
-    console.log({ companyLogo, companyPhotos, aboutCompany });
     return !companyLogo || !companyPhotos.length || !aboutCompany;
   };
 
@@ -184,7 +174,7 @@ const Step2 = ({ finish, back }) => {
                   type="file"
                   accept="image/jpeg, image/png"
                 />
-                {isLogoUploading && (
+                {companyLogo_Status === true && (
                   <div className={classes.loadingOverlay}>
                     <CircularProgress />
                   </div>
@@ -206,7 +196,7 @@ const Step2 = ({ finish, back }) => {
                   type="file"
                   accept="image/jpeg, image/png"
                 />
-                {isPhotosUploading && (
+                {companyPhotos_Status === true && (
                   <div className={classes.loadingOverlay}>
                     <CircularProgress />
                   </div>
@@ -308,6 +298,7 @@ const Step2 = ({ finish, back }) => {
                 color="primary"
                 disabled={isDisabled()}
               >
+                {isSaving === true && <CircularProgress color="white" />}
                 Finish
               </Button>
             </Box>
@@ -318,5 +309,16 @@ const Step2 = ({ finish, back }) => {
   );
 };
 
-export default Step2;
+const mapStateToProps = (state) => ({
+  companyLogo_Status: state.upload.companyLogo_Status,
+  companyPhotos_Status: state.upload.companyPhotos_Status,
+  companyLogo_Msg: state.upload.companyLogo_Msg,
+  companyPhotos_Msg: state.upload.companyPhotos_Msg,
+});
+const mapDispatchToProps = (dispatch) => ({
+  upload(payload) {
+    dispatch(upload(payload));
+  },
+});
 
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Step2));

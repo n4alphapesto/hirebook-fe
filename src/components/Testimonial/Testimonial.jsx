@@ -49,23 +49,27 @@ const Testimonial = () => {
         </Grid>
       </Box>
       <Box mt={5} mb={10}>
-        <Grid container spacing={4}>
-          <Grid item xs={12} sm={6} className={classes.textContainer}>
-            <Box align="right">
-              <Typography variant="h5" align="right">
-                Harsh Khndewal
-              </Typography>
-              <Typography variant="subtitle1" gutterBottom align="right">
+        <Grid container spacing={4} className="direction-xs-column-reverse">
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            order={{ xs: 2, sm: 1 }}
+            className={classes.textContainer}
+          >
+            <Box>
+              <Typography variant="h5">Harsh Khndewal</Typography>
+              <Typography variant="subtitle1" gutterBottom>
                 DevOps Engineer
               </Typography>
-              <Typography variant="body2" align="right">
+              <Typography variant="body2">
                 "Little did I know about the reach of Hirebook. They have
                 hundreds of start-ups searching for candidates. I received a
                 good number of offers!"
               </Typography>
             </Box>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} order={{ xs: 1, sm: 2 }}>
             <Img src={harsh} />
           </Grid>
         </Grid>

@@ -30,7 +30,6 @@ const Step1 = ({ next, initialData }) => {
   const [noOfEmployees, _setNoOfEmployee] = useState();
 
   useEffect(() => {
-    console.log(" --- intialData --", initialData);
     if (initialData.companyName) _setCompanyName(initialData.companyName);
     if (initialData.userRole) _setUserRole(initialData.userRole);
     if (initialData.mobileNo) _setMobileNo(initialData.mobileNo);
@@ -103,13 +102,6 @@ const Step1 = ({ next, initialData }) => {
     next(data);
   };
 
-  console.log(" states ", {
-    companyName,
-    userRole,
-    mobileNo,
-    companyLocations,
-    noOfEmployees,
-  });
   return (
     <>
       <Box mb={5} align="center">

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Container, Grid, Paper, makeStyles } from "@material-ui/core";
 import { Step1, Step2, Step3 } from "../../components/Onboarding/JobSeeker";
-import { onBoardJobSeeker } from "../../ducks/onboarding";
+import { saveJobSeeker } from "../../ducks/user";
 
 const useStyles = makeStyles((theme) => ({
   stepContainer: {
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const JobSeekerOnboarding = ({ onBoardJobSeeker, isOnboarding }) => {
+const JobSeekerOnboarding = ({ saveJobSeeker, isSaving }) => {
   //const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
   const classes = useStyles();
@@ -30,13 +30,13 @@ const JobSeekerOnboarding = ({ onBoardJobSeeker, isOnboarding }) => {
     _setStep(step - 1);
   };
   useEffect(() => {
-    if (isOnboarding === 'done') {
+    if (isSaving === "done") {
       history.push("/jobseeker");
     }
-  }, [isOnboarding])
+  }, [isSaving]);
   const submitData = (step3Data) => {
     const finalData = { ...data, ...step3Data };
-    onBoardJobSeeker(finalData);
+    saveJobSeeker(finalData);
   };
 
   return (
@@ -48,7 +48,14 @@ const JobSeekerOnboarding = ({ onBoardJobSeeker, isOnboarding }) => {
               {
                 0: <Step1 next={next} initialData={data} />,
                 1: <Step2 next={next} back={back} initialData={data} />,
-                2: <Step3 back={back} finish={submitData} initialData={data} />,
+                2: (
+                  <Step3
+                    back={back}
+                    finish={submitData}
+                    initialData={data}
+                    isSaving={isSaving}
+                  />
+                ),
               }[step]
             }
           </Paper>
@@ -58,13 +65,16 @@ const JobSeekerOnboarding = ({ onBoardJobSeeker, isOnboarding }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  isOnboarding: state.onBoard.isJobSeekerOnBoarding
+const mapStateToProps = (state) => ({
+  isSaving: state.user.isSavingSeekerProfile,
+  errorMsg: state.user.saveSeekerProfileMsg,
 });
-const mapDispatchToProps = dispatch => ({
-  onBoardJobSeeker(payload) {
-    dispatch(onBoardJobSeeker(payload));
-  }
+const mapDispatchToProps = (dispatch) => ({
+  saveJobSeeker(payload) {
+    dispatch(saveJobSeeker(payload));
+  },
 });
-export default connect(mapStateToProps, mapDispatchToProps)(React.memo(JobSeekerOnboarding));
-
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(React.memo(JobSeekerOnboarding));
