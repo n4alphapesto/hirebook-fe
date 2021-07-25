@@ -29,13 +29,6 @@ code {
 }
 
 @font-face {
-  font-family: "JosefinSans-Medium";
-  src: url("./assets/fonts/JosefinSans-Medium.woff2") format("woff2"),
-    url("./assets/fonts/JosefinSans-Medium.woff") format("woff"),
-    url("./assets/fonts/JosefinSans-Medium.ttf") format("truetype");
-}
-
-@font-face {
   font-family: "Arvo-Regular";
   src: url("./assets/fonts/Arvo-Regular.woff2") format("woff2"),
     url("./assets/fonts/Arvo-Regular.woff") format("woff"),
