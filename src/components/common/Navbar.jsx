@@ -12,7 +12,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  makeStyles
+  makeStyles,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import Login from "../../components/Login/Login";
@@ -21,7 +21,7 @@ import { PopUpComponent } from ".";
 
 import logo from "../../assets/svg/logo.svg";
 import Image from "./Image";
-import { setCookies } from '../../utils'
+import { setCookies } from "../../utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,6 +55,10 @@ const useStyles = makeStyles((theme) => ({
       borderBottom: "2px solid red",
     },
   },
+
+  dialoagRoot: {
+    padding: 0,
+  },
 }));
 
 const Navbar = () => {
@@ -83,7 +87,7 @@ const Navbar = () => {
     _setIsSignUpOpen(false);
   };
 
-  const removeToken = () => { } //setCookies('ssoToken', '');
+  const removeToken = () => {}; //setCookies('ssoToken', '');
 
   const navChildrenLanding = [];
   navChildrenLanding[0] = (
@@ -177,10 +181,18 @@ const Navbar = () => {
           </Menu>
         </Hidden>
 
-        <PopUpComponent open={isLoginOpen} handleClose={closeLogin}>
+        <PopUpComponent
+          open={isLoginOpen}
+          className={classes.dialoagRoot}
+          handleClose={closeLogin}
+        >
           <Login handleClose={closeLogin} />
         </PopUpComponent>
-        <PopUpComponent open={isSignUpOpen} handleClose={closeSignUp}>
+        <PopUpComponent
+          open={isSignUpOpen}
+          className={classes.dialoagRoot}
+          handleClose={closeSignUp}
+        >
           <Signup handleClose={closeSignUp} />
         </PopUpComponent>
       </Toolbar>
