@@ -16,13 +16,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FilterComponent = ({ title, options }) => {
+const FilterComponent = ({ title, options, value, handleChange }) => {
   const classes = useStyles();
-  const [value, setValue] = React.useState(options[0]);
+  //const [val, setVal] = React.useState(value);
 
-  const handleChange = (event) => {
+  /*const handleChange = (event) => {
     setValue(event.target.value);
-  };
+  };*/
 
   return (
     <Card className={classes.root}>
