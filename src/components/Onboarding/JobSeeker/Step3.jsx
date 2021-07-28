@@ -70,7 +70,7 @@ const Step3 = ({
 
   useEffect(() => {
     if (initialData.resume) _setResume(initialData.resume);
-    if (initialData.userPhoto) _setResume(initialData.userPhoto);
+    if (initialData.userPhoto) _setUserPhoto(initialData.userPhoto);
     if (initialData.about) _setAbout(initialData.about);
   }, [initialData]);
 

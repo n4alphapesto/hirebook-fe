@@ -27,7 +27,7 @@ const RecruiterOnboarding = ({ saveRecruiter, isSaving, userDetails }) => {
         companyName: userDetails.recruiter.companyName,
         userRole: userDetails.recruiter.userRole,
         mobileNo: userDetails.recruiter.mobileNo,
-        companyLocations: userDetails.recruiter.companyLocations,
+        companyLocations: userDetails.recruiter.locations,
         foundationYear: userDetails.recruiter.foundationYear,
         noOfEmployees: userDetails.recruiter.noOfEmployees,
         aboutCompany: userDetails.recruiter.aboutCompany,
@@ -60,6 +60,11 @@ const RecruiterOnboarding = ({ saveRecruiter, isSaving, userDetails }) => {
 
   const submitData = (step2Data) => {
     const finalData = { ...data, ...step2Data };
+
+    if (userDetails.recruiter) {
+      finalData.updateId = userDetails.recruiter._id;
+    }
+
     saveRecruiter(finalData);
   };
 
@@ -72,7 +77,12 @@ const RecruiterOnboarding = ({ saveRecruiter, isSaving, userDetails }) => {
               {
                 0: <Step1 next={next} initialData={data} />,
                 1: (
-                  <Step2 back={back} finish={submitData} isSaving={isSaving} />
+                  <Step2
+                    back={back}
+                    finish={submitData}
+                    initialData={data}
+                    isSaving={isSaving}
+                  />
                 ),
               }[step]
             }

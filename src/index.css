@@ -34,3 +34,10 @@ code {
     url("./assets/fonts/Arvo-Regular.woff") format("woff"),
     url("./assets/fonts/Arvo-Regular.ttf") format("truetype");
 }
+
+@font-face {
+  font-family: "Ubuntu";
+  src: url("./assets/fonts/Ubuntu-Regular.woff2") format("woff2"),
+    url("./assets/fonts/Ubuntu-Regular.woff") format("woff"),
+    url("./assets/fonts/Ubuntu-Regular.ttf") format("truetype");
+}

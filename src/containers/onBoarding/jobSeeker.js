@@ -54,8 +54,13 @@ const JobSeekerOnboarding = ({ saveJobSeeker, isSaving, userDetails }) => {
       history.push("/jobseeker");
     }
   }, [isSaving]);
+
   const submitData = (step3Data) => {
     const finalData = { ...data, ...step3Data };
+
+    if(userDetails.jobseeker)
+      finalData.updateId = userDetails.jobseeker._id;
+
     saveJobSeeker(finalData);
   };
 

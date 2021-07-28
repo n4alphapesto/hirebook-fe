@@ -105,7 +105,7 @@ const RecruiterProfile = () => {
           <div className={classes.title}>
             <Typography variant="body2"></Typography>
             <IconButton>
-              <Link underling="none" href="/recruiter/onboarding">
+              <Link underling="none" href="/recruiter/editprofile">
                 <EditIcon className={classes.editIcon} />
               </Link>
             </IconButton>

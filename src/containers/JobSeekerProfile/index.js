@@ -73,7 +73,7 @@ const JobSeekerProfile = ({ userDetails }) => {
                 <Box mb={5}>
                   <Typography variant="h4">About</Typography>
                   <Divider className={classes.divider} />
-                  <Typography variant="subtitile">
+                  <Typography variant="subtitle1">
                     {userDetails.jobseeker.about}
                   </Typography>
                 </Box>
@@ -81,9 +81,9 @@ const JobSeekerProfile = ({ userDetails }) => {
                 <Box mb={5}>
                   <Typography variant="h4">Skills</Typography>
                   <Divider className={classes.divider} />
-                  <Typography variant="subtitile">
+                  <Typography variant="subtitle1">
                     {userDetails.jobseeker.skills.map((skill) => (
-                      <Chip label={skill.title} />
+                      <Chip key={skill.title} label={skill.title} />
                     ))}
                   </Typography>
                 </Box>
@@ -91,7 +91,7 @@ const JobSeekerProfile = ({ userDetails }) => {
                 <Box mb={5}>
                   <Typography variant="h4">Resume</Typography>
                   <Divider className={classes.divider} />
-                  <Typography variant="subtitile">Resumes</Typography>
+                  <Typography variant="subtitle1">Resumes</Typography>
                 </Box>
               </CardContent>
             </Card>

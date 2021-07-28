@@ -55,6 +55,7 @@ const Step2 = ({
   finish,
   back,
   upload,
+  initialData,
   companyLogo_Status,
   companyPhotos_Status,
   companyLogo_Msg,
@@ -70,6 +71,19 @@ const Step2 = ({
   const [facebookProfile, _setFacebookProfile] = useState();
   const [companyPhotos, _setCompanyPhotos] = useState([]);
   const [companyLogo, _setCompnayLogo] = useState("");
+
+  useEffect(() => {
+    if (initialData.aboutCompany) _setAboutCompany(initialData.aboutCompany);
+    if (initialData.website) _setWebsite(initialData.website);
+    if (initialData.linkedInProfile)
+      _setLinkedInProfile(initialData.linkedInProfile);
+    if (initialData.twitterProfile)
+      _setTwitterProfile(initialData.twitterProfile);
+    if (initialData.facebookProfile)
+      _setFacebookProfile(initialData.facebookProfile);
+    if (initialData.companyLogo) _setCompnayLogo(initialData.companyLogo);
+    if (initialData.companyPhotos) _setCompanyPhotos(initialData.companyPhotos);
+  }, [initialData]);
 
   useEffect(() => {
     if (companyPhotos_Status === "done") {
