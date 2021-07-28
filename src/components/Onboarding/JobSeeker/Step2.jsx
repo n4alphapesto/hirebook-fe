@@ -32,12 +32,12 @@ const Step2 = ({ back, next, initialData }) => {
     if (initialData.currentCTC) _setCurrentCTC(initialData.currentCTC);
     if (initialData.noticePeriod) _setNoticePeriod(initialData.noticePeriod);
     if (initialData.openToWork) {
-      const prefferedLocations = initialData.skills.map((loc) => {
+      const prefferedLocations = initialData.openToWork.map((loc) => {
         return locations.find((option) => option.value === loc);
       });
       _setOpenToWork(prefferedLocations);
     }
-  }, []);
+  }, [initialData]);
 
   const transformData = () => {
     if (!currentLocation) {

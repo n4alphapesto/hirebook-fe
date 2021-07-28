@@ -40,7 +40,7 @@ const RouteValidator = ({
       </Grid>
     );
 
-  const redirectUrl = validateRoute(userDetails, rest.location.pathname);
+  const redirectUrl = validateRoute(userDetails, rest.path);
   return (
     <Route
       {...rest}

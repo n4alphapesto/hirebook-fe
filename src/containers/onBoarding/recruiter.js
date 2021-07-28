@@ -15,11 +15,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RecruiterOnboarding = ({ saveRecruiter, isSaving }) => {
+const RecruiterOnboarding = ({ saveRecruiter, isSaving, userDetails }) => {
   const classes = useStyles();
   const history = useHistory();
   const [data, _setData] = useState({});
   const [step, _setStep] = useState(0);
+
+  useEffect(() => {
+    if (userDetails) {
+      const userData = {
+        companyName: userDetails.recruiter.companyName,
+        userRole: userDetails.recruiter.userRole,
+        mobileNo: userDetails.recruiter.mobileNo,
+        companyLocations: userDetails.recruiter.companyLocations,
+        foundationYear: userDetails.recruiter.foundationYear,
+        noOfEmployees: userDetails.recruiter.noOfEmployees,
+        aboutCompany: userDetails.recruiter.aboutCompany,
+        website: userDetails.recruiter.website,
+        linkedInProfile: userDetails.recruiter.linkedInProfile,
+        twitterProfile: userDetails.recruiter.twitterProfile,
+        facebookProfile: userDetails.recruiter.facebookProfile,
+        companyPhotos: userDetails.recruiter.companyPhotos,
+        companyLogo: userDetails.recruiter.companyLogo,
+      };
+
+      _setData(userData);
+    }
+  }, []);
 
   const next = (payload) => {
     _setStep(step + 1);
@@ -64,6 +86,7 @@ const RecruiterOnboarding = ({ saveRecruiter, isSaving }) => {
 const mapStateToProps = (state) => ({
   isSaving: state.user.isSavingRecruiterProfile,
   errorMsg: state.user.saveRecruiterProfileMsg,
+  userDetails: state.user.userDetails,
 });
 const mapDispatchToProps = (dispatch) => ({
   saveRecruiter(payload) {

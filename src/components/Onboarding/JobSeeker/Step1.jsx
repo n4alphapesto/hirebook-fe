@@ -55,7 +55,7 @@ const Step1 = ({ next, initialData }) => {
       }));
       _setSkills(initialSkills);
     }
-  }, []);
+  }, [initialData]);
 
   const addSkillsRow = () => {
     if (skills.length === 4)

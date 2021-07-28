@@ -71,7 +71,8 @@ const Step3 = ({
   useEffect(() => {
     if (initialData.resume) _setResume(initialData.resume);
     if (initialData.userPhoto) _setResume(initialData.userPhoto);
-  }, []);
+    if (initialData.about) _setAbout(initialData.about);
+  }, [initialData]);
 
   useEffect(() => {
     if (resume_Status === "done") _setResume(resume_Msg[0]);

@@ -9,8 +9,11 @@ import {
   Chip,
   CardMedia,
   Divider,
+  IconButton,
   makeStyles,
 } from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
@@ -26,6 +29,10 @@ const useStyles = makeStyles({
 
 const JobSeekerProfile = ({ userDetails }) => {
   const classes = useStyles();
+  const history = useHistory();
+
+  const editProfile = () =>
+    history.push(`/${userDetails.userType.toLowerCase()}/editprofile`);
 
   return (
     <Grid container justifyContent="center" alignItems="center">
@@ -40,38 +47,52 @@ const JobSeekerProfile = ({ userDetails }) => {
                 }
                 title="Contemplative Reptile"
               />
-              <Divider variant="middle" className={classes.divider} />
               <CardContent>
-                <Typography variant="h5">{userDetails.name}</Typography>
-                <Typography variant="body1">
-                  {userDetails.jobseeker.currentRole}
-                </Typography>
-                <Typography variant="body2">
-                  {userDetails.jobseeker.currentLocation}
-                </Typography>
+                <Grid container justifyContent="space-between">
+                  <Grid item>
+                    <Typography variant="h5">{userDetails.name}</Typography>
+                    <Typography variant="body1">
+                      {userDetails.jobseeker.currentRole}
+                    </Typography>
+                    <Typography variant="body2">
+                      {userDetails.jobseeker.currentLocation}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={1}>
+                    <IconButton onClick={editProfile} aria-label="edit-profile">
+                      <EditIcon />
+                    </IconButton>
+                  </Grid>
+                </Grid>
               </CardContent>
             </Card>
           </Grid>
           <Grid item xs={12} sm={8}>
             <Card>
               <CardContent>
-                <Typography variant="h4">About</Typography>
-                <Divider className={classes.divider} />
-                <Typography variant="subtitile">
-                  {userDetails.jobseeker.about}
-                </Typography>
+                <Box mb={5}>
+                  <Typography variant="h4">About</Typography>
+                  <Divider className={classes.divider} />
+                  <Typography variant="subtitile">
+                    {userDetails.jobseeker.about}
+                  </Typography>
+                </Box>
 
-                <Typography variant="h4">Skills</Typography>
-                <Divider className={classes.divider} />
-                <Typography variant="subtitile">
-                  {userDetails.jobseeker.skills.map((skill) => (
-                    <Chip label={skill.title} />
-                  ))}
-                </Typography>
+                <Box mb={5}>
+                  <Typography variant="h4">Skills</Typography>
+                  <Divider className={classes.divider} />
+                  <Typography variant="subtitile">
+                    {userDetails.jobseeker.skills.map((skill) => (
+                      <Chip label={skill.title} />
+                    ))}
+                  </Typography>
+                </Box>
 
-                <Typography variant="h4">Resume</Typography>
-                <Divider className={classes.divider} />
-                <Typography variant="subtitile">Resumes</Typography>
+                <Box mb={5}>
+                  <Typography variant="h4">Resume</Typography>
+                  <Divider className={classes.divider} />
+                  <Typography variant="subtitile">Resumes</Typography>
+                </Box>
               </CardContent>
             </Card>
           </Grid>

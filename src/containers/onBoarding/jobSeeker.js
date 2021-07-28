@@ -14,12 +14,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const JobSeekerOnboarding = ({ saveJobSeeker, isSaving }) => {
+const JobSeekerOnboarding = ({ saveJobSeeker, isSaving, userDetails }) => {
   //const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
   const classes = useStyles();
   const [data, _setData] = useState({});
   const [step, _setStep] = useState(0);
+
+  useEffect(() => {
+    if (userDetails) {
+      const userData = {
+        experienceType: userDetails.jobseeker?.experienceType,
+        experience: userDetails.jobseeker?.experience,
+        currentRole: userDetails.jobseeker?.currentRole,
+        skills: userDetails.jobseeker?.skills,
+        currentLocation: userDetails.jobseeker?.currentLocation,
+        currentCTC: userDetails.jobseeker?.currentCTC,
+        noticePeriod: userDetails.jobseeker?.noticePeriod,
+        openToWork: userDetails.jobseeker?.openToWork,
+        resume: userDetails.jobseeker?.resume,
+        userPhoto: userDetails.jobseeker?.userPhoto,
+        about: userDetails.jobseeker?.about,
+      };
+
+      _setData(userData);
+    }
+  }, []);
 
   const next = (payload) => {
     _setStep(step + 1);
@@ -68,6 +88,7 @@ const JobSeekerOnboarding = ({ saveJobSeeker, isSaving }) => {
 const mapStateToProps = (state) => ({
   isSaving: state.user.isSavingSeekerProfile,
   errorMsg: state.user.saveSeekerProfileMsg,
+  userDetails: state.user.userDetails,
 });
 const mapDispatchToProps = (dispatch) => ({
   saveJobSeeker(payload) {
