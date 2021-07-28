@@ -12,6 +12,7 @@ import {
   JobDetail,
   RecruiterOnboarding,
   JobSeekerOnboarding,
+  JobSeekerProfile,
 } from "./containers";
 
 const Routes = () => {
@@ -24,6 +25,11 @@ const Routes = () => {
             exact
             path="/jobseeker"
             component={JobseekerDashboard}
+          />
+          <RouteValidator
+            exact
+            path="/jobseeker/profile"
+            component={JobSeekerProfile}
           />
           <RouteValidator
             exact
@@ -69,7 +75,6 @@ const Routes = () => {
             path="/recruiter/createNewPost"
             component={RecruiterJobPostForm}
           />
-          <RouteValidator path="/signout" component={LandingPage} />
           <RouteValidator exact path="/" component={LandingPage} />
         </Switch>
         <Footer />

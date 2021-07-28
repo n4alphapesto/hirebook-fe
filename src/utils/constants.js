@@ -24,7 +24,7 @@ const CONST = {
     SAVE_RECRUITER: "/user/recruiter/saveProfile",
   },
   JOB_URL: {
-    JOB_LIST: "/job/joblist",
+    JOB_LIST: "/job",
     ADD_JOB: "/job/addjob",
     JOB_BY_ID: "/job/jobById/",
     JOB_APPLY: "/job/applyForJob",

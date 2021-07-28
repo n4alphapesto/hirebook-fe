@@ -40,8 +40,15 @@ export const SAVE_RECRUITER_PROFILE = {
   ON_ERROR: "SAVE_RECRUITER_ERROR",
 };
 
+export const GET_USER = {
+  ON_REQUEST: "GET_USER_REQUEST",
+  ON_SUCCESS: "GET_USER_SUCCESS",
+  ON_ERROR: "GET_USER_ERROR",
+};
+
 const initialState = {
   userDetails: null,
+  isUserLoading: true,
   isLogging: false,
   loginErrorMsg: null,
   isVerifying: false,
@@ -124,6 +131,13 @@ export default function userReducer(state = initialState, action) {
         isSavingRecruiterProfile: false,
         saveRecruiterProfileMsg: payload,
       };
+
+    case GET_USER.ON_REQUEST:
+      return { ...state, userDetails: null };
+    case GET_USER.ON_SUCCESS:
+      return { ...state, isUserLoading: "done", userDetails: payload };
+    case GET_USER.ON_ERROR:
+      return { ...state, isUserLoading: false, userDetails: payload };
     default:
       return { ...state };
   }
@@ -154,6 +168,12 @@ export function register(payload) {
   return {
     type: REGISTER_USER.ON_REQUEST,
     payload,
+  };
+}
+
+export function getUser() {
+  return {
+    type: GET_USER.ON_REQUEST,
   };
 }
 
@@ -289,5 +309,21 @@ export function* saveSeekerProfile({ payload }) {
     });
   } catch (e) {
     yield put({ type: SAVE_SEEKER_PROFILE.ON_ERROR, payload: e.response });
+  }
+}
+
+export function* getUserApi() {
+  try {
+    const response = yield call(axios, {
+      method: "GET",
+      url: `${CONST.BASE_URL + CONST.USER_URL.GET_USER}`,
+    });
+    const data = response.data.data;
+    yield put({
+      type: GET_USER.ON_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    yield put({ type: GET_USER.ON_ERROR, payload: e.response });
   }
 }

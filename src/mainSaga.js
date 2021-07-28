@@ -12,6 +12,8 @@ import {
   SAVE_RECRUITER_PROFILE,
   saveSeekerProfile,
   saveRecruiterApi,
+  GET_USER,
+  getUserApi,
 } from "./ducks/user";
 import {
   GET_JOB,
@@ -31,6 +33,7 @@ import { UPLOAD, uploadApi } from "./ducks/upload";
 export default function* mainSaga() {
   yield takeEvery(RESEND_OTP.ON_REQUEST, resendOtpApi);
   yield takeLatest(VERIFY_USER.ON_REQUEST, verifyOTPApi);
+  yield takeLatest(GET_USER.ON_REQUEST, getUserApi);
   yield takeLatest(USER_LOGIN.ON_REQUEST, loginApi);
   yield takeLatest(GET_JOB.ON_REQUEST, getJobsApi);
   yield takeLatest(GET_JOB_BY_ID.ON_REQUEST, getJobByIdApi);
@@ -41,4 +44,5 @@ export default function* mainSaga() {
   yield takeEvery(SAVE_RECRUITER_PROFILE.ON_REQUEST, saveRecruiterApi);
   yield takeEvery(UPLOAD.ON_REQUEST, uploadApi);
   yield takeEvery(GET_JOB_APPLICANT.ON_REQUEST, jobApplicantApi);
+  yield takeEvery(GET_USER.ON_REQUEST, getUserApi);
 }

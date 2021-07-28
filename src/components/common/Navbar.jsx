@@ -1,5 +1,5 @@
 import React from "react";
-
+import { connect } from "react-redux";
 import { useLocation } from "react-router";
 import PropTypes from "prop-types";
 
@@ -137,8 +137,6 @@ const Navbar = () => {
     navChildren = navChildrenRecruiter;
   } else if (location.pathname.startsWith("/jobseeker")) {
     navChildren = navChildrenJobseeker;
-  } else if (location.pathname.startsWith("/signout")) {
-    navChildren = navChildrenLanding;
   } else {
     navChildren = navChildrenLanding;
   }
@@ -208,4 +206,9 @@ Navbar.propTypes = {
   navItems: PropTypes.array,
 };
 
-export default React.memo(Navbar);
+const mapStateToProps = (state) => ({
+  userDetails: state.user.userDetails,
+  isUserLoading: state.user.isUserLoading,
+});
+
+export default connect(mapStateToProps)(React.memo(Navbar));

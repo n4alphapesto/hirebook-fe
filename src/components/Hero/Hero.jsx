@@ -52,7 +52,6 @@ const Hero = () => {
         container
         alignItems="center"
         justifyContent="center"
-        spacing={4}
         className={classes.gridContainer}
       >
         <Grid item xs={12} sm={4} md={7} lg={7}></Grid>

@@ -7,6 +7,7 @@ import RecruiterJobPostForm from "./RecruiterDashboard/newJob";
 import RecruiterProfile from "./RecruiterDashboard/profile";
 import JobDetail from "./RecruiterDashboard/jobDetails";
 import RecruiterViewJobSeekerDetails from "./RecruiterDashboard/candiateDetails";
+import JobSeekerProfile from "./JobSeekerProfile";
 
 export {
   LandingPage,
@@ -18,4 +19,5 @@ export {
   RecruiterProfile,
   JobDetail,
   RecruiterViewJobSeekerDetails,
+  JobSeekerProfile,
 };

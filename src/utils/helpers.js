@@ -14,24 +14,25 @@ const recrutierRoutes = [
   "/recruiter/onboarding",
   "/recruiter/postedjobs",
   "/recruiter/profile",
-  "recruiter/createNewPost",
-  "recruiter/candidates",
+  "/recruiter/createNewPost",
+  "/recruiter/candidates",
 ];
 
 export const validateRoute = (user, route) => {
+  let redirectingRoute = null;
   //if user is not logged in and wants to open protected route
   if (!user && !publicRoutes.includes(route)) {
-    return "/";
+    redirectingRoute = "/";
   }
 
   //if user is logged in and has not completed onboarding
   if (user && !user.isOnboardingCompleted) {
-    return `/${user.userType}/onboarding`;
+    redirectingRoute = `/${user?.userType?.toLowerCase()}/onboarding`;
   }
 
   //if user is logged in and has not completed onboarding
   if (user && user.isOnboardingCompleted && route.includes("/onboarding")) {
-    return `/${user.userType}`;
+    redirectingRoute = `/${user?.userType?.toLowerCase()}`;
   }
 
   //if user is logged in and wants to access other routes
@@ -40,7 +41,7 @@ export const validateRoute = (user, route) => {
     user.userType === userTypes.JOBSEEKER &&
     !jobSeekerRoutes.includes(route)
   ) {
-    return "/jobseeker";
+    redirectingRoute = "/jobseeker";
   }
 
   //if user is logged in and wants to access other routes
@@ -49,8 +50,10 @@ export const validateRoute = (user, route) => {
     user.userType === userTypes.RECRUITER &&
     !recrutierRoutes.includes(route)
   ) {
-    return "/recruiter";
+    redirectingRoute = "/recruiter";
   }
 
-  return null;
+  redirectingRoute = route;
+
+  return redirectingRoute === route ? null : redirectingRoute;
 };
