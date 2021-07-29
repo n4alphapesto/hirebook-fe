@@ -14,6 +14,24 @@ const CONST = {
       value: 0,
     },
   ],
+  DEFAULT_JOBSEEKER_STATS: [
+    {
+      title: "Applied Jobs",
+      value: 0,
+    },
+    {
+      title: "Saved Jobs",
+      value: 0,
+    },
+    {
+      title: "Ongoing",
+      value: 0,
+    },
+    {
+      title: "Offers",
+      value: 0,
+    },
+  ],
   USER_URL: {
     LOGIN: "/auth/login",
     VERIFY: "/auth/verify-otp",
@@ -24,7 +42,8 @@ const CONST = {
     SAVE_RECRUITER: "/user/recruiter/saveProfile",
   },
   JOB_URL: {
-    JOB_LIST: "/job",
+    ALL_JOB_LIST: "/job",
+    JOB_LIST: "/job/joblist",
     ADD_JOB: "/job/addjob",
     JOB_BY_ID: "/job/jobById/",
     JOB_APPLY: "/job/applyForJob",

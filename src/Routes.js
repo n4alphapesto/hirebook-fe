@@ -5,6 +5,8 @@ import { RouteValidator, Navbar, Footer } from "./components/common";
 import {
   LandingPage,
   JobseekerDashboard,
+  JobPost,
+  JobseekerProfile,
   RecruiterDashboard,
   RecruiterJobPostForm,
   RecruiterProfile,
@@ -35,6 +37,16 @@ const Routes = () => {
             exact
             path="/jobseeker/editprofile"
             component={JobSeekerOnboarding}
+          />
+          <RouteValidator
+            exact
+            path="/jobseeker/opportunities/:id"
+            component={JobPost}
+          />
+          <RouteValidator
+            exact
+            path="/jobseeker/profile"
+            component={JobseekerProfile}
           />
           <RouteValidator
             exact

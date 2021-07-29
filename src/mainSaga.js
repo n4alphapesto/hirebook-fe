@@ -21,6 +21,7 @@ import {
   ADD_JOB,
   APPLY_JOB,
   GET_JOB_APPLICANT,
+  getAllJobsApi,
   getJobsApi,
   getJobByIdApi,
   applyJobApi,
