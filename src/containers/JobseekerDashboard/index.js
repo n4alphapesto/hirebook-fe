@@ -1,108 +1,164 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
+  Link,
+  Box,
+  Typography,
+  Grid,
+  Hidden,
+  Drawer,
+  IconButton,
   makeStyles,
 } from "@material-ui/core";
 
-//import FilterListIcon from "@material-ui/icons/FilterList";
+import FilterListIcon from "@material-ui/icons/FilterList";
+import { connect } from "react-redux";
+import { getUserData } from "../../ducks/user";
 
-// import {
-//   Navbar,
-//   Footer,
-//   StatsComponent,
-//   FilterComponent,
-//   SummaryComponent,
-// } from "../../components/common";
-// import oracle from "../../assets/svg/oracle.svg";
+import { StatsComponent, FilterComponent } from "../../components/common";
+import JobList from "./jobList";
 
-// const candidateData = {
-//   applied: {
-//     title: "Applied Jobs",
-//     value: 6,
-//   },
-//   saved: {
-//     title: "Saved Jobs",
-//     value: 6,
-//   },
-//   viewed: {
-//     title: "Viewed Resume",
-//     value: 22,
-//   },
-//   invitations: {
-//     title: "Invitations",
-//     value: 5,
-//   },
-// };
-
-// const jobPostData = {
-//   type: "companyDetails",
-//   companyLogo: oracle,
-//   companyName: "oracle",
-//   jobTitle: "Frontend Developer",
-//   jobLocation: "Bangalore",
-//   datePosted: "7/12/2021",
-//   jobSummary:
-//     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-// };
+import { getAllJobs } from "../../ducks/jobs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    padding: theme.spacing(2),
+    maxWidth: "1000px",
+    height: "80%",
   },
-  filterMenu: {
+  list: {
     display: "flex",
     flexDirection: "row",
   },
-  filters: {},
+  listItems: {
+    color: "#4A5056",
+    background: "#EDEDED",
+    textAlign: "center",
+    margin: theme.spacing(2),
+  },
 }));
 
-const JobseekerDashboard = () => {
+const JobseekerDashboard = ({
+  getAllJobs,
+  jobList,
+  jobsFetching,
+  jobseekerStats,
+  getUserData,
+  fetchingUser,
+  userData,
+}) => {
   const classes = useStyles();
+  const [location, setLocation] = React.useState("All");
+  const [openDrawer, setOpenDrawer] = React.useState(false);
+
+  const handleChange = (event) => {
+    setLocation(event.target.value);
+  };
+
+  const toggleDrawer = () => setOpenDrawer(!openDrawer);
+
+  useEffect(() => {
+    getAllJobs();
+    //debugger;
+    //console.log(getAllJobs());
+  }, []);
+
+  useEffect(() => {
+    const payload = {
+      id: "60f595d5d0b19546d6cfed20",
+    };
+    console.log(getUserData(payload));
+  }, []);
 
   return (
     <div className={classes.root}>
-      {/*
       <Box mt={8}>
+        {/*JSON.stringify(jobList)*/}
+        {JSON.stringify(userData)}
         <Hidden mdUp>
           <Grid container justifyContent="center">
-            <Grid item>
-              <FilterListIcon />
+            <Grid item className={classes.list}>
+              <IconButton onClick={toggleDrawer}>
+                <FilterListIcon />
+                <Typography>Filter</Typography>
+              </IconButton>
             </Grid>
             <Grid item>
-              <Typography>Filter</Typography>
+              <Drawer anchor="bottom" open={openDrawer} onClose={toggleDrawer}>
+                <FilterComponent
+                  title="Filter By Location"
+                  options={[
+                    "All",
+                    "Bangalore",
+                    "Hyderabad",
+                    "Gurgaon",
+                    "Work From Home",
+                  ]}
+                  value={location}
+                  handleChange={handleChange}
+                />
+              </Drawer>
             </Grid>
           </Grid>
         </Hidden>
-        <StatsComponent data={candidateData} />
+        <Hidden mdDown>
+          <StatsComponent data={jobseekerStats} />
+        </Hidden>
 
         <Grid container spacing={2} justifyContent="center">
-          <Hidden mdDown>
-            <Grid item className={classes.filters}>
+          <Grid item md={3}>
+            <Hidden mdDown>
               <FilterComponent
-                title={"Filter By status"}
-                options={["interested", "not interested"]}
+                title="Filter By Location"
+                options={[
+                  "All",
+                  "Bangalore",
+                  "Hyderabad",
+                  "Gurgaon",
+                  "Work From Home",
+                ]}
+                value={location}
+                handleChange={handleChange}
               />
-              <FilterComponent
-                title={"Filter By location"}
-                options={["All", "bangalore", "mumbai", "pune"]}
-              />
-              <FilterComponent
-                title={"Filter By company size"}
-                options={["All", "small", "medium", "large"]}
-              />
-            </Grid>
-          </Hidden>
-
-          <Grid item xs={12} sm={6} md={9}>
-            <SummaryComponent data={jobPostData} />
-            <SummaryComponent data={jobPostData} />
-            <SummaryComponent data={jobPostData} />
-            <SummaryComponent data={jobPostData} />
+            </Hidden>
+          </Grid>
+          <Grid item md={9}>
+            <JobList
+              jobList={
+                location === "All"
+                  ? jobList
+                  : jobList.filter(
+                      (post) => post.locations.indexOf(location) !== -1
+                    )
+              }
+            />
           </Grid>
         </Grid>
       </Box>
-      */}
     </div>
   );
 };
 
-export default JobseekerDashboard;
+const mapStateToProps = (state) => ({
+  jobList: state.jobs.jobList,
+  jobsFetching: state.jobs.jobsFetching,
+  jobseekerStats: state.jobs.jobseekerStats,
+  fetchingUser: state.user.fetchingUser,
+  userData: state.user.userData,
+});
+const mapDispatchToProps = (dispatch) => ({
+  getAllJobs() {
+    dispatch(getAllJobs());
+  },
+  getUserData(payload) {
+    dispatch(getUserData(payload));
+  },
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(React.memo(JobseekerDashboard));

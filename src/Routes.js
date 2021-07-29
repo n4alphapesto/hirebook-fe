@@ -5,6 +5,8 @@ import { RouteValidator, Navbar, Footer } from "./components/common";
 import {
   LandingPage,
   JobseekerDashboard,
+  JobPost,
+  JobseekerProfile,
   RecruiterDashboard,
   RecruiterJobPostForm,
   RecruiterProfile,
@@ -20,15 +22,60 @@ const Routes = () => {
       <Router className="routes">
         <Navbar />
         <Switch>
-          <RouteValidator exact path="/jobseeker" component={JobseekerDashboard} />
-          <RouteValidator exact path="/jobseeker/onboarding" component={JobSeekerOnboarding} />
-          <RouteValidator exact path="/recruiter/onboarding" component={RecruiterOnboarding} />
-          <RouteValidator exact path="/recruiter" component={RecruiterDashboard} />
-          <RouteValidator exact path="/recruiter/postedjobs" component={JobDetail} />
-          <RouteValidator exact path="/recruiter/postedjobs/:id" component={JobDetail} />
+          <RouteValidator
+            exact
+            path="/jobseeker"
+            component={JobseekerDashboard}
+          />
+          <RouteValidator
+            exact
+            path="/jobseeker/opportunities"
+            component={JobseekerDashboard}
+          />
+          <RouteValidator
+            exact
+            path="/jobseeker/opportunities/:id"
+            component={JobPost}
+          />
+          <RouteValidator
+            exact
+            path="/jobseeker/profile"
+            component={JobseekerProfile}
+          />
+          <RouteValidator
+            exact
+            path="/jobseeker/onboarding"
+            component={JobSeekerOnboarding}
+          />
+          <RouteValidator
+            exact
+            path="/recruiter/onboarding"
+            component={RecruiterOnboarding}
+          />
+          <RouteValidator
+            exact
+            path="/recruiter"
+            component={RecruiterDashboard}
+          />
+          <RouteValidator
+            exact
+            path="/recruiter/postedjobs"
+            component={JobDetail}
+          />
+          <RouteValidator
+            exact
+            path="/recruiter/postedjobs/:id"
+            component={JobDetail}
+          />
           {/* <RouteValidator path="/recruiter/candidates/:id" component={RecruiterViewJobSeekerDetails} /> */}
-          <RouteValidator path="/recruiter/profile" component={RecruiterProfile} />
-          <RouteValidator path="/recruiter/createNewPost" component={RecruiterJobPostForm} />
+          <RouteValidator
+            path="/recruiter/profile"
+            component={RecruiterProfile}
+          />
+          <RouteValidator
+            path="/recruiter/createNewPost"
+            component={RecruiterJobPostForm}
+          />
           <RouteValidator path="/signout" component={LandingPage} />
           <RouteValidator exact path="/" component={LandingPage} />
         </Switch>
