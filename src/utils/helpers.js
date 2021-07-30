@@ -19,7 +19,7 @@ const recrutierRoutes = [
 ];
 
 export const validateRoute = (user, route) => {
-  let redirectingRoute = null;
+  let redirectingRoute = route;
   //if user is not logged in and wants to open protected route
   if (!user && !publicRoutes.includes(route)) {
     redirectingRoute = "/";
@@ -52,8 +52,6 @@ export const validateRoute = (user, route) => {
   ) {
     redirectingRoute = "/recruiter";
   }
-
-  redirectingRoute = route;
 
   return redirectingRoute === route ? null : redirectingRoute;
 };

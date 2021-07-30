@@ -12,7 +12,6 @@ import {
 
 import FilterListIcon from "@material-ui/icons/FilterList";
 import { connect } from "react-redux";
-import { getUserData } from "../../ducks/user";
 
 import { StatsComponent, FilterComponent } from "../../components/common";
 import JobList from "./jobList";
@@ -24,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     marginLeft: "auto",
     marginRight: "auto",
-    marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
     padding: theme.spacing(2),
     maxWidth: "1000px",
@@ -62,23 +60,14 @@ const JobseekerDashboard = ({
   const toggleDrawer = () => setOpenDrawer(!openDrawer);
 
   useEffect(() => {
-    getAllJobs();
-    //debugger;
-    //console.log(getAllJobs());
-  }, []);
+    const user = userData;
 
-  useEffect(() => {
-    const payload = {
-      id: "60f595d5d0b19546d6cfed20",
-    };
-    console.log(getUserData(payload));
+    getAllJobs();
   }, []);
 
   return (
     <div className={classes.root}>
       <Box mt={8}>
-        {/*JSON.stringify(jobList)*/}
-        {JSON.stringify(userData)}
         <Hidden mdUp>
           <Grid container justifyContent="center">
             <Grid item className={classes.list}>
@@ -90,7 +79,7 @@ const JobseekerDashboard = ({
             <Grid item>
               <Drawer anchor="bottom" open={openDrawer} onClose={toggleDrawer}>
                 <FilterComponent
-                  title="Filter By Location"
+                  title="By Location"
                   options={[
                     "All",
                     "Bangalore",
@@ -114,13 +103,7 @@ const JobseekerDashboard = ({
             <Hidden mdDown>
               <FilterComponent
                 title="Filter By Location"
-                options={[
-                  "All",
-                  "Bangalore",
-                  "Hyderabad",
-                  "Gurgaon",
-                  "Work From Home",
-                ]}
+                options={["All", "Bangalore", "Hyderabad", "Gurgaon"]}
                 value={location}
                 handleChange={handleChange}
               />
@@ -148,14 +131,11 @@ const mapStateToProps = (state) => ({
   jobsFetching: state.jobs.jobsFetching,
   jobseekerStats: state.jobs.jobseekerStats,
   fetchingUser: state.user.fetchingUser,
-  userData: state.user.userData,
+  userData: state.user.userDetails,
 });
 const mapDispatchToProps = (dispatch) => ({
   getAllJobs() {
     dispatch(getAllJobs());
-  },
-  getUserData(payload) {
-    dispatch(getUserData(payload));
   },
 });
 export default connect(

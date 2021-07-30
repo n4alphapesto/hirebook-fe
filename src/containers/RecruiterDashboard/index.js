@@ -3,19 +3,17 @@ import {
   Link,
   Box,
   Typography,
+  Button,
   Grid,
   makeStyles,
 } from "@material-ui/core";
 import { connect } from "react-redux";
 
-import {
-  StatsComponent
-} from "../../components/common";
-import JobList from './jobList';
+import { StatsComponent } from "../../components/common";
+import JobList from "./jobList";
 
-import { getJobs } from '../../ducks/jobs'
-
-
+import { getJobs } from "../../ducks/jobs";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,13 +26,6 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "1000px",
     height: "80%",
   },
-  createPostButton: {
-    background: "#79d4fd",
-    margin: theme.spacing(2),
-    "&:hover": {
-      background: "#79a2fe",
-    },
-  },
   list: {
     display: "flex",
     flexDirection: "row",
@@ -44,28 +35,24 @@ const useStyles = makeStyles((theme) => ({
     background: "#EDEDED",
     textAlign: "center",
     margin: theme.spacing(2),
-  }
+  },
 }));
 
-const RecruiterDashboard = ({ getJobs, jobList, jobsFetching, recruitStats, isJobPosting }) => {
+const RecruiterDashboard = ({
+  getJobs,
+  jobList,
+  jobsFetching,
+  recruitStats,
+  isJobPosting,
+}) => {
   const classes = useStyles();
-  const [openForm, setOpenForm] = useState(false);
+  const history = useHistory();
+
   useEffect(() => {
     getJobs();
   }, []);
 
-  const deletePost = (id) => {
-
-  };
-  const handleCloseForm = () => setOpenForm(false);
-
-  // const addNewPost = (newPost) => {
-  //   //newPost.id = posts.length + 1;
-  //   //setPosts((posts) => {
-  //   //  return [...posts, newPost];
-  //   //});
-  //   handleCloseForm();
-  // };
+  const redirect = () => history.push("/recruiter/createNewPost");
 
   return (
     <div className={classes.root}>
@@ -73,14 +60,11 @@ const RecruiterDashboard = ({ getJobs, jobList, jobsFetching, recruitStats, isJo
         <StatsComponent data={recruitStats} />
         <Grid container spacing={2} justifyContent="center">
           <Grid item md={9}>
-            <Link
-              className={classes.createPostButton}
-              variant="button"
-              //onClick={handleOpenForm}
-              href="/recruiter/createNewPost"
-            >
-              Create New Job Post
-            </Link>
+            <Box align="right">
+              <Button variant="outlined" onClick={redirect}>
+                Create New Job Post
+              </Button>
+            </Box>
             <JobList jobList={jobList} />
           </Grid>
         </Grid>
@@ -89,16 +73,18 @@ const RecruiterDashboard = ({ getJobs, jobList, jobsFetching, recruitStats, isJo
   );
 };
 
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   jobList: state.jobs.jobList,
   jobsFetching: state.jobs.jobsFetching,
   recruitStats: state.jobs.recruitStats,
-  isJobPosting: state.jobs.isJobPosting
+  isJobPosting: state.jobs.isJobPosting,
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   getJobs() {
     dispatch(getJobs());
-  }
+  },
 });
-export default connect(mapStateToProps, mapDispatchToProps)(React.memo(RecruiterDashboard));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(React.memo(RecruiterDashboard));

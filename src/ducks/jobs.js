@@ -213,7 +213,7 @@ export function* getJobsApi({ payload }) {
   };
   try {
     const response = yield call(axios, {
-      method: "POST",
+      method: "GET",
       url: `${CONST.BASE_URL + CONST.JOB_URL.JOB_LIST}`,
       data: option,
     });

@@ -11,7 +11,8 @@ import {
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    margin: theme.spacing(2),
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
   },
   cardTitle: {
     color: "#40454A",
@@ -45,7 +46,7 @@ const SummaryComponent = ({
 }) => {
   const classes = useStyles();
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} elevation={2}>
       <CardContent>
         <Grid container spacing={2} justifyContent="center">
           <Grid item md={2}>
@@ -60,7 +61,7 @@ const SummaryComponent = ({
             {Boolean(cardSubTitle2) && (
               <Typography variant="subtitle2">{cardSubTitle2}</Typography>
             )}
-            <Box variant="body2">{children[1]}</Box>
+            <Typography className={"truncated"}>{children[1]}</Typography>
           </Grid>
           <Grid item md={2} className={classes.actionSection}>
             {children.slice(2, children.length)}

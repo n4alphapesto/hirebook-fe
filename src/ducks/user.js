@@ -3,6 +3,11 @@ import axios from "axios";
 
 import CONST from "../utils/constants";
 //User Actions
+export const LOG_OUT = {
+  ON_REQUEST: "LOGOUT_REQUEST",
+  ON_SUCCESS: "LOGOUT_SUCCESS",
+};
+
 export const RESEND_OTP = {
   ON_REQUEST: "RESEND_OTP_REQUEST",
   ON_SUCCESS: "RESEND_OTP_SUCCESS",
@@ -137,7 +142,10 @@ export default function userReducer(state = initialState, action) {
     case GET_USER.ON_SUCCESS:
       return { ...state, isUserLoading: "done", userDetails: payload };
     case GET_USER.ON_ERROR:
-      return { ...state, isUserLoading: false, userDetails: payload };
+      return { ...state, isUserLoading: false, userDetails: null };
+
+    case LOG_OUT.ON_SUCCESS:
+      return { ...state, userDetails: null };
     default:
       return { ...state };
   }
@@ -177,6 +185,12 @@ export function getUser() {
   };
 }
 
+export function logout() {
+  return {
+    type: LOG_OUT.ON_REQUEST,
+  };
+}
+
 export function* loginApi({ payload }) {
   const options = {
     email: payload.email,
@@ -212,13 +226,11 @@ export function* verifyOTPApi({ payload }) {
       data: options,
     });
     const data = response.data;
-    // enqueueSnackbar("Verified Successfully..", { variant: "success" });
     yield put({
       type: VERIFY_USER.ON_SUCCESS,
       payload: data,
     });
   } catch (e) {
-    // enqueueSnackbar("Verification Failed..", { variant: "error" });
     yield put({ type: VERIFY_USER.ON_ERROR, payload: e.response });
   }
 }
@@ -233,7 +245,6 @@ export function* resendOtpApi({ payload }) {
       url: `${CONST.BASE_URL + CONST.USER_URL.RESEND_OTP}`,
       data: options,
     });
-    // enqueueSnackbar("OTP Sent.", { variant: "success" });
     const data = response.data;
     yield put({
       type: RESEND_OTP.ON_SUCCESS,
@@ -326,4 +337,8 @@ export function* getUserApi() {
   } catch (e) {
     yield put({ type: GET_USER.ON_ERROR, payload: e.response });
   }
+}
+
+export function* logoutAction() {
+  yield put({ type: LOG_OUT.ON_SUCCESS });
 }

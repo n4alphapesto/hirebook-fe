@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { useLocation } from "react-router";
+import { useLocation, Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import {
@@ -8,7 +8,6 @@ import {
   AppBar,
   Toolbar,
   Box,
-  Link,
   IconButton,
   Menu,
   MenuItem,
@@ -22,6 +21,7 @@ import { PopUpComponent } from ".";
 import logo from "../../assets/svg/logo.svg";
 import Image from "./Image";
 import { setCookies } from "../../utils";
+import { logout } from "../../ducks/user";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = () => {
+const Navbar = ({ logout }) => {
   const classes = useStyles();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -87,7 +87,10 @@ const Navbar = () => {
     _setIsSignUpOpen(false);
   };
 
-  const removeToken = () => {}; //setCookies('ssoToken', '');
+  const logOutUser = () => {
+    logout();
+    setCookies("ssoToken", "");
+  };
 
   const navChildrenLanding = [];
   navChildrenLanding[0] = (
@@ -105,7 +108,7 @@ const Navbar = () => {
     <Link
       key={i}
       underline="none"
-      href={`/recruiter/${el.toLowerCase().split(" ").join("")}`}
+      to={`/recruiter/${el.toLowerCase().split(" ").join("")}`}
     >
       {el}
     </Link>
@@ -115,18 +118,18 @@ const Navbar = () => {
     <Link
       key={i}
       underline="none"
-      href={`/jobseeker/${el.toLowerCase().split(" ").join("")}`}
+      to={`/jobseeker/${el.toLowerCase().split(" ").join("")}`}
     >
       {el}
     </Link>
   ));
   navChildrenRecruiter[2] = (
-    <Link href="/" onClick={removeToken} underline="none">
+    <Link onClick={logOutUser} underline="none">
       LOG OUT
     </Link>
   );
   navChildrenJobseeker[2] = (
-    <Link href="/" onClick={removeToken} underline="none">
+    <Link onClick={logOutUser} underline="none">
       LOG OUT
     </Link>
   );
@@ -144,7 +147,7 @@ const Navbar = () => {
   return (
     <AppBar className={classes.root}>
       <Toolbar className={classes.content}>
-        <Link href="/" className={classes.logo}>
+        <Link to="/" className={classes.logo}>
           <Image src={logo} width={164} />
         </Link>
 
@@ -211,4 +214,10 @@ const mapStateToProps = (state) => ({
   isUserLoading: state.user.isUserLoading,
 });
 
-export default connect(mapStateToProps)(React.memo(Navbar));
+const mapDispatchToProps = (dispatch) => ({
+  logout() {
+    dispatch(logout());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Navbar));

@@ -14,6 +14,8 @@ import {
   saveRecruiterApi,
   GET_USER,
   getUserApi,
+  LOG_OUT,
+  logoutAction,
 } from "./ducks/user";
 import {
   GET_JOB,
@@ -46,4 +48,5 @@ export default function* mainSaga() {
   yield takeEvery(UPLOAD.ON_REQUEST, uploadApi);
   yield takeEvery(GET_JOB_APPLICANT.ON_REQUEST, jobApplicantApi);
   yield takeEvery(GET_USER.ON_REQUEST, getUserApi);
+  yield takeEvery(LOG_OUT.ON_REQUEST, logoutAction);
 }

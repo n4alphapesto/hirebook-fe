@@ -103,7 +103,9 @@ const Login = ({ signIn, isLogging, handleClose, userDetails }) => {
                 variant="contained"
                 color="primary"
               >
-                {isLogging && <CircularProgress size={20} color="white" />}
+                {isLogging === true && (
+                  <CircularProgress size={20} color="white" />
+                )}
                 Login
               </Button>
             </Box>

@@ -10,14 +10,16 @@ import {
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    //margin: theme.spacing(2),
-    //padding: theme.spacing(2),
-    //border: "2px solid blue",
     display: "flex",
     flexWrap: "wrap",
-    //width: "80%",
-    //position: "relative",
-    //left: "10%",
+  },
+
+  count: {
+    fontWeight: "bold",
+  },
+
+  title: {
+    textTransform: "uppercase",
   },
 }));
 
@@ -34,12 +36,20 @@ const StatsComponent = ({ data }) => {
       {data.map((item, i) => {
         return (
           <Grid item xs={12} sm={6} md={3} key={i}>
-            <Card>
+            <Card elevation={2}>
               <CardContent>
-                <Typography variant="h2" align="center">
+                <Typography
+                  variant="h3"
+                  align="center"
+                  className={classes.count}
+                >
                   {item.value}
                 </Typography>
-                <Typography variant="h4" align="center">
+                <Typography
+                  variant="h6"
+                  align="center"
+                  className={classes.title}
+                >
                   {item.title}
                 </Typography>
               </CardContent>
