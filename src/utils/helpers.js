@@ -7,7 +7,12 @@ export const publicApiRoutes = ["/auth/login", "/auth/register"];
 
 const publicRoutes = ["/"];
 
-const jobSeekerRoutes = ["/jobseeker", "/jobseeker/onboarding"];
+const jobSeekerRoutes = [
+  "/jobseeker",
+  "/jobseeker/onboarding",
+  "/jobseeker/profile",
+  "/jobseeker/jobs/",
+];
 
 const recrutierRoutes = [
   "/recruiter",
@@ -39,7 +44,7 @@ export const validateRoute = (user, route) => {
   if (
     user &&
     user.userType === userTypes.JOBSEEKER &&
-    !jobSeekerRoutes.includes(route)
+    !jobSeekerRoutes.filter((item) => route.startsWith(item))
   ) {
     redirectingRoute = "/jobseeker";
   }

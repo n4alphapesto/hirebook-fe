@@ -52,10 +52,10 @@ const JobSeekerProfile = ({ userDetails }) => {
                   <Grid item>
                     <Typography variant="h5">{userDetails.name}</Typography>
                     <Typography variant="body1">
-                      {userDetails.jobseeker.currentRole}
+                      {userDetails.jobseeker?.currentRole}
                     </Typography>
                     <Typography variant="body2">
-                      {userDetails.jobseeker.currentLocation}
+                      {userDetails.jobseeker?.currentLocation}
                     </Typography>
                   </Grid>
                   <Grid item xs={1}>

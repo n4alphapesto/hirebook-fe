@@ -23,7 +23,7 @@ body {
 }
 
 .content {
-  margin: 100px 0;
+  padding: 100px 0 50px;
   flex: 1 1 auto;
 }
 

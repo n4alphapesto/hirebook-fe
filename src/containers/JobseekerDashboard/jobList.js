@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import TablePagination from "@material-ui/core/TablePagination";
 import { Link, Typography, makeStyles } from "@material-ui/core";
 import { SummaryComponent } from "../../components/common";
-import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   viewButton: {
@@ -61,7 +60,7 @@ function JobList({ getUserData, jobList }) {
               <Link
                 className={classes.viewButton}
                 variant="button"
-                href={`/jobseeker/opportunities/${post.id}`}
+                href={`/jobseeker/jobs/${post.id}`}
                 underline="none"
               >
                 View

@@ -16,7 +16,7 @@ import { connect } from "react-redux";
 import { StatsComponent, FilterComponent } from "../../components/common";
 import JobList from "./jobList";
 
-import { getAllJobs } from "../../ducks/jobs";
+import { getJobs } from "../../ducks/jobs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,15 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const JobseekerDashboard = ({
-  getAllJobs,
-  jobList,
-  jobsFetching,
-  jobseekerStats,
-  getUserData,
-  fetchingUser,
-  userData,
-}) => {
+const JobseekerDashboard = ({ getJobs, jobList, jobseekerStats, userData }) => {
   const classes = useStyles();
   const [location, setLocation] = React.useState("All");
   const [openDrawer, setOpenDrawer] = React.useState(false);
@@ -62,7 +54,7 @@ const JobseekerDashboard = ({
   useEffect(() => {
     const user = userData;
 
-    getAllJobs();
+    getJobs();
   }, []);
 
   return (
@@ -134,8 +126,8 @@ const mapStateToProps = (state) => ({
   userData: state.user.userDetails,
 });
 const mapDispatchToProps = (dispatch) => ({
-  getAllJobs() {
-    dispatch(getAllJobs());
+  getJobs() {
+    dispatch(getJobs());
   },
 });
 export default connect(
