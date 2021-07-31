@@ -23,6 +23,23 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     flexDirection: "column",
   },
+
+  caption: {
+    color: "grey",
+    marginBottom: 10,
+  },
+
+  secondGrid: {
+    [theme.breakpoints.down("xs")]: {
+      flexDirection: "column-reverse",
+    },
+  },
+
+  secondItem: {
+    [theme.breakpoints.down("xs")]: {
+      textAlign: "left",
+    },
+  },
 }));
 
 const Testimonial = () => {
@@ -36,11 +53,15 @@ const Testimonial = () => {
             <Img src={ashwek} />
           </Grid>
           <Grid item xs={12} sm={6} className={classes.textContainer}>
-            <Typography variant="h5">Ashwek Pawar</Typography>
-            <Typography variant="subtitle1" gutterBottom>
+            <Typography variant="h4">Ashwek Pawar</Typography>
+            <Typography
+              variant="caption"
+              className={classes.caption}
+              gutterBottom
+            >
               Full-Stack Developer
             </Typography>
-            <Typography variant="body2">
+            <Typography variant="body1">
               "It was a really cool experience with Hirebook. It was very simple
               and clean without the bugging from job consultants. Keep up the
               good work guys!"
@@ -49,23 +70,31 @@ const Testimonial = () => {
         </Grid>
       </Box>
       <Box mt={5} mb={10}>
-        <Grid container spacing={4}>
-          <Grid item xs={12} sm={6} className={classes.textContainer}>
-            <Box align="right">
-              <Typography variant="h5" align="right">
-                Harsh Khndewal
-              </Typography>
-              <Typography variant="subtitle1" gutterBottom align="right">
+        <Grid container spacing={4} className={classes.secondGrid}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            order={{ xs: 2, sm: 1 }}
+            className={classes.textContainer}
+          >
+            <Box align="right" className={classes.secondItem}>
+              <Typography variant="h4">Harsh Khndewal</Typography>
+              <Typography
+                variant="caption"
+                className={classes.caption}
+                gutterBottom
+              >
                 DevOps Engineer
               </Typography>
-              <Typography variant="body2" align="right">
+              <Typography variant="body1">
                 "Little did I know about the reach of Hirebook. They have
                 hundreds of start-ups searching for candidates. I received a
                 good number of offers!"
               </Typography>
             </Box>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} order={{ xs: 1, sm: 2 }}>
             <Img src={harsh} />
           </Grid>
         </Grid>

@@ -34,9 +34,13 @@ const Step1 = ({ next, initialData }) => {
   const classes = useStyles();
   const [experienceType, _setExperienceType] = useState("PROFESSIONAL");
   const [experience, _setTotalexperience] = useState();
-  const [currentRole, _setCurrentRole] = useState(10);
+  const [currentRole, _setCurrentRole] = useState("Full-Stack Developer");
   const [skills, _setSkills] = useState([
-    { _id: randomNumber(4), title: "", expertiseLevel: "FRESHER" },
+    {
+      _id: randomNumber(4),
+      title: "",
+      expertiseLevel: expertiseOptions[0].value,
+    },
   ]);
 
   useEffect(() => {
@@ -51,7 +55,7 @@ const Step1 = ({ next, initialData }) => {
       }));
       _setSkills(initialSkills);
     }
-  }, []);
+  }, [initialData]);
 
   const addSkillsRow = () => {
     if (skills.length === 4)
@@ -59,7 +63,11 @@ const Step1 = ({ next, initialData }) => {
 
     _setSkills([
       ...skills,
-      { _id: randomNumber(4), title: "", expertiseLevel: "fresher" },
+      {
+        _id: randomNumber(4),
+        title: "",
+        expertiseLevel: expertiseOptions[0].value,
+      },
     ]);
   };
 
@@ -283,7 +291,7 @@ const Step1 = ({ next, initialData }) => {
                   <Button
                     variant="contained"
                     color="primary"
-                    disabled={skills.length == 4}
+                    disabled={skills.length === 4}
                     className={classes.button}
                     startIcon={<AddIcon />}
                     onClick={addSkillsRow}

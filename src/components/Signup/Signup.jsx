@@ -1,7 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { useSnackbar } from "notistack";
-import { bindActionCreators } from "redux";
 import {
   Grid,
   Box,
@@ -16,67 +14,69 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import OtpInput from "react-otp-input";
-import { register, verify } from "../../redux/actions/auth";
-import { resendOTPApi } from "../../api/auth";
+import { register, resendOtp, verify } from "../../ducks/user";
 import "./style.css";
+import { useHistory } from "react-router-dom";
 
-const Signup = ({ isSigning, actions, closeDialog }) => {
+const useStyles = makeStyles((theme) => ({
+  label: {
+    fontWeight: "bold",
+  },
+
+  otpContainer: {
+    display: "flex",
+    justifyContent: "center",
+  },
+}));
+
+const Signup = ({
+  isSigning,
+  isVerifying,
+  register,
+  resendOtp,
+  verify,
+  resendingOtp,
+  handleClose,
+}) => {
+  const history = useHistory();
   const classes = useStyles();
-  const { enqueueSnackbar } = useSnackbar();
   const [userType, _setUserType] = useState("JOBSEEKER");
   const [name, _setName] = useState("");
   const [email, _setEmail] = useState("");
   const [password, _setPassword] = useState("");
   const [showOTP, _setShowOTP] = useState(false);
   const [otp, _setOTP] = useState(false);
-  const [isResendingOTP, _setIsResendingOTP] = useState(false);
 
   const handleChange = (otp) => _setOTP(otp);
 
   const redirectUser = (data) => {
     let url = `/${userType.toLowerCase()}/onboarding`;
-
-    window.location.href = url;
+    history.push(url);
   };
+
+  useEffect(() => {
+    if (isSigning === "done") {
+      _setShowOTP(true);
+    }
+  }, [isSigning]);
+
+  useEffect(() => {
+    if (isVerifying === "done") {
+      redirectUser();
+    }
+  }, [isVerifying]);
 
   const onSubmit = (e) => {
     e.preventDefault();
-
-    actions
-      .register({ email, password, name, userType })
-      .then((result) => {
-        _setShowOTP(true);
-        enqueueSnackbar("Signup Successfully.", { variant: "success" });
-      })
-      .catch((error) => {
-        enqueueSnackbar("Signup Failed.", { variant: "error" });
-      });
+    register({ email, password, name, userType });
   };
 
   const verifyOTP = () => {
-    actions
-      .verify({ email, otp })
-      .then((result) => {
-        enqueueSnackbar("Verified Successfully..", { variant: "success" });
-        redirectUser();
-      })
-      .catch((error) => {
-        console.log(error);
-        enqueueSnackbar("Verification Failed..", { variant: "error" });
-      });
+    verify({ email, otp });
   };
 
   const handleResendOTP = () => {
-    _setIsResendingOTP(true);
-    resendOTPApi({ email })
-      .then((result) => {
-        enqueueSnackbar("OTP Sent.", { variant: "success" });
-        _setIsResendingOTP(false);
-      })
-      .catch((error) => {
-        enqueueSnackbar("Operation Failed.", { variant: "error" });
-        _setIsResendingOTP(false);
-      });
+    resendOtp({ email });
   };
 
   return (
@@ -194,7 +194,9 @@ const Signup = ({ isSigning, actions, closeDialog }) => {
                 variant="contained"
                 color="primary"
               >
-                {isSigning && <CircularProgress size={20} color="white" />}
+                {isSigning === true && (
+                  <CircularProgress size={20} color="white" />
+                )}
                 Signup
               </Button>
             </Box>
@@ -210,12 +212,10 @@ const Signup = ({ isSigning, actions, closeDialog }) => {
               <Box align="right">
                 <Button
                   onClick={handleResendOTP}
-                  disabled={isResendingOTP}
+                  disabled={resendingOtp}
                   color="primary"
                 >
-                  {isResendingOTP && (
-                    <CircularProgress size={20} color="white" />
-                  )}
+                  {resendingOtp && <CircularProgress size={20} color="white" />}
                   Resend OTP
                 </Button>
               </Box>
@@ -250,7 +250,7 @@ const Signup = ({ isSigning, actions, closeDialog }) => {
               fullWidth
               variant="outlined"
               color="secondary"
-              onClick={closeDialog}
+              onClick={handleClose}
             >
               Cancel
             </Button>
@@ -262,22 +262,19 @@ const Signup = ({ isSigning, actions, closeDialog }) => {
 };
 
 const mapStateToProps = (state) => ({
-  isSigning: state.userReducer.isSigning,
+  isSigning: state.user.isSinging,
+  isVerifying: state.user.isVerifying,
+  resendingOtp: state.user.resendingOtp,
 });
-
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators({ register, verify }, dispatch),
+  register(payload) {
+    dispatch(register(payload));
+  },
+  resendOtp(payload) {
+    dispatch(resendOtp(payload));
+  },
+  verify(payload) {
+    dispatch(verify(payload));
+  },
 });
-
-export default connect(mapStateToProps, mapDispatchToProps)(Signup);
-
-const useStyles = makeStyles((theme) => ({
-  label: {
-    fontWeight: "bold",
-  },
-
-  otpContainer: {
-    display: "flex",
-    justifyContent: "center",
-  },
-}));
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Signup));

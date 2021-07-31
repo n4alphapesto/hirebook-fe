@@ -1,57 +1,63 @@
 import React from "react";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 
-import { RouteValidator } from "./common";
+import { RouteValidator, Navbar, Footer } from "./components/common";
 import {
   LandingPage,
   JobseekerDashboard,
+  JobPost,
+  JobseekerProfile,
   RecruiterDashboard,
   RecruiterJobPostForm,
   RecruiterProfile,
   RecruiterJobPostDetails,
-  RecruiterViewJobSeekerDetails,
+  JobDetail,
   RecruiterOnboarding,
   JobSeekerOnboarding,
+  JobSeekerProfile,
 } from "./containers";
-
-import { Navbar, Footer } from "./common";
-
-const styles = {
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "space-between",
-  border: "2px solid red",
-};
 
 const Routes = () => {
   return (
     <div className="app-container">
-      <Router style={styles}>
+      <Router className="routes">
         <Navbar />
         <Switch>
-          <RouteValidator exact path="/" component={LandingPage} />
-          <RouteValidator path="/signout" component={LandingPage} />
-          {/*jobseeker routes*/}
-
           <RouteValidator
             exact
             path="/jobseeker"
             component={JobseekerDashboard}
           />
-
+          <RouteValidator
+            exact
+            path="/jobseeker/profile"
+            component={JobSeekerProfile}
+          />
+          <RouteValidator
+            exact
+            path="/jobseeker/editprofile"
+            component={JobSeekerOnboarding}
+          />
+          <RouteValidator
+            exact
+            path="/jobseeker/opportunities/:id"
+            component={JobPost}
+          />
+          <RouteValidator
+            exact
+            path="/jobseeker/profile"
+            component={JobseekerProfile}
+          />
           <RouteValidator
             exact
             path="/jobseeker/onboarding"
             component={JobSeekerOnboarding}
           />
-
           <RouteValidator
             exact
             path="/recruiter/onboarding"
             component={RecruiterOnboarding}
           />
-
-          {/*recruiter routes*/}
           <RouteValidator
             exact
             path="/recruiter"
@@ -59,19 +65,20 @@ const Routes = () => {
           />
           <RouteValidator
             exact
+            path="/recruiter/editprofile"
+            component={RecruiterOnboarding}
+          />
+          <RouteValidator
+            exact
             path="/recruiter/postedjobs"
-            component={RecruiterDashboard}
+            component={JobDetail}
           />
           <RouteValidator
             exact
             path="/recruiter/postedjobs/:id"
-            component={RecruiterJobPostDetails}
+            component={JobDetail}
           />
-          <RouteValidator
-            path="/recruiter/candidates/:id"
-            component={RecruiterViewJobSeekerDetails}
-          />
-
+          {/* <RouteValidator path="/recruiter/candidates/:id" component={RecruiterViewJobSeekerDetails} /> */}
           <RouteValidator
             path="/recruiter/profile"
             component={RecruiterProfile}
@@ -80,6 +87,7 @@ const Routes = () => {
             path="/recruiter/createNewPost"
             component={RecruiterJobPostForm}
           />
+          <RouteValidator exact path="/" component={LandingPage} />
         </Switch>
         <Footer />
       </Router>
@@ -87,4 +95,4 @@ const Routes = () => {
   );
 };
 
-export default Routes;
+export default React.memo(Routes);

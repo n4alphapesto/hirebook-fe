@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Typography,
-  TextareaAutosize,
   Grid,
   makeStyles,
   Button,
@@ -9,18 +8,60 @@ import {
   TextField,
   CircularProgress,
 } from "@material-ui/core";
+import { connect } from "react-redux";
 import { useSnackbar } from "notistack";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
-import { uploadFileApi } from "../../../api/common";
+import { upload } from "../../../ducks/upload";
 
-const expertiseOptions = [
-  { value: "fresher", label: "Fresher" },
-  { value: "intermediate", label: "Intermediate" },
-  { value: "expert", label: "Expert" },
-];
+const useStyles = makeStyles((theme) => ({
+  label: {
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
 
-const Step2 = ({ finish, back }) => {
+  buttonContainer: {
+    display: "flex",
+  },
+  fileDropZone: {
+    minHeight: 200,
+    width: "auto",
+    border: "2px dashed grey",
+    borderRadius: 5,
+    position: "relative",
+  },
+
+  fileInputControl: {
+    minHeight: 200,
+    height: "100%",
+    width: "100%",
+    opacity: 0,
+  },
+  loadingOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+    width: "100%",
+    background: "rgba(0,0,0,0.1)",
+  },
+}));
+
+const Step2 = ({
+  finish,
+  back,
+  upload,
+  initialData,
+  companyLogo_Status,
+  companyPhotos_Status,
+  companyLogo_Msg,
+  companyPhotos_Msg,
+  isSaving,
+}) => {
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   const [aboutCompany, _setAboutCompany] = useState("");
@@ -30,8 +71,31 @@ const Step2 = ({ finish, back }) => {
   const [facebookProfile, _setFacebookProfile] = useState();
   const [companyPhotos, _setCompanyPhotos] = useState([]);
   const [companyLogo, _setCompnayLogo] = useState("");
-  const [isLogoUploading, _setIsLogoUploading] = useState(false);
-  const [isPhotosUploading, _setIsPhotosUploading] = useState(false);
+
+  useEffect(() => {
+    if (initialData.aboutCompany) _setAboutCompany(initialData.aboutCompany);
+    if (initialData.website) _setWebsite(initialData.website);
+    if (initialData.linkedInProfile)
+      _setLinkedInProfile(initialData.linkedInProfile);
+    if (initialData.twitterProfile)
+      _setTwitterProfile(initialData.twitterProfile);
+    if (initialData.facebookProfile)
+      _setFacebookProfile(initialData.facebookProfile);
+    if (initialData.companyLogo) _setCompnayLogo(initialData.companyLogo);
+    if (initialData.companyPhotos) _setCompanyPhotos(initialData.companyPhotos);
+  }, [initialData]);
+
+  useEffect(() => {
+    if (companyPhotos_Status === "done") {
+      _setCompanyPhotos(companyPhotos_Msg);
+    }
+  }, [companyPhotos_Status]);
+
+  useEffect(() => {
+    if (companyLogo_Status === "done") {
+      _setCompnayLogo(companyLogo_Msg[0]);
+    }
+  }, [companyLogo_Status]);
 
   const handleFinish = () => {
     if (!aboutCompany)
@@ -69,10 +133,6 @@ const Step2 = ({ finish, back }) => {
   const handleFileChange = (e, key) => {
     if (!e.target.files[0]) return;
 
-    key === "companyLogo"
-      ? _setIsLogoUploading(true)
-      : _setIsPhotosUploading(true);
-
     const { files } = e.target;
     const formData = new FormData();
 
@@ -80,36 +140,10 @@ const Step2 = ({ finish, back }) => {
       formData.append("files", file);
     });
 
-    uploadFileApi(formData)
-      .then((result) => {
-        enqueueSnackbar(
-          `${files.length > 1 ? "Files" : "File"} Uploaded Successfully.`,
-          { variant: "success" }
-        );
-        if (key === "companyLogo") {
-          result.data.data?.[0] && _setCompnayLogo(result.data.data[0]);
-          key === "companyLogo"
-            ? _setIsLogoUploading(true)
-            : _setIsPhotosUploading(true);
-        } else {
-          _setCompanyPhotos(result.data.data);
-          key === "companyLogo"
-            ? _setIsLogoUploading(true)
-            : _setIsPhotosUploading(true);
-        }
-      })
-      .catch((error) => {
-        enqueueSnackbar(`Error uploading files. Please try again.`, {
-          variant: "error",
-        });
-        key === "companyLogo"
-          ? _setIsLogoUploading(true)
-          : _setIsPhotosUploading(true);
-      });
+    upload({ formData, key });
   };
 
   const isDisabled = () => {
-    console.log({ companyLogo, companyPhotos, aboutCompany });
     return !companyLogo || !companyPhotos.length || !aboutCompany;
   };
 
@@ -154,7 +188,7 @@ const Step2 = ({ finish, back }) => {
                   type="file"
                   accept="image/jpeg, image/png"
                 />
-                {isLogoUploading && (
+                {companyLogo_Status === true && (
                   <div className={classes.loadingOverlay}>
                     <CircularProgress />
                   </div>
@@ -176,7 +210,7 @@ const Step2 = ({ finish, back }) => {
                   type="file"
                   accept="image/jpeg, image/png"
                 />
-                {isPhotosUploading && (
+                {companyPhotos_Status === true && (
                   <div className={classes.loadingOverlay}>
                     <CircularProgress />
                   </div>
@@ -278,6 +312,7 @@ const Step2 = ({ finish, back }) => {
                 color="primary"
                 disabled={isDisabled()}
               >
+                {isSaving === true && <CircularProgress color="white" />}
                 Finish
               </Button>
             </Box>
@@ -288,41 +323,16 @@ const Step2 = ({ finish, back }) => {
   );
 };
 
-export default Step2;
+const mapStateToProps = (state) => ({
+  companyLogo_Status: state.upload.companyLogo_Status,
+  companyPhotos_Status: state.upload.companyPhotos_Status,
+  companyLogo_Msg: state.upload.companyLogo_Msg,
+  companyPhotos_Msg: state.upload.companyPhotos_Msg,
+});
+const mapDispatchToProps = (dispatch) => ({
+  upload(payload) {
+    dispatch(upload(payload));
+  },
+});
 
-const useStyles = makeStyles((theme) => ({
-  label: {
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-
-  buttonContainer: {
-    display: "flex",
-  },
-  fileDropZone: {
-    minHeight: 200,
-    width: "auto",
-    border: "2px dashed grey",
-    borderRadius: 5,
-    position: "relative",
-  },
-
-  fileInputControl: {
-    minHeight: 200,
-    height: "100%",
-    width: "100%",
-    opacity: 0,
-  },
-  loadingOverlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100%",
-    width: "100%",
-    background: "rgba(0,0,0,0.1)",
-  },
-}));
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Step2));

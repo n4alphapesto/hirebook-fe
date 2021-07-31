@@ -11,7 +11,7 @@ import { useTheme } from "@material-ui/core/styles";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
-import Image from "../../common/Image";
+import Image from "../../components/common/Image";
 
 import twilio from "../../assets/svg/twilio.svg";
 import disney from "../../assets/svg/disney.svg";
@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     textAlign: "center",
+    padding: "0 10px",
   },
   mainContainer: {
     display: "flex",
@@ -45,13 +46,12 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     scrollBehavior: "smooth",
     width: "1185px",
+    flex: 1,
   },
-  logoImage: {
-    //border: "2px solid red",
-  },
+  logoImage: {},
   arrows: {
-    //border: "2px solid red",
     height: "inherit",
+    flex: "0 0 auto",
   },
 }));
 
@@ -77,7 +77,7 @@ function TrustedCompanies() {
   ];
 
   const theme = useTheme();
-  const logoWidth = useMediaQuery(theme.breakpoints.down("sm")) ? 82 : 164;
+  const logoWidth = useMediaQuery(theme.breakpoints.down("sm")) ? 164 : 164;
   const logoHeight = 164;
 
   useEffect(() => {
@@ -121,7 +121,7 @@ function TrustedCompanies() {
 
   return (
     <Box className={classes.root}>
-      <Typography variant="h5">Companies who trust us</Typography>
+      <Typography variant="h4">Companies who trust us</Typography>
       <Box className={classes.mainContainer} justifyContent="center">
         <ArrowBackIosIcon
           className={classes.arrows}

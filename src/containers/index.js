@@ -1,21 +1,27 @@
-import LandingPage from "./LandingPage";
-import RecruiterOnboarding from "./RecruiterOnboarding";
-import JobSeekerOnboarding from "./JobSeekerOnboarding";
-import JobseekerDashboard from "./JobseekerDashboard/JobseekerDashboard";
-import RecruiterDashboard from "./RecruiterDashboard/RecruiterDashboard";
-import RecruiterJobPostForm from "./RecruiterDashboard/RecruiterJobPostForm";
-import RecruiterProfile from "./RecruiterDashboard/RecruiterProfile";
-import RecruiterJobPostDetails from "./RecruiterDashboard/RecruiterJobPostDetails";
-import RecruiterViewJobSeekerDetails from "./RecruiterDashboard/RecruiterViewJobSeekerDetails";
+import LandingPage from "./home";
+import RecruiterOnboarding from "./onBoarding/recruiter";
+import JobSeekerOnboarding from "./onBoarding/jobSeeker";
+import JobseekerDashboard from "./JobseekerDashboard/index";
+import JobPost from "./JobseekerDashboard/jobDetails";
+import JobseekerProfile from "./JobseekerDashboard/profile";
+import RecruiterDashboard from "./RecruiterDashboard/index";
+import RecruiterJobPostForm from "./RecruiterDashboard/newJob";
+import RecruiterProfile from "./RecruiterDashboard/profile";
+import JobDetail from "./RecruiterDashboard/jobDetails";
+import RecruiterViewJobSeekerDetails from "./RecruiterDashboard/candiateDetails";
+import JobSeekerProfile from "./JobSeekerProfile";
 
 export {
   LandingPage,
   RecruiterOnboarding,
   JobSeekerOnboarding,
   JobseekerDashboard,
+  JobPost,
+  JobseekerProfile,
   RecruiterDashboard,
   RecruiterJobPostForm,
   RecruiterProfile,
-  RecruiterJobPostDetails,
+  JobDetail,
   RecruiterViewJobSeekerDetails,
+  JobSeekerProfile,
 };

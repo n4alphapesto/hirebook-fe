@@ -1,7 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { useSnackbar } from "notistack";
 import {
   Grid,
   Box,
@@ -11,51 +9,44 @@ import {
   CircularProgress,
   makeStyles,
 } from "@material-ui/core";
-import { login } from "../../redux/actions/auth";
+import { login } from "../../ducks/user";
+import { setCookies } from "../../utils";
+import { useHistory } from "react-router-dom";
 
-const Login = ({ loginAction, isLogging, closeDialog, user }) => {
-  const { enqueueSnackbar } = useSnackbar();
+const useStyles = makeStyles((theme) => ({
+  label: {
+    fontWeight: "bold",
+  },
+}));
+
+const Login = ({ signIn, isLogging, handleClose, userDetails }) => {
+  const history = useHistory();
   const classes = useStyles();
   const [email, _setEmail] = useState("");
   const [password, _setPassword] = useState("");
 
   const redirectUser = (data) => {
-    let url;
-    console.log({
-      userType: data.userType,
-      isOnboardingCompleted: data.isOnboardingCompleted,
-    });
-    if (data.userType === "JOBSEEKER") {
-      url = "/jobseeker";
-
-      if (!data.isOnboardingCompleted) {
-        url += "/onboarding";
-      }
-    } else {
-      url = "/recruiter";
-
-      if (!data.isOnboardingCompleted) {
-        url += "/onboarding";
-      }
-    }
-
-    window.location.href = url;
+    let userType = data.userType === "JOBSEEKER" ? "jobseeker" : "recruiter";
+    let finalRoute = data.isOnboardingCompleted
+      ? `/${userType}`
+      : `/${userType}/onboarding`;
+    history.push(finalRoute);
   };
+
+  useEffect(() => {
+    if (isLogging === "done" && userDetails) {
+      setCookies("ssoToken", userDetails.token);
+      handleClose(false);
+      redirectUser(userDetails);
+    }
+  }, [isLogging]);
 
   const login = (e) => {
     e.preventDefault();
-
-    loginAction({ email, password })
-      .then((result) => {
-        enqueueSnackbar("Login Successfully.", { variant: "success" });
-
-        const data = result?.data?.data;
-        redirectUser(data);
-      })
-      .catch((error) => {
-        console.log(" --- error --- ", error);
-        enqueueSnackbar(error.message, { variant: "error" });
-      });
+    signIn({
+      email,
+      password,
+    });
   };
 
   return (
@@ -112,23 +103,21 @@ const Login = ({ loginAction, isLogging, closeDialog, user }) => {
                 variant="contained"
                 color="primary"
               >
-                {isLogging && <CircularProgress size={20} color="white" />}
+                {isLogging === true && (
+                  <CircularProgress size={20} color="white" />
+                )}
                 Login
               </Button>
             </Box>
             <Box mt={2}>
               <Button
-                onClick={closeDialog}
+                onClick={handleClose}
                 fullWidth
                 variant="outlined"
                 color="secondary"
               >
                 Cancel
               </Button>
-            </Box>
-
-            <Box mt={1} align="center">
-              <Button color="primary">Forgot Your Password?</Button>
             </Box>
           </form>
         </Grid>
@@ -138,18 +127,13 @@ const Login = ({ loginAction, isLogging, closeDialog, user }) => {
 };
 
 const mapStateToProps = (state) => ({
-  user: state.userReducer.user,
-  isLogging: state.userReducer.isLogging,
+  loginErrorMsg: state.user.loginErrorMsg,
+  isLogging: state.user.isLogging,
+  userDetails: state.user.userDetails,
 });
-
 const mapDispatchToProps = (dispatch) => ({
-  loginAction: bindActionCreators(login, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
-
-const useStyles = makeStyles((theme) => ({
-  label: {
-    fontWeight: "bold",
+  signIn(payload) {
+    dispatch(login(payload));
   },
-}));
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

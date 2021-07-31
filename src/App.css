@@ -3,6 +3,10 @@
   --whiteSmoke: whitesmoke;
   --primary: #79d4fd;
   --white: #fff;
+  --charcol: #333333;
+}
+body {
+  color: var(--charcol);
 }
 
 .app-container {
@@ -11,7 +15,15 @@
   height: 100vh;
 }
 
+.routes {
+  display: "flex";
+  flex-direction: "column";
+  justify-content: "space-between";
+  border: "2px solid red";
+}
+
 .content {
+  padding: 100px 0 50px;
   flex: 1 1 auto;
 }
 
@@ -40,6 +52,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

@@ -30,20 +30,19 @@ const Step1 = ({ next, initialData }) => {
   const [noOfEmployees, _setNoOfEmployee] = useState();
 
   useEffect(() => {
-    console.log(" --- intialData --", initialData);
     if (initialData.companyName) _setCompanyName(initialData.companyName);
     if (initialData.userRole) _setUserRole(initialData.userRole);
     if (initialData.mobileNo) _setMobileNo(initialData.mobileNo);
     if (initialData.foundationYear)
       _setFoundationYear(initialData.foundationYear);
     if (initialData.noOfEmployees) _setNoOfEmployee(initialData.noOfEmployees);
-    if (initialData.locations) {
-      const prefferedLocations = initialData.locations.map((loc) =>
+    if (initialData.companyLocations) {
+      const compnayLoc = initialData.companyLocations.map((loc) =>
         locations.find((option) => option.value === loc)
       );
-      _setCompanyLocations(prefferedLocations);
+      _setCompanyLocations(compnayLoc);
     }
-  }, []);
+  }, [initialData]);
 
   const getYearOptions = () => {
     const now = new Date();
@@ -103,13 +102,6 @@ const Step1 = ({ next, initialData }) => {
     next(data);
   };
 
-  console.log(" states ", {
-    companyName,
-    userRole,
-    mobileNo,
-    companyLocations,
-    noOfEmployees,
-  });
   return (
     <>
       <Box mb={5} align="center">
@@ -149,7 +141,7 @@ const Step1 = ({ next, initialData }) => {
                 </Typography>
                 <Select
                   required
-                  value={userRole}
+                  value={`${userRole}`}
                   onChange={({ target }) => _setUserRole(target.value)}
                 >
                   <MenuItem value={"Talent Acquistion Manager"}>
@@ -215,7 +207,7 @@ const Step1 = ({ next, initialData }) => {
                 </Typography>
                 <Select
                   required
-                  value={foundationYear}
+                  value={`${foundationYear}`}
                   onChange={({ target }) => _setFoundationYear(target.value)}
                 >
                   {getYearOptions().map((option) => option)}

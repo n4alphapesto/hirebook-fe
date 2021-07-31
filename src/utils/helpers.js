@@ -7,15 +7,20 @@ export const publicApiRoutes = ["/auth/login", "/auth/register"];
 
 const publicRoutes = ["/"];
 
-const jobSeekerRoutes = ["/jobseeker", "/jobseeker/onboarding"];
+const jobSeekerRoutes = [
+  "/jobseeker",
+  "/jobseeker/onboarding",
+  "/jobseeker/profile",
+  "/jobseeker/jobs/",
+];
 
 const recrutierRoutes = [
   "/recruiter",
   "/recruiter/onboarding",
   "/recruiter/postedjobs",
   "/recruiter/profile",
-  "recruiter/createNewPost",
-  "recruiter/candidates",
+  "/recruiter/createNewPost",
+  "/recruiter/candidates",
 ];
 
 export const validateRoute = (user, route) => {
@@ -39,7 +44,7 @@ export const validateRoute = (user, route) => {
   if (
     user &&
     user.userType === userTypes.JOBSEEKER &&
-    !jobSeekerRoutes.includes(route)
+    !jobSeekerRoutes.filter((item) => route.startsWith(item))
   ) {
     redirectRoute = "/jobseeker";
   }

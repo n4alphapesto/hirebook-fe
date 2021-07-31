@@ -11,7 +11,7 @@ const Div = styled.div`
   min-height: 500px;
   background-size: cover;
 
-  @media (max-width: 768px) {
+  @media (max-width: 959px) {
     background-image: url("${HeroImageSm}");
   }
 `;
@@ -23,6 +23,24 @@ const useStyles = makeStyles((theme) => ({
   gridContainer: {
     minHeight: 500,
     height: "auto",
+    alignContent: "center",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
+    },
+  },
+
+  gridItem: {
+    [theme.breakpoints.down("sm")]: {
+      marginTop: 300,
+    },
+  },
+
+  heroText: {
+    fontWeight: "900",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "2rem",
+    },
   },
 }));
 
@@ -32,15 +50,14 @@ const Hero = () => {
     <Div>
       <Grid
         container
-        direction="column"
-        alignItems="flex-end"
+        alignItems="center"
         justifyContent="center"
-        spacing={4}
         className={classes.gridContainer}
       >
-        <Grid item xs={12} sm={6} md={4}>
+        <Grid item xs={12} sm={4} md={7} lg={7}></Grid>
+        <Grid item xs={10} sm={8} md={5} lg={5} className={classes.gridItem}>
           <Box alignItems="center" className={classes.box}>
-            <Typography variant="h4">
+            <Typography variant="h3" className={classes.heroText}>
               Hirebook is an exclusive network of top talents and hiring
               companies.
             </Typography>
