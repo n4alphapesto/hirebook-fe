@@ -40,7 +40,7 @@ const Routes = () => {
           />
           <RouteValidator
             exact
-            path="/jobseeker/opportunities/:id"
+            path="/jobseeker/jobs/:id"
             component={JobPost}
           />
           <RouteValidator

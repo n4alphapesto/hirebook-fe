@@ -44,7 +44,7 @@ export const validateRoute = (user, route) => {
   if (
     user &&
     user.userType === userTypes.JOBSEEKER &&
-    !jobSeekerRoutes.filter((item) => route.startsWith(item))
+    !jobSeekerRoutes.some((item) => route.startsWith(item))
   ) {
     redirectRoute = "/jobseeker";
   }
@@ -53,7 +53,7 @@ export const validateRoute = (user, route) => {
   if (
     user &&
     user.userType === userTypes.RECRUITER &&
-    !recrutierRoutes.includes(route)
+    !recrutierRoutes.some((item) => route.startsWith(item))
   ) {
     redirectRoute = "/recruiter";
   }

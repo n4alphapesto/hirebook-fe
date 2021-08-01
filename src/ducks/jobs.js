@@ -9,7 +9,7 @@ export const GET_ALL_JOBS = {
   ON_ERROR: "GET_ALL_JOBS_ERROR",
 };
 
-export const GET_JOB = {
+export const GET_JOBS = {
   ON_REQUEST: "GET_JOB_REQUEST",
   ON_SUCCESS: "GET_JOB_SUCCESS",
   ON_ERROR: "GET_JOB_ERROR",
@@ -45,72 +45,85 @@ const initialState = {
   recruitStats: CONST.DEFAULT_RECRUITER_STATS,
   isApplying: false,
   isJobPosting: false,
-  crJob: {},
-  fetchingCrJob: false,
-  crJobApplicant: {},
-  isjobApFetching: false,
+  isJobApplicantFetching: false,
+  selectdJobDetails: null,
+  jobApplicants: [],
+  isFetchingSelectedJob: false,
   jobseekerStats: CONST.DEFAULT_JOBSEEKER_STATS,
+  totalJobs: 0,
 };
 
 export default function jobReducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
-    case GET_ALL_JOBS.ON_REQUEST:
+    // case GET_ALL_JOBS.ON_REQUEST:
+    //   return {
+    //     ...state,
+    //     jobsFetching: true,
+    //     jobList: [],
+    //     jobseekerStats: CONST.DEFAULT_JOBSEEKER_STATS,
+    //   };
+    // case GET_ALL_JOBS.ON_SUCCESS:
+    //   return {
+    //     ...state,
+    //     jobsFetching: "done",
+    //     jobList: payload.data,
+    //     jobseekerStats: payload.jobseekerStats,
+    //   };
+    // case GET_ALL_JOBS.ON_ERROR:
+    //   return { ...state, jobsFetching: false, jobList: [] };
+    case GET_JOBS.ON_REQUEST:
       return {
         ...state,
         jobsFetching: true,
         jobList: [],
-        jobseekerStats: CONST.DEFAULT_JOBSEEKER_STATS,
       };
-    case GET_ALL_JOBS.ON_SUCCESS:
+    case GET_JOBS.ON_SUCCESS:
       return {
         ...state,
         jobsFetching: "done",
         jobList: payload.data,
-        jobseekerStats: payload.jobseekerStats,
+        totalJobs: payload.totalJobs,
       };
-    case GET_ALL_JOBS.ON_ERROR:
+    case GET_JOBS.ON_ERROR:
       return { ...state, jobsFetching: false, jobList: [] };
-    case GET_JOB.ON_REQUEST:
-      return {
-        ...state,
-        jobsFetching: true,
-        jobList: [],
-        recruitStats: CONST.DEFAULT_RECRUITER_STATS,
-      };
-    case GET_JOB.ON_SUCCESS:
-      return {
-        ...state,
-        jobsFetching: "done",
-        jobList: payload.data,
-        recruitStats: payload.recruitStats,
-      };
-    case GET_JOB.ON_ERROR:
-      return { ...state, jobsFetching: false, jobList: [] };
+
     case APPLY_JOB.ON_REQUEST:
       return { ...state, isApplying: true };
     case APPLY_JOB.ON_SUCCESS:
       return { ...state, isApplying: "done" };
     case APPLY_JOB.ON_ERROR:
       return { ...state, isApplying: false };
+
     case ADD_JOB.ON_REQUEST:
       return { ...state, isJobPosting: true };
     case ADD_JOB.ON_SUCCESS:
       return { ...state, isJobPosting: "done" };
     case ADD_JOB.ON_ERROR:
       return { ...state, isJobPosting: false };
+
     case GET_JOB_BY_ID.ON_REQUEST:
-      return { ...state, fetchingCrJob: true, crJob: {} };
+      return { ...state, isFetchingSelectedJob: true, selectdJobDetails: {} };
     case GET_JOB_BY_ID.ON_SUCCESS:
-      return { ...state, fetchingCrJob: "done", crJob: payload };
+      return {
+        ...state,
+        isFetchingSelectedJob: "done",
+        selectdJobDetails: payload,
+      };
     case GET_JOB_BY_ID.ON_ERROR:
-      return { ...state, fetchingCrJob: false, crJob: {} };
+      return { ...state, isFetchingSelectedJob: false, selectdJobDetails: {} };
+
     case GET_JOB_APPLICANT.ON_REQUEST:
-      return { ...state, isjobApFetching: true, crJobApplicant: {} };
+      return { ...state, isJobApplicantFetching: true, jobApplicants: [] };
     case GET_JOB_APPLICANT.ON_SUCCESS:
-      return { ...state, isjobApFetching: "done", crJobApplicant: payload };
+      return {
+        ...state,
+        isJobApplicantFetching: "done",
+        jobApplicants: payload,
+      };
     case GET_JOB_APPLICANT.ON_ERROR:
-      return { ...state, isjobApFetching: false, crJobApplicant: {} };
+      return { ...state, isJobApplicantFetching: false, jobApplicants: {} };
+
     default:
       return { ...state };
   }
@@ -125,7 +138,7 @@ export function getAllJobs(payload) {
 
 export function getJobs(payload) {
   return {
-    type: GET_JOB.ON_REQUEST,
+    type: GET_JOBS.ON_REQUEST,
     payload,
   };
 }
@@ -218,29 +231,16 @@ export function* getJobsApi({ payload }) {
       data: option,
     });
     const data = response.data?.data;
-    let recruitStats = [
-      {
-        title: "Jobs Posted",
-        value: data.count,
-      },
-      {
-        title: "Vacancies",
-        value: data?.jobs?.reduce((aux, cr) => aux + cr.vacancies, 0),
-      },
-      {
-        title: "In Progress",
-        value: 0,
-      },
-    ];
+
     yield put({
-      type: GET_JOB.ON_SUCCESS,
+      type: GET_JOBS.ON_SUCCESS,
       payload: {
         data: data.jobs,
-        recruitStats,
+        totalJobs: data.count,
       },
     });
   } catch (e) {
-    yield put({ type: GET_JOB.ON_ERROR, payload: e.response });
+    yield put({ type: GET_JOBS.ON_ERROR, payload: e.response });
     // enqueueSnackbar(error.message, { variant: "error" });
   }
 }
@@ -249,7 +249,7 @@ export function* getJobByIdApi({ payload }) {
   try {
     const response = yield call(axios, {
       method: "GET",
-      url: `${CONST.BASE_URL + CONST.JOB_URL.JOB_BY_ID + payload}`,
+      url: `${CONST.BASE_URL + CONST.JOB_URL.JOB_BY_ID + `/${payload}`}`,
     });
     const data = response.data?.data;
     yield put({

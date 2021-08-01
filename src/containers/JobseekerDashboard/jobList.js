@@ -1,7 +1,16 @@
-import React, { useState, useEffect } from "react";
-import TablePagination from "@material-ui/core/TablePagination";
-import { Link, Typography, makeStyles } from "@material-ui/core";
-import { SummaryComponent } from "../../components/common";
+import React from "react";
+import { connect } from "react-redux";
+import {
+  Typography,
+  makeStyles,
+  Card,
+  CardContent,
+  CardMedia,
+  Button,
+  Grid,
+  Box,
+} from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   viewButton: {
@@ -14,72 +23,93 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#029a82",
     },
   },
-  removePostLink: {
-    textAlign: "center",
+
+  root: {
+    display: "flex",
+    marginBottom: 10,
+    height: 150,
+  },
+  details: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  content: {
+    flex: "1 1 auto",
+  },
+  cover: {
+    minWidth: 151,
   },
 }));
 
-function JobList({ getUserData, jobList }) {
+const Jobs = ({ jobsData, userDetails, selectJob }) => {
   const classes = useStyles();
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const history = useHistory();
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const viewJobData = (job) => {
+    history.push(`/jobseeker/jobs/${job.id}`);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
+  const userType = userDetails.userType;
   return (
-    <React.Fragment>
-      {jobList &&
-        jobList.map((post) => {
-          return (
-            <SummaryComponent
-              key={post.id}
-              cardTitle={post.title}
-              cardSubTitle1={
-                <Typography>
-                  Job available in {post?.locations?.join(", ")}
-                </Typography>
-              }
-              cardSubTitle2={`Posted on: ${new Date(
-                post.createdAt
-              ).toLocaleDateString()}`}
-            >
-              <img
-                src=""
-                alt={`posted by ${post.postedBy}`}
-                height={164}
-                width={164}
-              />
-              <Typography>{post.description.slice(0, 100)}</Typography>
-              <Link
-                className={classes.viewButton}
-                variant="button"
-                href={`/jobseeker/jobs/${post.id}`}
-                underline="none"
-              >
-                View
-              </Link>
-              <Link className={classes.removePostLink} variant="inherit">
-                Not Interested
-              </Link>
-            </SummaryComponent>
-          );
-        })}
-      <TablePagination
-        component="div"
-        count={100}
-        page={page}
-        onPageChange={handleChangePage}
-        rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </React.Fragment>
+    <>
+      {jobsData &&
+        jobsData.map((job) => (
+          <Card className={classes.root}>
+            <CardMedia
+              className={classes.cover}
+              image="https://thumbs.dreamstime.com/b/software-developer-smiling-young-working-computer-54668839.jpg"
+              title="Live from space album cover"
+            />
+            <CardContent className={classes.content}>
+              <Grid container>
+                <Grid item xs={9}>
+                  <Box>
+                    <Typography component="h4" variant="h5">
+                      {job.title}
+                    </Typography>
+                    <Typography variant="subtitle2" color="textSecondary">
+                      Job available in {job?.locations?.join(", ")}
+                    </Typography>
+                    <Typography variant="caption" color="textSecondary">
+                      Posted on: ${new Date(job.createdAt).toLocaleDateString()}
+                    </Typography>
+                    <Typography variant="body2">
+                      {job.description.slice(0, 125)}
+                      {job.description.length > 125 && "..."}
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={3} alignItems="center">
+                  <Box align="center">
+                    <Button
+                      variant="contained"
+                      className={classes.viewButton}
+                      onClick={() => viewJobData(job)}
+                    >
+                      View Job
+                    </Button>
+                    {userType === "RECRUITER" ? (
+                      <Button href="#text-buttons" color="primary">
+                        Delete Job
+                      </Button>
+                    ) : (
+                      <Button href="#text-buttons" color="primary">
+                        Not Interested
+                      </Button>
+                    )}
+                  </Box>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        ))}
+    </>
   );
-}
-export default JobList;
+};
+
+const mapStatToProps = (state) => ({
+  userDetails: state.user.userDetails,
+});
+
+export default connect(mapStatToProps)(Jobs);

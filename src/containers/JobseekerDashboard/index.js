@@ -8,6 +8,7 @@ import {
   Drawer,
   IconButton,
   makeStyles,
+  TablePagination,
 } from "@material-ui/core";
 
 import FilterListIcon from "@material-ui/icons/FilterList";
@@ -40,13 +41,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const JobseekerDashboard = ({ getJobs, jobList, jobseekerStats, userData }) => {
+const JobseekerDashboard = ({
+  getJobs,
+  jobList,
+  jobseekerStats,
+  userData,
+  totalJobs,
+}) => {
   const classes = useStyles();
   const [location, setLocation] = React.useState("All");
   const [openDrawer, setOpenDrawer] = React.useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, _setPage] = useState(0);
 
   const handleChange = (event) => {
     setLocation(event.target.value);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    _setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    _setPage(0);
   };
 
   const toggleDrawer = () => setOpenDrawer(!openDrawer);
@@ -103,7 +121,7 @@ const JobseekerDashboard = ({ getJobs, jobList, jobseekerStats, userData }) => {
           </Grid>
           <Grid item md={9}>
             <JobList
-              jobList={
+              jobsData={
                 location === "All"
                   ? jobList
                   : jobList.filter(
@@ -111,6 +129,18 @@ const JobseekerDashboard = ({ getJobs, jobList, jobseekerStats, userData }) => {
                     )
               }
             />
+          </Grid>
+          <Grid item xs={12}>
+            <Box align="right">
+              <TablePagination
+                component="div"
+                count={totalJobs}
+                page={page}
+                onPageChange={handleChangePage}
+                rowsPerPage={rowsPerPage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </Box>
           </Grid>
         </Grid>
       </Box>
@@ -120,6 +150,7 @@ const JobseekerDashboard = ({ getJobs, jobList, jobseekerStats, userData }) => {
 
 const mapStateToProps = (state) => ({
   jobList: state.jobs.jobList,
+  totalJobs: state.jobs.totalJobs,
   jobsFetching: state.jobs.jobsFetching,
   jobseekerStats: state.jobs.jobseekerStats,
   fetchingUser: state.user.fetchingUser,

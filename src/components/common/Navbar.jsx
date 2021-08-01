@@ -94,12 +94,12 @@ const Navbar = ({ logout }) => {
 
   const navChildrenLanding = [];
   navChildrenLanding[0] = (
-    <Link underline="none" onClick={openLogin}>
+    <Link to="/" underline="none" onClick={openLogin}>
       LOGIN
     </Link>
   );
   navChildrenLanding[1] = (
-    <Link underline="none" onClick={openSignUp}>
+    <Link to="/" underline="none" onClick={openSignUp}>
       SIGNUP
     </Link>
   );
@@ -124,12 +124,12 @@ const Navbar = ({ logout }) => {
     </Link>
   ));
   navChildrenRecruiter[2] = (
-    <Link onClick={logOutUser} underline="none">
+    <Link to="/" onClick={logOutUser} underline="none">
       LOG OUT
     </Link>
   );
   navChildrenJobseeker[2] = (
-    <Link onClick={logOutUser} underline="none">
+    <Link to="/" onClick={logOutUser} underline="none">
       LOG OUT
     </Link>
   );

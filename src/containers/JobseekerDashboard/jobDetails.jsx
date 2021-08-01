@@ -9,10 +9,16 @@ import {
   Avatar,
   Typography,
   makeStyles,
+  CardActions,
+  Button,
+  Box,
+  Divider,
+  Chip,
 } from "@material-ui/core";
 
 import { SummaryComponent, Emailer } from "../../components/common";
-import { getJobApplicant } from "../../ducks/jobs";
+import { getJobApplicant, getJobById } from "../../ducks/jobs";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -56,111 +62,188 @@ const useStyles = makeStyles((theme) => ({
   emailMessage: {
     width: "100%",
   },
+
+  companyLogo: {
+    width: "100%",
+    height: "auto",
+    margin: "0 10px",
+  },
+
+  chip: {
+    margin: theme.spacing(0.5),
+  },
 }));
 
-const JobPostDetails = ({ jobData, isFetching, getJobApplicant }) => {
+const JobPostDetails = ({
+  jobData,
+  isJobFetching,
+  getJobById,
+  userDetails,
+}) => {
+  const [openEmail, setOpenEmail] = useState(false);
   const classes = useStyles();
   const params = useParams();
   const jobId = params.id;
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getJobById(params.id);
+  }, []);
 
+  console.log(" !!! jobData !!!", jobData);
+  const userTypes = userDetails.userType;
+  if (isJobFetching !== "done") return null;
   return (
     <div className={classes.root}>
-      <Card>
+      <Card elevation={2}>
         <CardContent>
-          <h1>{jobId}</h1>
-          {/*<Grid container justifyContent="left" spacing={2} direction="column">
-            <Grid item xs={12} md={12}>
-              <Typography variant="h3">{jobData.title}</Typography>
-              <Typography variant="subtitle2">
-                {jobData?.locations?.join(",  ")}
-              </Typography>
-              <Typography variant="subtitle2">
-                <span
-                  className={classes.bold}
-                >{` Vacancies: ${jobData.vacancies}`}</span>
-              </Typography>
-              <Typography variant="subtitle2">
-                <span
-                  className={classes.bold}
-                >{` Number of people applied: ${jobData?.applicants?.length}`}</span>
-              </Typography>
+          <Grid container spacing={2} direction="column">
+            <Grid container spacing={5}>
+              <Grid item xs={12} md={3}>
+                <img
+                  className={classes.companyLogo}
+                  src="https://thumbs.dreamstime.com/b/software-developer-smiling-young-working-computer-54668839.jpg"
+                />
+              </Grid>
+              <Grid item xs={12} md={9}>
+                <Typography variant="h4">{jobData.title}</Typography>
+                <Typography variant="subtitle1">
+                  {jobData.postedBy?.recruiter?.companyName}
+                </Typography>
+                <Typography variant="subtitle2">
+                  Company Locations:{" "}
+                  {jobData.postedBy?.recruiter?.locations.toString()}
+                </Typography>
+                <Typography variant="subtitle2">
+                  <span
+                    className={classes.bold}
+                  >{` Vacancies: ${jobData.vacancies}`}</span>
+                </Typography>
+                <Typography variant="subtitle2">
+                  <span
+                    className={classes.bold}
+                  >{` Number of people applied: ${jobData?.applicants?.length}`}</span>
+                </Typography>
+              </Grid>
             </Grid>
-            <Grid item xs={12} md={12}>
+            <Grid item xs={12}>
               <Typography variant="h5" className={classes.title}>
                 {`Required Skills`}
               </Typography>
-              <Grid container justifyCentent="left" spacing={2} direction="row">
-                {jobData?.skills?.map((skill, i) => (
-                  <Grid item key={i} className={classes.skill}>
-                    {`${skill.title} : ${skill.expertiseLevel}`}
-                  </Grid>
-                ))}
-              </Grid>
-            </Grid>
-            <Grid item xs={12} md={12}>
+              {jobData?.skills?.map((skill, i) => (
+                <Chip
+                  className={classes.chip}
+                  key={skill.title}
+                  label={skill.title}
+                />
+              ))}
               <Typography variant="h5" className={classes.title}>
                 {`Job Description`}
               </Typography>
               <Typography variant="body2">{jobData.description}</Typography>
+              <Typography variant="h5" className={classes.title}>
+                {`About Company`}
+              </Typography>
+              <Typography variant="body2">
+                {jobData.postedBy.recruiter.aboutCompany}
+              </Typography>
+              <Typography variant="h5" className={classes.title}>
+                {`Quick Facts`}
+              </Typography>
+              <ul className={classes.list}>
+                <li>
+                  <Typography variant="body2">
+                    Founded in {jobData.postedBy.recruiter.foundationYear}
+                  </Typography>
+                </li>
+                <li>
+                  <Typography variant="body2">
+                    Number Of Employees{" "}
+                    {jobData.postedBy.recruiter.noOfEmployees}
+                  </Typography>
+                </li>
+              </ul>
+
+              <Typography variant="h5" className={classes.title}>
+                {jobData.postedBy.recruiter.companyName} on web:
+              </Typography>
+              <Link target="_blank" href={jobData.postedBy.recruiter.website}>
+                Website
+              </Link>
+              {jobData.postedBy.recruiter.linkedinProfile && (
+                <Link
+                  target="_blank"
+                  href={jobData.postedBy.recruiter.linkedinProfile}
+                >
+                  LinkedIn
+                </Link>
+              )}
+              {jobData.postedBy.recruiter.twitterProfile && (
+                <Link
+                  target="_blank"
+                  href={jobData.postedBy.recruiter.twitterProfile}
+                >
+                  Twitter
+                </Link>
+              )}
+              {jobData.postedBy.recruiter.facebookProfile && (
+                <Link
+                  target="_blank"
+                  href={jobData.postedBy.recruiter.facebookProfile}
+                >
+                  Facebook
+                </Link>
+              )}
             </Grid>
-            <Grid item xs={12} md={12}>
-              {jobData?.applicants?.length === 0 &&
-                "No Applicants applied for this job."}
-              {jobData?.applicants?.map((applicant) => {
-                return (
-                  <SummaryComponent
-                    cardTitle={applicant.name}
-                    cardSubtitle1={""}
-                    cardSubtitle2={""}
-                    key={applicant.name}
-                  >
-                    <Avatar
-                      alt={applicant.name}
-                      src={applicant.img}
-                      className={classes.avatar}
-                    />
-                    <Typography variant="h5">
-                      Interview Status: <span>{applicant.status}</span>
-                    </Typography>
-                    <Link
-                      href={`/recruiter/candidates/${applicant?.candidate?._id}`}
-                      className={classes.viewButton}
-                      variant="button"
-                      underline="none"
-                    >
-                      View
-                    </Link>
-                    <Link
-                      className={classes.rejectButton}
-                      onClick={() => setOpenEmail(true)}
-                    >
-                      Reject
-                    </Link>
-                  </SummaryComponent>
-                );
-              })}
-            </Grid>
+
+            <Box mt={5}>
+              <Divider />
+              <CardActions className={classes.actionRow}>
+                {userTypes === "JOBSEEKER" ? (
+                  <>
+                    <Button variant="contained" color="primary">
+                      Apply
+                    </Button>
+                    <Button variant="contained" color="secondary">
+                      Not Interested
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button variant="contained" color="primary">
+                      Edit
+                    </Button>
+                    <Button variant="contained" color="secondary">
+                      Remove Job
+                    </Button>
+                  </>
+                )}
+              </CardActions>
+            </Box>
           </Grid>
           <Emailer
             type="reject"
             emailId=""
             open={openEmail}
             handleClose={() => setOpenEmail()}
-          />*/}
+          />
         </CardContent>
       </Card>
     </div>
   );
 };
 const mapStateToProps = (state) => ({
-  jobData: state.jobs.crJobApplicant,
-  isFetching: state.jobs.isjobApFetching,
+  isJobApplicantFetching: state.jobs.isJobApplicantFetching,
+  jobApplicants: state.jobs.jobApplicants,
+  jobData: state.jobs.selectdJobDetails,
+  isJobFetching: state.jobs.isFetchingSelectedJob,
+  userDetails: state.user.userDetails,
 });
 const mapDispatchToProps = (dispatch) => ({
   getJobApplicant(payload) {
     dispatch(getJobApplicant(payload));
+  },
+  getJobById(payload) {
+    dispatch(getJobById(payload));
   },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(JobPostDetails);

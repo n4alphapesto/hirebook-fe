@@ -25,6 +25,7 @@ body {
 .content {
   padding: 100px 0 50px;
   flex: 1 1 auto;
+  background-color: #fafafa;
 }
 
 @media (prefers-reduced-motion: no-preference) {

@@ -18,7 +18,7 @@ import {
   logoutAction,
 } from "./ducks/user";
 import {
-  GET_JOB,
+  GET_JOBS,
   GET_JOB_BY_ID,
   ADD_JOB,
   APPLY_JOB,
@@ -38,7 +38,7 @@ export default function* mainSaga() {
   yield takeLatest(VERIFY_USER.ON_REQUEST, verifyOTPApi);
   yield takeLatest(GET_USER.ON_REQUEST, getUserApi);
   yield takeLatest(USER_LOGIN.ON_REQUEST, loginApi);
-  yield takeLatest(GET_JOB.ON_REQUEST, getJobsApi);
+  yield takeLatest(GET_JOBS.ON_REQUEST, getJobsApi);
   yield takeLatest(GET_JOB_BY_ID.ON_REQUEST, getJobByIdApi);
   yield takeEvery(APPLY_JOB.ON_REQUEST, applyJobApi);
   yield takeEvery(ADD_JOB.ON_REQUEST, addJobApi);
