@@ -23,7 +23,6 @@ import {
   ADD_JOB,
   APPLY_JOB,
   GET_JOB_APPLICANT,
-  getAllJobsApi,
   getJobsApi,
   getJobByIdApi,
   applyJobApi,
@@ -40,7 +39,7 @@ export default function* mainSaga() {
   yield takeLatest(USER_LOGIN.ON_REQUEST, loginApi);
   yield takeLatest(GET_JOBS.ON_REQUEST, getJobsApi);
   yield takeLatest(GET_JOB_BY_ID.ON_REQUEST, getJobByIdApi);
-  yield takeEvery(APPLY_JOB.ON_REQUEST, applyJobApi);
+  yield takeLatest(APPLY_JOB.ON_REQUEST, applyJobApi);
   yield takeEvery(ADD_JOB.ON_REQUEST, addJobApi);
   yield takeEvery(REGISTER_USER.ON_REQUEST, registerApi);
   yield takeEvery(SAVE_SEEKER_PROFILE.ON_REQUEST, saveSeekerProfile);

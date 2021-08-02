@@ -33,6 +33,12 @@ export const APPLY_JOB = {
   ON_ERROR: "APPLY_JOB_ERROR",
 };
 
+export const NOT_INTERESTED = {
+  ON_REQUEST: "NOT_INTERESTED_REQUEST",
+  ON_SUCCESS: "NOT_INTERESTED_SUCCESS",
+  ON_ERROR: "NOT_INTERESTED_ERROR",
+};
+
 export const GET_JOB_APPLICANT = {
   ON_REQUEST: "GET_JOB_APPLICANT_REQUEST",
   ON_SUCCESS: "GET_JOB_APPLICANT_SUCCESS",
@@ -163,6 +169,12 @@ export function applyJob(payload) {
     payload,
   };
 }
+export function markJobNotinterested(payload) {
+  return {
+    type: NOT_INTERESTED.ON_REQUEST,
+    payload,
+  };
+}
 
 export function getJobById(payload) {
   return {
@@ -279,14 +291,28 @@ export function* addJobApi({ payload }) {
 }
 
 export function* applyJobApi({ payload }) {
-  const options = {
-    jobId: payload.jobId,
-  };
   try {
     const response = yield call(axios, {
       method: "POST",
       url: `${CONST.BASE_URL + CONST.JOB_URL.APPLY_JOB}`,
-      data: options,
+      data: payload,
+    });
+    const data = response.data?.data;
+    yield put({
+      type: APPLY_JOB.ON_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    yield put({ type: APPLY_JOB.ON_ERROR, payload: e.response });
+  }
+}
+
+export function* markJobUnInterested({ payload }) {
+  try {
+    const response = yield call(axios, {
+      method: "POST",
+      url: `${CONST.BASE_URL + CONST.JOB_URL.NOT_INTERESTED}`,
+      data: payload,
     });
     const data = response.data?.data;
     yield put({

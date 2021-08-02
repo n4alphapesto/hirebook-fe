@@ -48,6 +48,8 @@ const CONST = {
     JOB_BY_ID: "/job/jobById",
     JOB_APPLY: "/job/applyForJob",
     JOB_APPLICANT: "/job/jobApplicants",
+    APPLY_JOB: "/job/applyForJob",
+    NOT_INTERESTED: "/job/markJobUnInterested",
   },
   JOB_ACTION_URL: {
     SCHEDULE: "/job/scheduleInterview",

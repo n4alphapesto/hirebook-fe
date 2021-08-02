@@ -6,7 +6,7 @@ import {
   Card,
   CardContent,
   Grid,
-  Avatar,
+  CircularProgress,
   Typography,
   makeStyles,
   CardActions,
@@ -17,7 +17,7 @@ import {
 } from "@material-ui/core";
 
 import { SummaryComponent, Emailer } from "../../components/common";
-import { getJobApplicant, getJobById } from "../../ducks/jobs";
+import { applyJob, getJobApplicant, getJobById } from "../../ducks/jobs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,6 +79,8 @@ const JobPostDetails = ({
   isJobFetching,
   getJobById,
   userDetails,
+  applyForThisJob,
+  isApplying,
 }) => {
   const [openEmail, setOpenEmail] = useState(false);
   const classes = useStyles();
@@ -89,7 +91,10 @@ const JobPostDetails = ({
     getJobById(params.id);
   }, []);
 
-  console.log(" !!! jobData !!!", jobData);
+  const apply = () => {
+    applyForThisJob({ jobId: jobData._id });
+  };
+
   const userTypes = userDetails.userType;
   if (isJobFetching !== "done") return null;
   return (
@@ -200,10 +205,21 @@ const JobPostDetails = ({
               <CardActions className={classes.actionRow}>
                 {userTypes === "JOBSEEKER" ? (
                   <>
-                    <Button variant="contained" color="primary">
+                    <Button
+                      disabled={isApplying === true}
+                      variant="contained"
+                      color="primary"
+                      onClick={apply}
+                    >
+                      {isApplying === true && (
+                        <CircularProgress color="white" size={20} />
+                      )}
                       Apply
                     </Button>
                     <Button variant="contained" color="secondary">
+                      {isApplying === true && (
+                        <CircularProgress color="white" size={20} />
+                      )}
                       Not Interested
                     </Button>
                   </>
@@ -221,7 +237,7 @@ const JobPostDetails = ({
             </Box>
           </Grid>
           <Emailer
-            type="reject"
+            type="apply"
             emailId=""
             open={openEmail}
             handleClose={() => setOpenEmail()}
@@ -237,6 +253,7 @@ const mapStateToProps = (state) => ({
   jobData: state.jobs.selectdJobDetails,
   isJobFetching: state.jobs.isFetchingSelectedJob,
   userDetails: state.user.userDetails,
+  isApplying: state.jobs.isApplying,
 });
 const mapDispatchToProps = (dispatch) => ({
   getJobApplicant(payload) {
@@ -244,6 +261,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   getJobById(payload) {
     dispatch(getJobById(payload));
+  },
+  applyForThisJob(payload) {
+    dispatch(applyJob(payload));
   },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(JobPostDetails);
