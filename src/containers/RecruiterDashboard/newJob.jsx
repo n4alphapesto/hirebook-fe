@@ -1,4 +1,5 @@
 import { React, useState, useEffect } from "react";
+import { connect } from "react-redux";
 import {
   Box,
   Card,
@@ -13,6 +14,7 @@ import {
   TextareaAutosize,
   Snackbar,
   makeStyles,
+  CircularProgress,
 } from "@material-ui/core";
 
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -26,6 +28,8 @@ import {
   EXPERIENCED,
   recruiter,
 } from "./recruiterData";
+import { useHistory } from "react-router-dom";
+import { addJob } from "../../ducks/jobs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,8 +66,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const JobPostForm = () => {
+const JobPostForm = ({ isPosting, createNewJobPost }) => {
   const classes = useStyles();
+  const history = useHistory();
   const [user, setUser] = useState({});
   const [openNotification, setOpenNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
@@ -76,9 +81,10 @@ const JobPostForm = () => {
   const [description, setDescription] = useState("");
 
   useEffect(() => {
-    //getUserApi().then((res) => setUser(res.data.data));
-    //console.log(user);
-  }, []);
+    if (isPosting === "done") {
+      history.push("/recruiter");
+    }
+  }, [isPosting]);
 
   const handleCloseNotification = () => {
     setOpenNotification(false);
@@ -100,28 +106,8 @@ const JobPostForm = () => {
       applicants: [],
       postedBy: user._id,
     };
-    //console.log(newPost);
-    // postNewJobApi(newPost)
-    //   .then((data) => {
-    //     console.log(data);
-    //     setNotificationMessage("Form Submitted succesfully!");
-    //     handleCloseNotification();
-    //     setTitle("");
-    //     setVacancies(1);
-    //     setSkills([{ expertiseLevel: "", title: "" }]);
-    //     setLocations([{ title: "" }]);
-    //     setDescription("");
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     setNotificationMessage("Sorry...Form not submitted");
-    //     handleCloseNotification();
-    //     setTitle("");
-    //     setVacancies(1);
-    //     setSkills([{ expertiseLevel: "", title: "" }]);
-    //     setLocations([{ title: "" }]);
-    //     setDescription("");
-    //   });
+    console.log(newPost);
+    createNewJobPost(newPost);
   };
 
   return (
@@ -133,35 +119,6 @@ const JobPostForm = () => {
               Create A New Job Post
             </Typography>
           </Box>
-          <Snackbar
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-            open={openNotification}
-            autoHideDuration={5000}
-            onClose={handleCloseNotification}
-            message={notificationMessage}
-            action={
-              <>
-                <Button
-                  color="secondary"
-                  size="small"
-                  onClick={handleCloseNotification}
-                >
-                  UNDO
-                </Button>
-                <IconButton
-                  size="small"
-                  aria-label="close"
-                  color="inherit"
-                  onClick={handleCloseNotification}
-                >
-                  <CloseIcon fontSize="small" />
-                </IconButton>
-              </>
-            }
-          />
 
           <form onSubmit={handleSubmit}>
             <Grid
@@ -176,7 +133,6 @@ const JobPostForm = () => {
                   autoFocus
                   fullWidth
                   required
-                  label="Job title"
                   variant="outlined"
                   onChange={({ target }) => setTitle(target.value)}
                 />
@@ -209,7 +165,7 @@ const JobPostForm = () => {
                     <TextField
                       {...params}
                       variant="standard"
-                    //placeholder={`Eg. ${recruiter.locations[0]}`}
+                      //placeholder={`Eg. ${recruiter.locations[0]}`}
                     />
                   )}
                 />
@@ -229,7 +185,7 @@ const JobPostForm = () => {
                     <TextField
                       {...params}
                       variant="standard"
-                    //placeholder={`Eg. ${recruiter.locations[0]}`}
+                      //placeholder={`Eg. ${recruiter.locations[0]}`}
                     />
                   )}
                 />
@@ -259,8 +215,12 @@ const JobPostForm = () => {
                   type="submit"
                   variant="contained"
                   color="primary"
+                  disabled={isPosting === true}
                   className={classes.button}
                 >
+                  {isPosting === true && (
+                    <CircularProgress size={20} color="white" />
+                  )}
                   Create
                 </Button>
               </Grid>
@@ -270,9 +230,13 @@ const JobPostForm = () => {
                   className={classes.button}
                   onClick={(e) => {
                     e.preventDefault();
-                    window.location.href = "/recruiter/postedjobs";
+                    window.location.href = "/recruiter";
                   }}
+                  disabled={isPosting === true}
                 >
+                  {isPosting === true && (
+                    <CircularProgress size={20} color="white" />
+                  )}
                   Discard
                   <CloseIcon />
                 </Button>
@@ -285,53 +249,14 @@ const JobPostForm = () => {
   );
 };
 
-export default JobPostForm;
+const mapStateToProps = (state) => ({
+  isPosting: state.jobs.isJobPosting,
+});
 
-/*
-            <Grid item xs={12} md={6}>
-            <Typography variant="subtitle2">Estimated Cost</Typography>
-            <div className={classes.cost}>
-              <TextField
-                fullWidth
-                placeholder={"Eg. 12 "}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">LPA</InputAdornment>
-                  ),
-                }}
-                variant="outlined"
-              />
-            </div>
-          </Grid>
-           <Grid container spacing={2} style={{ margin: "0px" }}>
-            <Grid item xs={12} md={2}>
-              <Typography variant="subtitle2">Job Created for</Typography>
-              <TextField
-                fullWidth
-                variant="outlined"
-                placeholder={""}
-                onChange={({ target }) => setOwner(Number(target.value))}
-              />
-            </Grid>
-            <Grid item xs={12} md={2}>
-              <Typography variant="subtitle2">Contact Email</Typography>
-              <TextField
-                fullWidth
-                variant="outlined"
-                placeholder={""}
-                onChange={({ target }) => setEmail(Number(target.value))}
-              />
-            </Grid>
-            <Grid item xs={12} md={2}>
-              <Typography variant="body1">Vacancies </Typography>
-              <TextField
-                fullWidth
-                variant="outlined"
-                placeholder={`${vacancies}`}
-                onChange={({ target }) => setVacancies(Number(target.value))}
-              />
-            </Grid>
-          </Grid>
+const mapDispatchToProps = (dispatch) => ({
+  createNewJobPost(payload) {
+    dispatch(addJob(payload));
+  },
+});
 
-
-          */
+export default connect(mapStateToProps, mapDispatchToProps)(JobPostForm);

@@ -44,7 +44,7 @@ const CONST = {
   JOB_URL: {
     ALL_JOB_LIST: "/job",
     JOB_LIST: "/job",
-    ADD_JOB: "/job/addjob",
+    ADD_JOB: "/job/createJob",
     JOB_BY_ID: "/job/jobById",
     JOB_APPLY: "/job/applyForJob",
     JOB_APPLICANT: "/job/jobApplicants",

@@ -16,8 +16,13 @@ import {
   Chip,
 } from "@material-ui/core";
 
-import { SummaryComponent, Emailer } from "../../components/common";
-import { applyJob, getJobApplicant, getJobById } from "../../ducks/jobs";
+import { Emailer } from "../../components/common";
+import {
+  applyJob,
+  getJobApplicant,
+  getJobById,
+  notInterested,
+} from "../../ducks/jobs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,9 +34,6 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     maxWidth: "1000px",
     height: "80%",
-  },
-  title: {
-    fontWeight: "900",
   },
   skill: {
     backgroundColor: "#EDEDED",
@@ -72,6 +74,12 @@ const useStyles = makeStyles((theme) => ({
   chip: {
     margin: theme.spacing(0.5),
   },
+
+  headers: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(0.5),
+    fontWeight: "900",
+  },
 }));
 
 const JobPostDetails = ({
@@ -81,6 +89,8 @@ const JobPostDetails = ({
   userDetails,
   applyForThisJob,
   isApplying,
+  notInterested,
+  isMarkingNotInterested,
 }) => {
   const [openEmail, setOpenEmail] = useState(false);
   const classes = useStyles();
@@ -95,20 +105,35 @@ const JobPostDetails = ({
     applyForThisJob({ jobId: jobData._id });
   };
 
-  const userTypes = userDetails.userType;
+  const notInterestedInThisJob = () => {
+    notInterested({ jobId: jobData._id });
+  };
+
+  const isJobSeeker = userDetails.userType === "JOBSEEKER";
   if (isJobFetching !== "done") return null;
+
+  const isApplied = () => {
+    let result = jobData.applicants.find(
+      (applicant) => applicant.candidate === userDetails._id
+    );
+
+    return !!result;
+  };
+
   return (
     <div className={classes.root}>
       <Card elevation={2}>
         <CardContent>
           <Grid container spacing={2} direction="column">
             <Grid container spacing={5}>
-              <Grid item xs={12} md={3}>
-                <img
-                  className={classes.companyLogo}
-                  src="https://thumbs.dreamstime.com/b/software-developer-smiling-young-working-computer-54668839.jpg"
-                />
-              </Grid>
+              {isJobSeeker && (
+                <Grid item xs={12} md={3}>
+                  <img
+                    className={classes.companyLogo}
+                    src="https://thumbs.dreamstime.com/b/software-developer-smiling-young-working-computer-54668839.jpg"
+                  />
+                </Grid>
+              )}
               <Grid item xs={12} md={9}>
                 <Typography variant="h4">{jobData.title}</Typography>
                 <Typography variant="subtitle1">
@@ -131,7 +156,7 @@ const JobPostDetails = ({
               </Grid>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h5" className={classes.title}>
+              <Typography variant="h5" className={classes.headers}>
                 {`Required Skills`}
               </Typography>
               {jobData?.skills?.map((skill, i) => (
@@ -141,17 +166,17 @@ const JobPostDetails = ({
                   label={skill.title}
                 />
               ))}
-              <Typography variant="h5" className={classes.title}>
+              <Typography variant="h5" className={classes.headers}>
                 {`Job Description`}
               </Typography>
               <Typography variant="body2">{jobData.description}</Typography>
-              <Typography variant="h5" className={classes.title}>
+              <Typography variant="h5" className={classes.headers}>
                 {`About Company`}
               </Typography>
               <Typography variant="body2">
                 {jobData.postedBy.recruiter.aboutCompany}
               </Typography>
-              <Typography variant="h5" className={classes.title}>
+              <Typography variant="h5" className={classes.headers}>
                 {`Quick Facts`}
               </Typography>
               <ul className={classes.list}>
@@ -168,7 +193,7 @@ const JobPostDetails = ({
                 </li>
               </ul>
 
-              <Typography variant="h5" className={classes.title}>
+              <Typography variant="h5" className={classes.headers}>
                 {jobData.postedBy.recruiter.companyName} on web:
               </Typography>
               <Link target="_blank" href={jobData.postedBy.recruiter.website}>
@@ -203,27 +228,39 @@ const JobPostDetails = ({
             <Box mt={5}>
               <Divider />
               <CardActions className={classes.actionRow}>
-                {userTypes === "JOBSEEKER" ? (
+                {isJobSeeker && (
                   <>
-                    <Button
-                      disabled={isApplying === true}
-                      variant="contained"
-                      color="primary"
-                      onClick={apply}
-                    >
-                      {isApplying === true && (
-                        <CircularProgress color="white" size={20} />
-                      )}
-                      Apply
-                    </Button>
-                    <Button variant="contained" color="secondary">
-                      {isApplying === true && (
-                        <CircularProgress color="white" size={20} />
-                      )}
-                      Not Interested
-                    </Button>
+                    {!isApplied() ? (
+                      <>
+                        <Button
+                          disabled={isApplying === true}
+                          variant="contained"
+                          color="primary"
+                          onClick={apply}
+                        >
+                          {isApplying === true && (
+                            <CircularProgress color="white" size={20} />
+                          )}
+                          Apply
+                        </Button>
+                        <Button
+                          onClick={notInterestedInThisJob}
+                          disabled={isMarkingNotInterested === true}
+                          variant="contained"
+                          color="secondary"
+                        >
+                          {isMarkingNotInterested === true && (
+                            <CircularProgress color="white" size={20} />
+                          )}
+                          Not Interested
+                        </Button>
+                      </>
+                    ) : (
+                      <Typography>You've applied to this job.</Typography>
+                    )}
                   </>
-                ) : (
+                )}
+                {!isJobSeeker && (
                   <>
                     <Button variant="contained" color="primary">
                       Edit
@@ -254,6 +291,7 @@ const mapStateToProps = (state) => ({
   isJobFetching: state.jobs.isFetchingSelectedJob,
   userDetails: state.user.userDetails,
   isApplying: state.jobs.isApplying,
+  isMarkingNotInterested: state.jobs.isMarkingNotInterested,
 });
 const mapDispatchToProps = (dispatch) => ({
   getJobApplicant(payload) {
@@ -264,6 +302,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   applyForThisJob(payload) {
     dispatch(applyJob(payload));
+  },
+  notInterested(payload) {
+    dispatch(notInterested(payload));
   },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(JobPostDetails);

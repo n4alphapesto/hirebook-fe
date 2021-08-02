@@ -28,6 +28,8 @@ import {
   applyJobApi,
   addJobApi,
   jobApplicantApi,
+  NOT_INTERESTED,
+  markJobUnInterested,
 } from "./ducks/jobs";
 
 import { UPLOAD, uploadApi } from "./ducks/upload";
@@ -40,6 +42,7 @@ export default function* mainSaga() {
   yield takeLatest(GET_JOBS.ON_REQUEST, getJobsApi);
   yield takeLatest(GET_JOB_BY_ID.ON_REQUEST, getJobByIdApi);
   yield takeLatest(APPLY_JOB.ON_REQUEST, applyJobApi);
+  yield takeLatest(NOT_INTERESTED.ON_REQUEST, markJobUnInterested);
   yield takeEvery(ADD_JOB.ON_REQUEST, addJobApi);
   yield takeEvery(REGISTER_USER.ON_REQUEST, registerApi);
   yield takeEvery(SAVE_SEEKER_PROFILE.ON_REQUEST, saveSeekerProfile);

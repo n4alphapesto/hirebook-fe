@@ -68,17 +68,12 @@ const Routes = () => {
             path="/recruiter/editprofile"
             component={RecruiterOnboarding}
           />
-          <RouteValidator
-            exact
-            path="/recruiter/postedjobs"
-            component={JobDetail}
-          />
+          <RouteValidator exact path="/recruiter" component={JobDetail} />
           <RouteValidator
             exact
             path="/recruiter/postedjobs/:id"
-            component={JobDetail}
+            component={JobPost}
           />
-          {/* <RouteValidator path="/recruiter/candidates/:id" component={RecruiterViewJobSeekerDetails} /> */}
           <RouteValidator
             path="/recruiter/profile"
             component={RecruiterProfile}

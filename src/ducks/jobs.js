@@ -57,27 +57,12 @@ const initialState = {
   isFetchingSelectedJob: false,
   jobseekerStats: CONST.DEFAULT_JOBSEEKER_STATS,
   totalJobs: 0,
+  isMarkingNotInterested: false,
 };
 
 export default function jobReducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
-    // case GET_ALL_JOBS.ON_REQUEST:
-    //   return {
-    //     ...state,
-    //     jobsFetching: true,
-    //     jobList: [],
-    //     jobseekerStats: CONST.DEFAULT_JOBSEEKER_STATS,
-    //   };
-    // case GET_ALL_JOBS.ON_SUCCESS:
-    //   return {
-    //     ...state,
-    //     jobsFetching: "done",
-    //     jobList: payload.data,
-    //     jobseekerStats: payload.jobseekerStats,
-    //   };
-    // case GET_ALL_JOBS.ON_ERROR:
-    //   return { ...state, jobsFetching: false, jobList: [] };
     case GET_JOBS.ON_REQUEST:
       return {
         ...state,
@@ -100,6 +85,13 @@ export default function jobReducer(state = initialState, action) {
       return { ...state, isApplying: "done" };
     case APPLY_JOB.ON_ERROR:
       return { ...state, isApplying: false };
+
+    case NOT_INTERESTED.ON_REQUEST:
+      return { ...state, isMarkingNotInterested: true };
+    case NOT_INTERESTED.ON_SUCCESS:
+      return { ...state, isMarkingNotInterested: "done" };
+    case NOT_INTERESTED.ON_ERROR:
+      return { ...state, isMarkingNotInterested: false };
 
     case ADD_JOB.ON_REQUEST:
       return { ...state, isJobPosting: true };
@@ -169,7 +161,7 @@ export function applyJob(payload) {
     payload,
   };
 }
-export function markJobNotinterested(payload) {
+export function notInterested(payload) {
   return {
     type: NOT_INTERESTED.ON_REQUEST,
     payload,
@@ -316,11 +308,11 @@ export function* markJobUnInterested({ payload }) {
     });
     const data = response.data?.data;
     yield put({
-      type: APPLY_JOB.ON_SUCCESS,
+      type: NOT_INTERESTED.ON_SUCCESS,
       payload: data,
     });
   } catch (e) {
-    yield put({ type: APPLY_JOB.ON_ERROR, payload: e.response });
+    yield put({ type: NOT_INTERESTED.ON_ERROR, payload: e.response });
   }
 }
 
