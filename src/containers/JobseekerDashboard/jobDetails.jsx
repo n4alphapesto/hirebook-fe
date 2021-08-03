@@ -23,6 +23,7 @@ import {
   getJobById,
   notInterested,
 } from "../../ducks/jobs";
+import JobApplicants from "../../components/JobApplicants/JobApplicants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -80,6 +81,12 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(0.5),
     fontWeight: "900",
   },
+
+  applicantsList: {
+    width: "100%",
+    maxHeight: 500,
+    overflow: "auto",
+  },
 }));
 
 const JobPostDetails = ({
@@ -136,13 +143,17 @@ const JobPostDetails = ({
               )}
               <Grid item xs={12} md={9}>
                 <Typography variant="h4">{jobData.title}</Typography>
-                <Typography variant="subtitle1">
-                  {jobData.postedBy?.recruiter?.companyName}
-                </Typography>
-                <Typography variant="subtitle2">
-                  Company Locations:{" "}
-                  {jobData.postedBy?.recruiter?.locations.toString()}
-                </Typography>
+                {isJobSeeker && (
+                  <>
+                    <Typography variant="subtitle1">
+                      {jobData.postedBy?.recruiter?.companyName}
+                    </Typography>
+                    <Typography variant="subtitle2">
+                      Company Locations:{" "}
+                      {jobData.postedBy?.recruiter?.locations.toString()}
+                    </Typography>
+                  </>
+                )}
                 <Typography variant="subtitle2">
                   <span
                     className={classes.bold}
@@ -170,60 +181,74 @@ const JobPostDetails = ({
                 {`Job Description`}
               </Typography>
               <Typography variant="body2">{jobData.description}</Typography>
-              <Typography variant="h5" className={classes.headers}>
-                {`About Company`}
-              </Typography>
-              <Typography variant="body2">
-                {jobData.postedBy.recruiter.aboutCompany}
-              </Typography>
-              <Typography variant="h5" className={classes.headers}>
-                {`Quick Facts`}
-              </Typography>
-              <ul className={classes.list}>
-                <li>
-                  <Typography variant="body2">
-                    Founded in {jobData.postedBy.recruiter.foundationYear}
+              {isJobSeeker && (
+                <>
+                  <Typography variant="h5" className={classes.headers}>
+                    {`About Company`}
                   </Typography>
-                </li>
-                <li>
                   <Typography variant="body2">
-                    Number Of Employees{" "}
-                    {jobData.postedBy.recruiter.noOfEmployees}
+                    {jobData.postedBy.recruiter.aboutCompany}
                   </Typography>
-                </li>
-              </ul>
-
-              <Typography variant="h5" className={classes.headers}>
-                {jobData.postedBy.recruiter.companyName} on web:
-              </Typography>
-              <Link target="_blank" href={jobData.postedBy.recruiter.website}>
-                Website
-              </Link>
-              {jobData.postedBy.recruiter.linkedinProfile && (
-                <Link
-                  target="_blank"
-                  href={jobData.postedBy.recruiter.linkedinProfile}
-                >
-                  LinkedIn
-                </Link>
-              )}
-              {jobData.postedBy.recruiter.twitterProfile && (
-                <Link
-                  target="_blank"
-                  href={jobData.postedBy.recruiter.twitterProfile}
-                >
-                  Twitter
-                </Link>
-              )}
-              {jobData.postedBy.recruiter.facebookProfile && (
-                <Link
-                  target="_blank"
-                  href={jobData.postedBy.recruiter.facebookProfile}
-                >
-                  Facebook
-                </Link>
+                  <Typography variant="h5" className={classes.headers}>
+                    {`Quick Facts`}
+                  </Typography>
+                  <ul className={classes.list}>
+                    <li>
+                      <Typography variant="body2">
+                        Founded in {jobData.postedBy.recruiter.foundationYear}
+                      </Typography>
+                    </li>
+                    <li>
+                      <Typography variant="body2">
+                        Number Of Employees{" "}
+                        {jobData.postedBy.recruiter.noOfEmployees}
+                      </Typography>
+                    </li>
+                  </ul>
+                  <Typography variant="h5" className={classes.headers}>
+                    {jobData.postedBy.recruiter.companyName} on web:
+                  </Typography>
+                  <Link
+                    target="_blank"
+                    href={jobData.postedBy.recruiter.website}
+                  >
+                    Website
+                  </Link>
+                  {jobData.postedBy.recruiter.linkedinProfile && (
+                    <Link
+                      target="_blank"
+                      href={jobData.postedBy.recruiter.linkedinProfile}
+                    >
+                      LinkedIn
+                    </Link>
+                  )}
+                  {jobData.postedBy.recruiter.twitterProfile && (
+                    <Link
+                      target="_blank"
+                      href={jobData.postedBy.recruiter.twitterProfile}
+                    >
+                      Twitter
+                    </Link>
+                  )}
+                  {jobData.postedBy.recruiter.facebookProfile && (
+                    <Link
+                      target="_blank"
+                      href={jobData.postedBy.recruiter.facebookProfile}
+                    >
+                      Facebook
+                    </Link>
+                  )}
+                </>
               )}
             </Grid>
+
+            {!isJobSeeker && (
+              <Grid xs={12}>
+                <div className={classes.applicantsList}>
+                  <JobApplicants applicants={jobData.applicants} />
+                </div>
+              </Grid>
+            )}
 
             <Box mt={5}>
               <Divider />
@@ -260,6 +285,7 @@ const JobPostDetails = ({
                     )}
                   </>
                 )}
+
                 {!isJobSeeker && (
                   <>
                     <Button variant="contained" color="primary">
@@ -273,12 +299,12 @@ const JobPostDetails = ({
               </CardActions>
             </Box>
           </Grid>
-          <Emailer
+          {/* <Emailer
             type="apply"
             emailId=""
             open={openEmail}
             handleClose={() => setOpenEmail()}
-          />
+          /> */}
         </CardContent>
       </Card>
     </div>

@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Jobs = ({ jobsData, userDetails, selectJob }) => {
+const Jobs = ({ jobsData, userDetails }) => {
   const classes = useStyles();
   const history = useHistory();
 
