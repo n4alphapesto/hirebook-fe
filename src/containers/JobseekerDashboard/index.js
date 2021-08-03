@@ -15,7 +15,7 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import { connect } from "react-redux";
 
 import { StatsComponent, FilterComponent } from "../../components/common";
-import JobList from "./jobList";
+import JobList from "../../components/common/jobList";
 
 import { getJobs } from "../../ducks/jobs";
 

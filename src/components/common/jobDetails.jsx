@@ -16,14 +16,14 @@ import {
   Chip,
 } from "@material-ui/core";
 
-import { Emailer } from "../../components/common";
+import { Emailer } from ".";
 import {
   applyJob,
   getJobApplicant,
   getJobById,
   notInterested,
 } from "../../ducks/jobs";
-import JobApplicants from "../../components/JobApplicants/JobApplicants";
+import JobApplicants from "../JobApplicants/JobApplicants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -251,12 +251,12 @@ const JobPostDetails = ({
             )}
 
             <Box mt={5}>
-              <Divider />
               <CardActions className={classes.actionRow}>
                 {isJobSeeker && (
                   <>
                     {!isApplied() ? (
                       <>
+                        <Divider />
                         <Button
                           disabled={isApplying === true}
                           variant="contained"
@@ -283,17 +283,6 @@ const JobPostDetails = ({
                     ) : (
                       <Typography>You've applied to this job.</Typography>
                     )}
-                  </>
-                )}
-
-                {!isJobSeeker && (
-                  <>
-                    <Button variant="contained" color="primary">
-                      Edit
-                    </Button>
-                    <Button variant="contained" color="secondary">
-                      Remove Job
-                    </Button>
                   </>
                 )}
               </CardActions>

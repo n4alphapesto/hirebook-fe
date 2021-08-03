@@ -2,6 +2,7 @@ import { call, put } from "redux-saga/effects";
 import axios from "axios";
 
 import CONST from "../utils/constants";
+import { setCookies } from "../utils";
 //User Actions
 export const LOG_OUT = {
   ON_REQUEST: "LOGOUT_REQUEST",
@@ -203,6 +204,7 @@ export function* loginApi({ payload }) {
       data: options,
     });
     const data = response.data?.data;
+    setCookies("ssoToken", response.data.data.token);
     yield put({
       type: USER_LOGIN.ON_SUCCESS,
       payload: data,

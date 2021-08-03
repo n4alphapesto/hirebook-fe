@@ -9,8 +9,7 @@ import {
 } from "@material-ui/core";
 import { connect } from "react-redux";
 
-import { StatsComponent } from "../../components/common";
-import JobList from "./jobList";
+import { StatsComponent, JobList } from "../../components/common";
 
 import { getJobs } from "../../ducks/jobs";
 import { useHistory } from "react-router-dom";
@@ -65,7 +64,7 @@ const RecruiterDashboard = ({
                 Create New Job Post
               </Button>
             </Box>
-            <JobList jobList={jobList} />
+            <JobList jobsData={jobList} />
           </Grid>
         </Grid>
       </Box>

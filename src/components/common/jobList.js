@@ -45,17 +45,18 @@ const useStyles = makeStyles((theme) => ({
 const Jobs = ({ jobsData, userDetails }) => {
   const classes = useStyles();
   const history = useHistory();
+  const userType = userDetails.userType;
 
   const viewJobData = (job) => {
-    history.push(`/jobseeker/jobs/${job.id}`);
+    if (userType === "JOBSEEKER") history.push(`/jobseeker/jobs/${job.id}`);
+    else history.push(`/recruiter/postedjobs/${job.id}`);
   };
 
-  const userType = userDetails.userType;
   return (
     <>
       {jobsData &&
         jobsData.map((job) => (
-          <Card className={classes.root}>
+          <Card className={classes.root} key={job.id}>
             <CardMedia
               className={classes.cover}
               image="https://thumbs.dreamstime.com/b/software-developer-smiling-young-working-computer-54668839.jpg"

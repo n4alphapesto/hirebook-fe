@@ -1,17 +1,19 @@
 import React from "react";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 
-import { RouteValidator, Navbar, Footer } from "./components/common";
+import {
+  RouteValidator,
+  Navbar,
+  Footer,
+  JobPostDetails,
+} from "./components/common";
 import {
   LandingPage,
   JobseekerDashboard,
-  JobPost,
   JobseekerProfile,
   RecruiterDashboard,
   RecruiterJobPostForm,
   RecruiterProfile,
-  RecruiterJobPostDetails,
-  JobDetail,
   RecruiterOnboarding,
   JobSeekerOnboarding,
   JobSeekerProfile,
@@ -41,7 +43,7 @@ const Routes = () => {
           <RouteValidator
             exact
             path="/jobseeker/jobs/:id"
-            component={JobPost}
+            component={JobPostDetails}
           />
           <RouteValidator
             exact
@@ -68,11 +70,10 @@ const Routes = () => {
             path="/recruiter/editprofile"
             component={RecruiterOnboarding}
           />
-          <RouteValidator exact path="/recruiter" component={JobDetail} />
           <RouteValidator
             exact
             path="/recruiter/postedjobs/:id"
-            component={JobPost}
+            component={JobPostDetails}
           />
           <RouteValidator
             path="/recruiter/profile"

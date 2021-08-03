@@ -37,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
     flexWrap: "wrap",
     overflow: "hidden",
-    backgroundColor: theme.palette.background.paper,
   },
   imageList: {
     flexWrap: "nowrap",

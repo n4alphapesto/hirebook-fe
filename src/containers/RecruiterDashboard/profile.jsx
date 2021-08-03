@@ -90,12 +90,6 @@ const RecruiterProfile = () => {
     createdAt: "",
     updatedAt: "",
   });
-  useEffect(() => {
-    // getUserApi().then((res) => {
-    //   console.log(res.data.data.recruiter);
-    //   setRecruiter(res.data.data.recruiter);
-    // });
-  }, [recruiter]);
 
   return (
     <div className={classes.root}>

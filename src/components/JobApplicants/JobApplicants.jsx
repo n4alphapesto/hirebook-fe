@@ -13,6 +13,7 @@ import {
 const useStyles = makeStyles((theme) => ({}));
 
 const JobApplicants = ({ applicants }) => {
+  console.log(" applicants ", applicants);
   const classes = useStyles();
   return (
     <>

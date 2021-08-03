@@ -10,6 +10,8 @@ import StatsComponent from "./StatsComponent";
 import SummaryComponent from "./SummaryComponent";
 import RouteValidator from "./RouteValidator";
 import Emailer from "./Emailer";
+import JobPostDetails from "./jobDetails";
+import JobList from "./jobList";
 
 export {
   Button,
@@ -24,4 +26,6 @@ export {
   SummaryComponent,
   Emailer,
   RouteValidator,
+  JobPostDetails,
+  JobList,
 };

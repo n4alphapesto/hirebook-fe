@@ -35,7 +35,6 @@ const Login = ({ signIn, isLogging, handleClose, userDetails }) => {
 
   useEffect(() => {
     if (isLogging === "done" && userDetails) {
-      setCookies("ssoToken", userDetails.token);
       handleClose(false);
       redirectUser(userDetails);
     }
