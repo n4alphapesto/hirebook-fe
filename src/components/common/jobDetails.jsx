@@ -240,7 +240,10 @@ const JobPostDetails = ({
             {!isJobSeeker && (
               <Grid xs={12}>
                 <div className={classes.applicantsList}>
-                  <JobApplicants applicants={jobData.applicants} />
+                  <JobApplicants
+                    applicants={jobData.applicants}
+                    jobId={jobData._id}
+                  />
                 </div>
               </Grid>
             )}
@@ -283,12 +286,6 @@ const JobPostDetails = ({
               </CardActions>
             </Box>
           </Grid>
-          {/* <Emailer
-            type="apply"
-            emailId=""
-            open={openEmail}
-            handleClose={() => setOpenEmail()}
-          /> */}
         </CardContent>
       </Card>
     </div>

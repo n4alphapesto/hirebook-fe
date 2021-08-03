@@ -17,7 +17,7 @@ import JobSeekerProfile from "../../containers/JobSeekerProfile";
 import { Emailer } from "../common";
 const useStyles = makeStyles((theme) => ({}));
 
-const JobApplicants = ({ applicants }) => {
+const JobApplicants = ({ applicants, jobId }) => {
   const [open, setOpen] = useState(false);
   const [openEmailType, setOpenEmailType] = useState(null);
   const [jobSeekerData, _setJobSeekerData] = useState(null);
@@ -133,7 +133,9 @@ const JobApplicants = ({ applicants }) => {
 
       <Emailer
         type={openEmailType}
-        emailId=""
+        candidateId={jobSeekerData?.candidate?._id}
+        jobId={jobId}
+        updateId={jobSeekerData?._id}
         open={openEmailType}
         handleClose={() => setOpenEmailType(null)}
       />

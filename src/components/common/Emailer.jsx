@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { connect } from "react-redux";
 import PopUpComponent from "./PopUpComponent";
@@ -9,7 +9,9 @@ import {
   TextareaAutosize,
   makeStyles,
   Button,
+  CircularProgress,
 } from "@material-ui/core";
+import { scheduleInterView, sendOffer, sendRegret } from "../../ducks/jobs";
 
 const useStyles = makeStyles((theme) => ({
   viewButton: {
@@ -39,13 +41,83 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Emailer = ({ type, emailId, open, handleClose }) => {
+const Emailer = ({
+  type,
+  candidateId,
+  open,
+  jobId,
+  handleClose,
+  scheduleInterView,
+  sendOffer,
+  sendRegret,
+  updateId,
+  isSchedulingInterview,
+  isSendingOffer,
+  isSendingRegret,
+}) => {
   const [data, _setData] = useState({
-    date: moment().add("1", "day").toDate(),
-    time: moment().toDate(),
+    date: moment().add("1", "day").format("yyyy-MM-DDTHH:mm"),
     message: "",
   });
   const classes = useStyles();
+
+  useEffect(() => {
+    if (
+      isSchedulingInterview === "done" ||
+      isSendingOffer === "done" ||
+      isSendingRegret === "done"
+    ) {
+      handleClose(null);
+    }
+  }, [isSchedulingInterview, isSendingOffer, isSendingRegret]);
+
+  const submit = (e) => {
+    let payload = {};
+
+    switch (type) {
+      case "schedule":
+        payload = {
+          api: {
+            jobId,
+            candidateId,
+            interviewDateTime: data.date,
+            message: data.message,
+          },
+          updateId,
+        };
+
+        console.log("--- schedule  payload ---", payload);
+        return scheduleInterView(payload);
+      case "offer":
+        payload = {
+          api: {
+            jobId,
+            candidateId,
+            message: data.message,
+          },
+          updateId,
+        };
+
+        return console.log("--- offer payload ---", payload);
+        return sendOffer(payload);
+      case "regret":
+        payload = {
+          api: {
+            jobId,
+            candidateId,
+            message: data.message,
+          },
+          updateId,
+        };
+
+        return console.log("--- regret  payload ---", payload);
+        return sendRegret(payload);
+
+      default:
+        break;
+    }
+  };
+
   let text;
   if (type === "reject") {
     text = "Regret Letter";
@@ -66,18 +138,11 @@ const Emailer = ({ type, emailId, open, handleClose }) => {
                 <Typography variant="subtitle2">Date:</Typography>
                 <TextField
                   fullWidth
-                  type="date"
+                  type="datetime-local"
                   value={data.date}
-                  onChange={({ target }) => console.log("!!! ", target.value)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-                <Typography variant="subtitle2">Time:</Typography>
-                <TextField
-                  fullWidth
-                  type="time"
-                  value={data.time}
+                  onChange={({ target }) =>
+                    _setData({ ...data, date: target.value })
+                  }
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -94,7 +159,10 @@ const Emailer = ({ type, emailId, open, handleClose }) => {
               fullWidth
               required
               label="details of job"
-              placeholder={""}
+              value={data.message}
+              onChange={({ target }) =>
+                _setData({ ...data, message: target.value })
+              }
               className={classes.emailMessage}
             />
           </Grid>
@@ -106,7 +174,18 @@ const Emailer = ({ type, emailId, open, handleClose }) => {
               variant="contained"
               color="primary"
               className={classes.button}
+              onClick={submit}
+              disabled={
+                isSchedulingInterview === true ||
+                isSendingRegret === true ||
+                isSendingOffer === true
+              }
             >
+              {(isSchedulingInterview === true ||
+                isSendingRegret === true ||
+                isSendingOffer === true) && (
+                <CircularProgress color="white" size={20} />
+              )}
               Send
             </Button>
           </Grid>
@@ -132,14 +211,14 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  scheduleInterView() {
-    dispatch();
+  scheduleInterView(payload) {
+    dispatch(scheduleInterView(payload));
   },
-  sendOffer() {
-    dispatch();
+  sendOffer(payload) {
+    dispatch(sendOffer(payload));
   },
-  sendRegret() {
-    dispatch();
+  sendRegret(payload) {
+    dispatch(sendRegret(payload));
   },
 });
 
