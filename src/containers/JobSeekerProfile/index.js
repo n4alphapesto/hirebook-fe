@@ -27,13 +27,16 @@ const useStyles = makeStyles({
   },
 });
 
-const JobSeekerProfile = ({ userDetails }) => {
+const JobSeekerProfile = ({ userDetails, jobSeekerData }) => {
   const classes = useStyles();
   const history = useHistory();
 
   const editProfile = () =>
     history.push(`/${userDetails.userType.toLowerCase()}/editprofile`);
 
+  const data = jobSeekerData || userDetails;
+
+  const isJobSeeker = userDetails.userType === "JOBSEEKER";
   return (
     <Grid container justifyContent="center" alignItems="center">
       <Grid item xs={12} md={10}>
@@ -50,19 +53,24 @@ const JobSeekerProfile = ({ userDetails }) => {
               <CardContent>
                 <Grid container justifyContent="space-between">
                   <Grid item>
-                    <Typography variant="h5">{userDetails.name}</Typography>
+                    <Typography variant="h5">{data.name}</Typography>
                     <Typography variant="body1">
-                      {userDetails.jobseeker?.currentRole}
+                      {data.jobseeker?.currentRole}
                     </Typography>
                     <Typography variant="body2">
-                      {userDetails.jobseeker?.currentLocation}
+                      {data.jobseeker?.currentLocation}
                     </Typography>
                   </Grid>
-                  <Grid item xs={1}>
-                    <IconButton onClick={editProfile} aria-label="edit-profile">
-                      <EditIcon />
-                    </IconButton>
-                  </Grid>
+                  {isJobSeeker && (
+                    <Grid item xs={1}>
+                      <IconButton
+                        onClick={editProfile}
+                        aria-label="edit-profile"
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </Grid>
+                  )}
                 </Grid>
               </CardContent>
             </Card>
@@ -74,7 +82,7 @@ const JobSeekerProfile = ({ userDetails }) => {
                   <Typography variant="h4">About</Typography>
                   <Divider className={classes.divider} />
                   <Typography variant="subtitle1">
-                    {userDetails.jobseeker.about}
+                    {data.jobseeker.about}
                   </Typography>
                 </Box>
 
@@ -82,7 +90,7 @@ const JobSeekerProfile = ({ userDetails }) => {
                   <Typography variant="h4">Skills</Typography>
                   <Divider className={classes.divider} />
                   <Typography variant="subtitle1">
-                    {userDetails.jobseeker.skills.map((skill) => (
+                    {data.jobseeker.skills.map((skill) => (
                       <Chip key={skill.title} label={skill.title} />
                     ))}
                   </Typography>

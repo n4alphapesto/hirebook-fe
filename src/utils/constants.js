@@ -50,6 +50,9 @@ const CONST = {
     JOB_APPLICANT: "/job/jobApplicants",
     APPLY_JOB: "/job/applyForJob",
     NOT_INTERESTED: "/job/markJobUnInterested",
+    SCHEDULE_INTERVIEW: "/scheduleInterview",
+    SEND_OFFER: "/sendOfferLetter",
+    SEND_REGRET: "/sendRegretLetter",
   },
   JOB_ACTION_URL: {
     SCHEDULE: "/job/scheduleInterview",

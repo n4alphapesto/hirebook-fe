@@ -39,10 +39,22 @@ export const NOT_INTERESTED = {
   ON_ERROR: "NOT_INTERESTED_ERROR",
 };
 
-export const GET_JOB_APPLICANT = {
-  ON_REQUEST: "GET_JOB_APPLICANT_REQUEST",
-  ON_SUCCESS: "GET_JOB_APPLICANT_SUCCESS",
-  ON_ERROR: "GET_JOB_APPLICANT_ERROR",
+export const SCHEDULE_INTERVIEW = {
+  ON_REQUEST: "SCHEDULE_INTERVIEW_REQUEST",
+  ON_SUCCESS: "SCHEDULE_INTERVIEW_SUCCESS",
+  ON_ERROR: "SCHEDULE_INTERVIEW_ERROR",
+};
+
+export const SEND_OFFER = {
+  ON_REQUEST: "SEND_OFFER_REQUEST",
+  ON_SUCCESS: "SEND_OFFER_SUCCESS",
+  ON_ERROR: "SEND_OFFER_ERROR",
+};
+
+export const SEND_REGRET = {
+  ON_REQUEST: "SEND_REGRET_REQUEST",
+  ON_SUCCESS: "SEND_REGRET_SUCCESS",
+  ON_ERROR: "SEND_REGRET_ERROR",
 };
 
 const initialState = {
@@ -51,13 +63,14 @@ const initialState = {
   recruitStats: CONST.DEFAULT_RECRUITER_STATS,
   isApplying: false,
   isJobPosting: false,
-  isJobApplicantFetching: false,
   selectdJobDetails: null,
-  jobApplicants: [],
   isFetchingSelectedJob: false,
   jobseekerStats: CONST.DEFAULT_JOBSEEKER_STATS,
   totalJobs: 0,
   isMarkingNotInterested: false,
+  isSchdeulingInterview: false,
+  isSendingOffer: false,
+  isSendingRegret: false,
 };
 
 export default function jobReducer(state = initialState, action) {
@@ -111,17 +124,66 @@ export default function jobReducer(state = initialState, action) {
     case GET_JOB_BY_ID.ON_ERROR:
       return { ...state, isFetchingSelectedJob: false, selectdJobDetails: {} };
 
-    case GET_JOB_APPLICANT.ON_REQUEST:
-      return { ...state, isJobApplicantFetching: true, jobApplicants: [] };
-    case GET_JOB_APPLICANT.ON_SUCCESS:
+    case SCHEDULE_INTERVIEW.ON_REQUEST:
+      return { ...state, isSchdeulingInterview: true };
+    case SCHEDULE_INTERVIEW.ON_SUCCESS:
       return {
         ...state,
-        isJobApplicantFetching: "done",
-        jobApplicants: payload,
-      };
-    case GET_JOB_APPLICANT.ON_ERROR:
-      return { ...state, isJobApplicantFetching: false, jobApplicants: {} };
+        isSchdeulingInterview: "done",
+        selectdJobDetails: {
+          ...state.selectdJobDetails,
+          applicants: [
+            ...state.selectdJobDetails.applicants.map((applicant) => {
+              if (applicant._id === payload.updateId)
+                return { ...applicant, status: "INTERVIEWING" };
 
+              return applicant;
+            }),
+          ],
+        },
+      };
+    case SCHEDULE_INTERVIEW.ON_ERROR:
+      return { ...state, isSchdeulingInterview: false };
+    case SEND_OFFER.ON_REQUEST:
+      return { ...state, isSendingOffer: true };
+    case SEND_OFFER.ON_SUCCESS:
+      return {
+        ...state,
+        isSendingOffer: "done",
+        selectdJobDetails: {
+          ...state.selectdJobDetails,
+          applicants: [
+            ...state.selectdJobDetails.applicants.map((applicant) => {
+              if (applicant._id === payload.updateId)
+                return { ...applicant, status: "HIRED" };
+
+              return applicant;
+            }),
+          ],
+        },
+      };
+    case SEND_OFFER.ON_ERROR:
+      return { ...state, isSendingOffer: false };
+    case SEND_REGRET.ON_REQUEST:
+      return { ...state, isSendingRegret: true };
+    case SEND_REGRET.ON_SUCCESS:
+      return {
+        ...state,
+        isSendingRegret: "done",
+        selectdJobDetails: {
+          ...state.selectdJobDetails,
+          applicants: [
+            ...state.selectdJobDetails.applicants.map((applicant) => {
+              if (applicant._id === payload.updateId)
+                return { ...applicant, status: "REJECTED" };
+
+              return applicant;
+            }),
+          ],
+        },
+      };
+    case SCHEDULE_INTERVIEW.ON_ERROR:
+      return { ...state, isSendingRegret: false };
     default:
       return { ...state };
   }
@@ -137,13 +199,6 @@ export function getAllJobs(payload) {
 export function getJobs(payload) {
   return {
     type: GET_JOBS.ON_REQUEST,
-    payload,
-  };
-}
-
-export function getJobApplicant(payload) {
-  return {
-    type: GET_JOB_APPLICANT.ON_REQUEST,
     payload,
   };
 }
@@ -171,6 +226,25 @@ export function notInterested(payload) {
 export function getJobById(payload) {
   return {
     type: GET_JOB_BY_ID.ON_REQUEST,
+    payload,
+  };
+}
+
+export function scheduleInterView(payload) {
+  return {
+    type: SCHEDULE_INTERVIEW.ON_REQUEST,
+    payload,
+  };
+}
+export function sendOffer(payload) {
+  return {
+    type: SEND_OFFER.ON_REQUEST,
+    payload,
+  };
+}
+export function sendRegret(payload) {
+  return {
+    type: SEND_REGRET.ON_REQUEST,
     payload,
   };
 }
@@ -222,17 +296,11 @@ export function* getAllJobsApi({ payload }) {
 }
 
 export function* getJobsApi({ payload }) {
-  const {
-    user: { userDetails },
-  } = yield select();
-  const option = {
-    postedBy: userDetails.id,
-  };
   try {
     const response = yield call(axios, {
       method: "GET",
       url: `${CONST.BASE_URL + CONST.JOB_URL.JOB_LIST}`,
-      data: option,
+      data: payload,
     });
     const data = response.data?.data;
 
@@ -316,22 +384,51 @@ export function* markJobUnInterested({ payload }) {
   }
 }
 
-export function* jobApplicantApi({ payload }) {
-  const options = {
-    jobId: payload,
-  };
+export function* scheduleInterViewApi({ payload }) {
   try {
     const response = yield call(axios, {
       method: "POST",
-      url: `${CONST.BASE_URL + CONST.JOB_URL.JOB_APPLICANT}`,
-      data: options,
+      url: `${CONST.BASE_URL + CONST.JOB_URL.SCHEDULE_INTERVIEW}`,
+      data: payload.api,
     });
     const data = response.data?.data;
     yield put({
-      type: GET_JOB_APPLICANT.ON_SUCCESS,
-      payload: data,
+      type: SCHEDULE_INTERVIEW.ON_SUCCESS,
+      payload: payload.updateId,
     });
   } catch (e) {
-    yield put({ type: GET_JOB_APPLICANT.ON_ERROR, payload: e.response });
+    yield put({ type: SCHEDULE_INTERVIEW.ON_ERROR, payload: e.response });
+  }
+}
+export function* sendOfferApi({ payload }) {
+  try {
+    const response = yield call(axios, {
+      method: "POST",
+      url: `${CONST.BASE_URL + CONST.JOB_URL.SEND_OFFER}`,
+      data: payload.api,
+    });
+    const data = response.data?.data;
+    yield put({
+      type: SCHEDULE_INTERVIEW.ON_SUCCESS,
+      payload: payload.updateId,
+    });
+  } catch (e) {
+    yield put({ type: SCHEDULE_INTERVIEW.ON_ERROR, payload: e.response });
+  }
+}
+export function* sendRegretApi({ payload }) {
+  try {
+    const response = yield call(axios, {
+      method: "POST",
+      url: `${CONST.BASE_URL + CONST.JOB_URL.SEND_REGRET}`,
+      data: payload.api,
+    });
+    const data = response.data?.data;
+    yield put({
+      type: SCHEDULE_INTERVIEW.ON_SUCCESS,
+      payload: payload.updateId,
+    });
+  } catch (e) {
+    yield put({ type: SCHEDULE_INTERVIEW.ON_ERROR, payload: e.response });
   }
 }

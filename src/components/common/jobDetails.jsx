@@ -17,12 +17,7 @@ import {
 } from "@material-ui/core";
 
 import { Emailer } from ".";
-import {
-  applyJob,
-  getJobApplicant,
-  getJobById,
-  notInterested,
-} from "../../ducks/jobs";
+import { applyJob, getJobById, notInterested } from "../../ducks/jobs";
 import JobApplicants from "../JobApplicants/JobApplicants";
 
 const useStyles = makeStyles((theme) => ({
@@ -300,8 +295,6 @@ const JobPostDetails = ({
   );
 };
 const mapStateToProps = (state) => ({
-  isJobApplicantFetching: state.jobs.isJobApplicantFetching,
-  jobApplicants: state.jobs.jobApplicants,
   jobData: state.jobs.selectdJobDetails,
   isJobFetching: state.jobs.isFetchingSelectedJob,
   userDetails: state.user.userDetails,
@@ -309,9 +302,6 @@ const mapStateToProps = (state) => ({
   isMarkingNotInterested: state.jobs.isMarkingNotInterested,
 });
 const mapDispatchToProps = (dispatch) => ({
-  getJobApplicant(payload) {
-    dispatch(getJobApplicant(payload));
-  },
   getJobById(payload) {
     dispatch(getJobById(payload));
   },

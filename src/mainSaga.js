@@ -22,14 +22,18 @@ import {
   GET_JOB_BY_ID,
   ADD_JOB,
   APPLY_JOB,
-  GET_JOB_APPLICANT,
   getJobsApi,
   getJobByIdApi,
   applyJobApi,
   addJobApi,
-  jobApplicantApi,
   NOT_INTERESTED,
   markJobUnInterested,
+  SCHEDULE_INTERVIEW,
+  SEND_OFFER,
+  SEND_REGRET,
+  scheduleInterViewApi,
+  sendOfferApi,
+  sendRegretApi,
 } from "./ducks/jobs";
 
 import { UPLOAD, uploadApi } from "./ducks/upload";
@@ -42,13 +46,15 @@ export default function* mainSaga() {
   yield takeLatest(GET_JOBS.ON_REQUEST, getJobsApi);
   yield takeLatest(GET_JOB_BY_ID.ON_REQUEST, getJobByIdApi);
   yield takeLatest(APPLY_JOB.ON_REQUEST, applyJobApi);
+  yield takeLatest(SCHEDULE_INTERVIEW.ON_REQUEST, scheduleInterViewApi);
+  yield takeLatest(SEND_OFFER.ON_REQUEST, sendOfferApi);
+  yield takeLatest(SEND_REGRET.ON_REQUEST, sendRegretApi);
   yield takeLatest(NOT_INTERESTED.ON_REQUEST, markJobUnInterested);
   yield takeEvery(ADD_JOB.ON_REQUEST, addJobApi);
   yield takeEvery(REGISTER_USER.ON_REQUEST, registerApi);
   yield takeEvery(SAVE_SEEKER_PROFILE.ON_REQUEST, saveSeekerProfile);
   yield takeEvery(SAVE_RECRUITER_PROFILE.ON_REQUEST, saveRecruiterApi);
   yield takeEvery(UPLOAD.ON_REQUEST, uploadApi);
-  yield takeEvery(GET_JOB_APPLICANT.ON_REQUEST, jobApplicantApi);
   yield takeEvery(GET_USER.ON_REQUEST, getUserApi);
   yield takeEvery(LOG_OUT.ON_REQUEST, logoutAction);
 }

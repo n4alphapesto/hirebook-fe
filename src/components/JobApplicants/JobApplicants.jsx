@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -8,13 +8,72 @@ import {
   Button,
   Box,
   CardMedia,
+  Dialog,
+  DialogContent,
+  DialogActions,
 } from "@material-ui/core";
-
+import { connect } from "react-redux";
+import JobSeekerProfile from "../../containers/JobSeekerProfile";
+import { Emailer } from "../common";
 const useStyles = makeStyles((theme) => ({}));
 
 const JobApplicants = ({ applicants }) => {
-  console.log(" applicants ", applicants);
+  const [open, setOpen] = useState(false);
+  const [openEmailType, setOpenEmailType] = useState(null);
+  const [jobSeekerData, _setJobSeekerData] = useState(null);
   const classes = useStyles();
+
+  const handleClickOpen = (data) => {
+    _setJobSeekerData(data);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    _setJobSeekerData(null);
+  };
+
+  const renderActions = () => {
+    switch (jobSeekerData?.status) {
+      case "APPLIED":
+        return (
+          <>
+            <Button
+              autoFocus
+              onClick={() => setOpenEmailType("schedule")}
+              color="primary"
+            >
+              Schedule Interview
+            </Button>
+            <Button autoFocus onClick={() => {}} color="secondary">
+              Not Interested
+            </Button>
+          </>
+        );
+      case "INTERVIWING":
+        return (
+          <>
+            <Button
+              autoFocus
+              onClick={() => setOpenEmailType("offer")}
+              color="primary"
+            >
+              Send Offer Letter
+            </Button>
+            <Button
+              autoFocus
+              onClick={() => setOpenEmailType("reject")}
+              color="secondary"
+            >
+              Send Regret Letter
+            </Button>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <>
       {applicants.map((applicant) => (
@@ -50,8 +109,9 @@ const JobApplicants = ({ applicants }) => {
                 <Box align="center">
                   <Button
                     variant="contained"
+                    color="primary"
                     className={classes.viewButton}
-                    onClick={() => {}}
+                    onClick={() => handleClickOpen(applicant)}
                   >
                     View Profile
                   </Button>
@@ -61,6 +121,22 @@ const JobApplicants = ({ applicants }) => {
           </CardContent>
         </Card>
       ))}
+
+      <Dialog onClose={handleClose} open={open} maxWidth="md" fullWidth>
+        <DialogContent dividers>
+          {open && jobSeekerData && jobSeekerData.candidate && (
+            <JobSeekerProfile jobSeekerData={jobSeekerData.candidate} />
+          )}
+        </DialogContent>
+        <DialogActions>{renderActions()}</DialogActions>
+      </Dialog>
+
+      <Emailer
+        type={openEmailType}
+        emailId=""
+        open={openEmailType}
+        handleClose={() => setOpenEmailType(null)}
+      />
     </>
   );
 };

@@ -1,4 +1,6 @@
-import { React } from "react";
+import React, { useState } from "react";
+import moment from "moment";
+import { connect } from "react-redux";
 import PopUpComponent from "./PopUpComponent";
 import {
   Typography,
@@ -38,13 +40,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Emailer = ({ type, emailId, open, handleClose }) => {
+  const [data, _setData] = useState({
+    date: moment().add("1", "day").toDate(),
+    time: moment().toDate(),
+    message: "",
+  });
   const classes = useStyles();
   let text;
   if (type === "reject") {
     text = "Regret Letter";
   } else if (type === "schedule") {
     text = "Schedule Interview";
-  } else if (type === "hire") {
+  } else if (type === "offer") {
     text = "Offer Letter";
   }
 
@@ -54,53 +61,29 @@ const Emailer = ({ type, emailId, open, handleClose }) => {
         <Typography variant="h3">{text}</Typography>
         <Grid container justifyContent="left" spacing={2} direction="column">
           <Grid item xs={12} md={12}>
-            {type === "schedule" ? (
+            {type === "schedule" && (
               <>
                 <Typography variant="subtitle2">Date:</Typography>
                 <TextField
                   fullWidth
-                  label="Interview Date"
                   type="date"
-                  defaultValue="2017-05-24"
+                  value={data.date}
+                  onChange={({ target }) => console.log("!!! ", target.value)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+                <Typography variant="subtitle2">Time:</Typography>
+                <TextField
+                  fullWidth
+                  type="time"
+                  value={data.time}
                   InputLabelProps={{
                     shrink: true,
                   }}
                 />
               </>
-            ) : (
-                <>
-                  <Typography variant="subtitle2">Email:</Typography>
-                  <TextField
-                    fullWidth
-                    required
-                    variant="outlined"
-                    value={emailId}
-                  />
-                </>
-              )}
-          </Grid>
-          <Grid item xs={12} md={12}>
-            <Grid item xs={12} md={12}>
-              {type === "schedule" ? (
-                <>
-                  <Typography variant="subtitle2">Time:</Typography>
-                  <TextField
-                    fullWidth
-                    label="Interview Time"
-                    type="time"
-                    defaultValue="07:30"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                </>
-              ) : (
-                  <>
-                    <Typography variant="subtitle2">Subject:</Typography>
-                    <TextField fullWidth required variant="outlined" />
-                  </>
-                )}
-            </Grid>
+            )}
           </Grid>
 
           <Grid item xs={12} md={12}>
@@ -128,8 +111,12 @@ const Emailer = ({ type, emailId, open, handleClose }) => {
             </Button>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Button color="secondary" className={classes.button}>
-              Discard
+            <Button
+              color="secondary"
+              onClick={handleClose}
+              className={classes.button}
+            >
+              Cancel
             </Button>
           </Grid>
         </Grid>
@@ -138,4 +125,22 @@ const Emailer = ({ type, emailId, open, handleClose }) => {
   );
 };
 
-export default Emailer;
+const mapStateToProps = (state) => ({
+  isSchedulingInterview: state.jobs.isSchedulingInterview,
+  isSendingOffer: state.jobs.isSendingOffer,
+  isSendingRegret: state.jobs.isSendingRegret,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  scheduleInterView() {
+    dispatch();
+  },
+  sendOffer() {
+    dispatch();
+  },
+  sendRegret() {
+    dispatch();
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Emailer);
