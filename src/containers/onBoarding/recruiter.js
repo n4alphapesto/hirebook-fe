@@ -24,19 +24,19 @@ const RecruiterOnboarding = ({ saveRecruiter, isSaving, userDetails }) => {
   useEffect(() => {
     if (userDetails) {
       const userData = {
-        companyName: userDetails.recruiter.companyName,
-        userRole: userDetails.recruiter.userRole,
-        mobileNo: userDetails.recruiter.mobileNo,
-        companyLocations: userDetails.recruiter.locations,
-        foundationYear: userDetails.recruiter.foundationYear,
-        noOfEmployees: userDetails.recruiter.noOfEmployees,
-        aboutCompany: userDetails.recruiter.aboutCompany,
-        website: userDetails.recruiter.website,
-        linkedInProfile: userDetails.recruiter.linkedInProfile,
-        twitterProfile: userDetails.recruiter.twitterProfile,
-        facebookProfile: userDetails.recruiter.facebookProfile,
-        companyPhotos: userDetails.recruiter.companyPhotos,
-        companyLogo: userDetails.recruiter.companyLogo,
+        companyName: userDetails?.recruiter?.companyName,
+        userRole: userDetails?.recruiter?.userRole,
+        mobileNo: userDetails?.recruiter?.mobileNo,
+        companyLocations: userDetails?.recruiter?.locations,
+        foundationYear: userDetails?.recruiter?.foundationYear,
+        noOfEmployees: userDetails?.recruiter?.noOfEmployees,
+        aboutCompany: userDetails?.recruiter?.aboutCompany,
+        website: userDetails?.recruiter?.website,
+        linkedInProfile: userDetails?.recruiter?.linkedInProfile,
+        twitterProfile: userDetails?.recruiter?.twitterProfile,
+        facebookProfile: userDetails?.recruiter?.facebookProfile,
+        companyPhotos: userDetails?.recruiter?.companyPhotos,
+        companyLogo: userDetails?.recruiter?.companyLogo,
       };
 
       _setData(userData);
