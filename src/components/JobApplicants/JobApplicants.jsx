@@ -12,7 +12,6 @@ import {
   DialogContent,
   DialogActions,
 } from "@material-ui/core";
-import { connect } from "react-redux";
 import JobSeekerProfile from "../../containers/JobSeekerProfile";
 import { Emailer } from "../common";
 const useStyles = makeStyles((theme) => ({}));
@@ -50,7 +49,7 @@ const JobApplicants = ({ applicants, jobId }) => {
             </Button>
           </>
         );
-      case "INTERVIWING":
+      case "INTERVIEWING":
         return (
           <>
             <Button
@@ -68,6 +67,18 @@ const JobApplicants = ({ applicants, jobId }) => {
               Send Regret Letter
             </Button>
           </>
+        );
+      case "HIRED":
+        return (
+          <Typography variant="body2" color="primary">
+            You Hired This Applicant.
+          </Typography>
+        );
+      case "REJECTED":
+        return (
+          <Typography variant="body2" color="secondary">
+            You Rejected This Applicant.
+          </Typography>
         );
       default:
         return null;
@@ -105,7 +116,7 @@ const JobApplicants = ({ applicants, jobId }) => {
                   </Typography>
                 </Box>
               </Grid>
-              <Grid item xs={3} alignItems="center">
+              <Grid item xs={3}>
                 <Box align="center">
                   <Button
                     variant="contained"
@@ -136,7 +147,7 @@ const JobApplicants = ({ applicants, jobId }) => {
         candidateId={jobSeekerData?.candidate?._id}
         jobId={jobId}
         updateId={jobSeekerData?._id}
-        open={openEmailType}
+        open={!!openEmailType}
         handleClose={() => setOpenEmailType(null)}
       />
     </>

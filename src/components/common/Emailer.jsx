@@ -68,6 +68,10 @@ const Emailer = ({
       isSendingRegret === "done"
     ) {
       handleClose(null);
+      _setData({
+        date: moment().add("1", "day").format("yyyy-MM-DDTHH:mm"),
+        message: "",
+      });
     }
   }, [isSchedulingInterview, isSendingOffer, isSendingRegret]);
 
@@ -86,7 +90,6 @@ const Emailer = ({
           updateId,
         };
 
-        console.log("--- schedule  payload ---", payload);
         return scheduleInterView(payload);
       case "offer":
         payload = {
@@ -98,9 +101,8 @@ const Emailer = ({
           updateId,
         };
 
-        return console.log("--- offer payload ---", payload);
         return sendOffer(payload);
-      case "regret":
+      case "reject":
         payload = {
           api: {
             jobId,
@@ -110,7 +112,6 @@ const Emailer = ({
           updateId,
         };
 
-        return console.log("--- regret  payload ---", payload);
         return sendRegret(payload);
 
       default:
@@ -127,6 +128,12 @@ const Emailer = ({
     text = "Offer Letter";
   }
 
+  console.log(
+    " --- isLoading ---",
+    isSchedulingInterview === true ||
+      isSendingRegret === true ||
+      isSendingOffer === true
+  );
   return (
     <div>
       <PopUpComponent open={open} handleClose={handleClose}>

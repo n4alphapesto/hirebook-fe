@@ -134,7 +134,7 @@ export default function jobReducer(state = initialState, action) {
           ...state.selectdJobDetails,
           applicants: [
             ...state.selectdJobDetails.applicants.map((applicant) => {
-              if (applicant._id === payload.updateId)
+              if (applicant._id === payload)
                 return { ...applicant, status: "INTERVIEWING" };
 
               return applicant;
@@ -154,7 +154,7 @@ export default function jobReducer(state = initialState, action) {
           ...state.selectdJobDetails,
           applicants: [
             ...state.selectdJobDetails.applicants.map((applicant) => {
-              if (applicant._id === payload.updateId)
+              if (applicant._id === payload)
                 return { ...applicant, status: "HIRED" };
 
               return applicant;
@@ -174,7 +174,7 @@ export default function jobReducer(state = initialState, action) {
           ...state.selectdJobDetails,
           applicants: [
             ...state.selectdJobDetails.applicants.map((applicant) => {
-              if (applicant._id === payload.updateId)
+              if (applicant._id === payload)
                 return { ...applicant, status: "REJECTED" };
 
               return applicant;
@@ -409,11 +409,11 @@ export function* sendOfferApi({ payload }) {
     });
     const data = response.data?.data;
     yield put({
-      type: SCHEDULE_INTERVIEW.ON_SUCCESS,
+      type: SEND_OFFER.ON_SUCCESS,
       payload: payload.updateId,
     });
   } catch (e) {
-    yield put({ type: SCHEDULE_INTERVIEW.ON_ERROR, payload: e.response });
+    yield put({ type: SEND_OFFER.ON_ERROR, payload: e.response });
   }
 }
 export function* sendRegretApi({ payload }) {
@@ -425,10 +425,10 @@ export function* sendRegretApi({ payload }) {
     });
     const data = response.data?.data;
     yield put({
-      type: SCHEDULE_INTERVIEW.ON_SUCCESS,
+      type: SEND_REGRET.ON_SUCCESS,
       payload: payload.updateId,
     });
   } catch (e) {
-    yield put({ type: SCHEDULE_INTERVIEW.ON_ERROR, payload: e.response });
+    yield put({ type: SEND_REGRET.ON_ERROR, payload: e.response });
   }
 }

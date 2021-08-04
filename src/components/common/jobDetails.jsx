@@ -238,7 +238,7 @@ const JobPostDetails = ({
             </Grid>
 
             {!isJobSeeker && (
-              <Grid xs={12}>
+              <Grid item xs={12}>
                 <div className={classes.applicantsList}>
                   <JobApplicants
                     applicants={jobData.applicants}
