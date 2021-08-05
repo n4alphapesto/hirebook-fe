@@ -296,11 +296,12 @@ export function* getAllJobsApi({ payload }) {
 }
 
 export function* getJobsApi({ payload }) {
+  console.log(payload);
   try {
     const response = yield call(axios, {
       method: "GET",
       url: `${CONST.BASE_URL + CONST.JOB_URL.JOB_LIST}`,
-      data: payload,
+      params: payload,
     });
     const data = response.data?.data;
 

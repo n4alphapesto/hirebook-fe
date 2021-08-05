@@ -60,7 +60,7 @@ const initialState = {
   isVerifying: false,
   verifyErrorMsg: null,
   resendingOtp: false,
-  isSinging: false,
+  isSignin: false,
   signInErrMsg: null,
   isSavingSeekerProfile: false,
   saveSeekerProfileMsg: null,
@@ -100,15 +100,15 @@ export default function userReducer(state = initialState, action) {
     case VERIFY_USER.ON_REQUEST:
       return { ...state, isVerifying: true, verifyErrorMsg: null };
     case VERIFY_USER.ON_SUCCESS:
-      return { ...state, isVerifying: "done", verifyErrorMsg: payload };
+      return { ...state, isVerifying: "done", userDetails: payload };
     case VERIFY_USER.ON_ERROR:
       return { ...state, isVerifying: false, verifyErrorMsg: payload };
     case REGISTER_USER.ON_REQUEST:
-      return { ...state, isSinging: true, signInErrMsg: null };
+      return { ...state, isSignin: true, signInErrMsg: null };
     case REGISTER_USER.ON_SUCCESS:
-      return { ...state, isSinging: "done", signInErrMsg: payload };
+      return { ...state, isSignin: "done" };
     case REGISTER_USER.ON_ERROR:
-      return { ...state, isSinging: false, signInErrMsg: payload };
+      return { ...state, isSignin: false, signInErrMsg: payload };
     case SAVE_SEEKER_PROFILE.ON_REQUEST:
       return { ...state, isSavingSeekerProfile: true, saveProfileErrMsg: null };
     case SAVE_SEEKER_PROFILE.ON_SUCCESS:
@@ -227,7 +227,7 @@ export function* verifyOTPApi({ payload }) {
       url: `${CONST.BASE_URL + CONST.USER_URL.VERIFY}`,
       data: options,
     });
-    const data = response.data;
+    const data = response.data?.data;
     yield put({
       type: VERIFY_USER.ON_SUCCESS,
       payload: data,
@@ -266,6 +266,7 @@ export function* registerApi({ payload }) {
       data: payload,
     });
     const data = response.data;
+    setCookies("ssoToken", response.data.data.token);
     // enqueueSnackbar("Signup Successfully.", { variant: "success" });
     yield put({
       type: REGISTER_USER.ON_SUCCESS,

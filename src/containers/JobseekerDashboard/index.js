@@ -49,10 +49,21 @@ const JobseekerDashboard = ({
   totalJobs,
 }) => {
   const classes = useStyles();
-  const [location, setLocation] = React.useState("All");
-  const [openDrawer, setOpenDrawer] = React.useState(false);
+  const [location, setLocation] = useState("All");
+  const [openDrawer, setOpenDrawer] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, _setPage] = useState(0);
+
+  useEffect(() => {
+    const payload = {
+      limit: rowsPerPage,
+      skip: page * rowsPerPage,
+    };
+
+    if (location !== "All") payload.location = location;
+
+    getJobs(payload);
+  }, [location, rowsPerPage, page]);
 
   const handleChange = (event) => {
     setLocation(event.target.value);
@@ -69,12 +80,6 @@ const JobseekerDashboard = ({
 
   const toggleDrawer = () => setOpenDrawer(!openDrawer);
 
-  useEffect(() => {
-    const user = userData;
-
-    getJobs();
-  }, []);
-
   return (
     <div className={classes.root}>
       <Box mt={8}>
@@ -90,13 +95,7 @@ const JobseekerDashboard = ({
               <Drawer anchor="bottom" open={openDrawer} onClose={toggleDrawer}>
                 <FilterComponent
                   title="By Location"
-                  options={[
-                    "All",
-                    "Bangalore",
-                    "Hyderabad",
-                    "Gurgaon",
-                    "Work From Home",
-                  ]}
+                  options={["All", "Bangalore", "Hyderabad", "Pune", "Delhi"]}
                   value={location}
                   handleChange={handleChange}
                 />
@@ -113,7 +112,7 @@ const JobseekerDashboard = ({
             <Hidden mdDown>
               <FilterComponent
                 title="Filter By Location"
-                options={["All", "Bangalore", "Hyderabad", "Gurgaon"]}
+                options={["All", "Bangalore", "Hyderabad", "Pune", "Delhi"]}
                 value={location}
                 handleChange={handleChange}
               />
@@ -157,8 +156,8 @@ const mapStateToProps = (state) => ({
   userData: state.user.userDetails,
 });
 const mapDispatchToProps = (dispatch) => ({
-  getJobs() {
-    dispatch(getJobs());
+  getJobs(payload) {
+    dispatch(getJobs(payload));
   },
 });
 export default connect(

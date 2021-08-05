@@ -17,8 +17,8 @@ const LandingPage = () => {
           <Divider />
         </Box>
         <Testimonial />
-        <TrustedCompanies />
       </Container>
+      <TrustedCompanies />
     </div>
   );
 };

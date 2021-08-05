@@ -10,7 +10,8 @@ import {
 import { useTheme } from "@material-ui/core/styles";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-
+import AliceCarousel from "react-alice-carousel";
+import "react-alice-carousel/lib/alice-carousel.css";
 import Image from "../../components/common/Image";
 
 import twilio from "../../assets/svg/twilio.svg";
@@ -38,27 +39,11 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: "wrap",
     overflow: "hidden",
   },
-  imageList: {
-    flexWrap: "nowrap",
-    // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
-    transform: "translateZ(0)",
-    overflow: "hidden",
-    scrollBehavior: "smooth",
-    width: "1185px",
-    flex: 1,
-  },
-  logoImage: {},
-  arrows: {
-    height: "inherit",
-    flex: "0 0 auto",
-  },
+  logoImage: { marginLeft: 30, marginRight: 30 },
 }));
 
 function TrustedCompanies() {
   const classes = useStyles();
-  const scrollRef = useRef(null);
-  const [direction, setDirection] = useState("r");
-  const [scrolled, setScrolled] = useState(0);
 
   const companiesList = [
     twilio,
@@ -76,78 +61,37 @@ function TrustedCompanies() {
   ];
 
   const theme = useTheme();
-  const logoWidth = useMediaQuery(theme.breakpoints.down("sm")) ? 164 : 164;
+  const logoWidth = useMediaQuery(theme.breakpoints.down("sm")) ? 200 : 164;
   const logoHeight = 164;
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      //console.log(scrollRef.current.scrollLeft, scrolled, direction)
-      if (direction === "r") {
-        setScrolled((scrolled) => scrolled + logoWidth);
-        scrollRef.current.scrollLeft += logoWidth;
-      } else {
-        setScrolled((scrolled) => scrolled - logoWidth);
-        scrollRef.current.scrollLeft -= logoWidth;
-      }
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [direction, scrolled, logoWidth]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      //console.log(scrollRef.current.scrollLeft, scrolled, direction)
-      if (scrolled >= logoWidth * 12) {
-        setDirection("l");
-      }
-      if (scrolled <= 0) {
-        setDirection("r");
-      }
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [scrolled, direction, logoWidth]);
-
-  const executeScrollLeft = () => {
-    //console.log(scrollRef.current.scrollLeft, direction)
-    setScrolled((scrolled) => scrolled - logoWidth);
-    scrollRef.current.scrollLeft -= logoWidth;
-  };
-
-  const executeScrollRight = () => {
-    //console.log(myRef.current.scrollLeft, direction)
-    setScrolled((scrolled) => scrolled + logoWidth);
-    scrollRef.current.scrollLeft += logoWidth;
-  };
+  const items = companiesList.map((item, index) => {
+    return (
+      <Image
+        src={item}
+        key={index}
+        alt={"logo"}
+        className={classes.logoImage}
+        width={logoWidth}
+        height={logoHeight}
+      />
+    );
+  });
 
   return (
     <Box className={classes.root}>
       <Typography variant="h4">Companies who trust us</Typography>
       <Box className={classes.mainContainer} justifyContent="center">
-        <ArrowBackIosIcon
-          className={classes.arrows}
-          onClick={executeScrollLeft}
-        />
-        <ImageList
-          className={classes.imageList}
-          cols={3.5}
-          gap={4}
-          ref={scrollRef}
-        >
-          {companiesList.map((item, i) => {
-            return (
-              <ImageListItem key={i} className={classes.logoImage}>
-                <Image
-                  src={item}
-                  alt={"logo"}
-                  width={logoWidth}
-                  height={logoHeight}
-                />
-              </ImageListItem>
-            );
-          })}
-        </ImageList>
-        <ArrowForwardIosIcon
-          className={classes.arrows}
-          onClick={executeScrollRight}
+        <AliceCarousel
+          autoPlay
+          autoWidth
+          autoPlayInterval={0}
+          animationDuration={600}
+          infinite
+          disableDotsControls
+          disableButtonsControls
+          animationType="slide"
+          mouseTracking
+          items={items}
         />
       </Box>
     </Box>

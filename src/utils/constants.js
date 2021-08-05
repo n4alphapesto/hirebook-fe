@@ -20,15 +20,15 @@ const CONST = {
       value: 0,
     },
     {
-      title: "Saved Jobs",
+      title: "Interviewd",
       value: 0,
     },
     {
-      title: "Ongoing",
+      title: "Hired",
       value: 0,
     },
     {
-      title: "Offers",
+      title: "Rejected",
       value: 0,
     },
   ],

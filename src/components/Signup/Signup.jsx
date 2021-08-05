@@ -62,6 +62,7 @@ const Signup = ({
 
   useEffect(() => {
     if (isVerifying === "done") {
+      handleClose(false);
       redirectUser();
     }
   }, [isVerifying]);
@@ -262,7 +263,7 @@ const Signup = ({
 };
 
 const mapStateToProps = (state) => ({
-  isSigning: state.user.isSinging,
+  isSigning: state.user.isSignin,
   isVerifying: state.user.isVerifying,
   resendingOtp: state.user.resendingOtp,
 });

@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 const RecruiterDashboard = ({
   getJobs,
   jobList,
+  userDetails,
   jobsFetching,
   recruitStats,
   isJobPosting,
@@ -48,7 +49,10 @@ const RecruiterDashboard = ({
   const history = useHistory();
 
   useEffect(() => {
-    getJobs();
+    const payload = {
+      postedBy: userDetails._id,
+    };
+    getJobs(payload);
   }, []);
 
   const redirect = () => history.push("/recruiter/createNewPost");
@@ -77,10 +81,11 @@ const mapStateToProps = (state) => ({
   jobsFetching: state.jobs.jobsFetching,
   recruitStats: state.jobs.recruitStats,
   isJobPosting: state.jobs.isJobPosting,
+  userDetails: state.user.userDetails,
 });
 const mapDispatchToProps = (dispatch) => ({
-  getJobs() {
-    dispatch(getJobs());
+  getJobs(payload) {
+    dispatch(getJobs(payload));
   },
 });
 export default connect(
