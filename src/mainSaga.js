@@ -34,6 +34,8 @@ import {
   scheduleInterViewApi,
   sendOfferApi,
   sendRegretApi,
+  removeJobApi,
+  REMOVE_JOB,
 } from "./ducks/jobs";
 
 import { UPLOAD, uploadApi } from "./ducks/upload";
@@ -46,6 +48,7 @@ export default function* mainSaga() {
   yield takeLatest(GET_JOBS.ON_REQUEST, getJobsApi);
   yield takeLatest(GET_JOB_BY_ID.ON_REQUEST, getJobByIdApi);
   yield takeLatest(APPLY_JOB.ON_REQUEST, applyJobApi);
+  yield takeLatest(REMOVE_JOB.ON_REQUEST, removeJobApi);
   yield takeLatest(SCHEDULE_INTERVIEW.ON_REQUEST, scheduleInterViewApi);
   yield takeLatest(SEND_OFFER.ON_REQUEST, sendOfferApi);
   yield takeLatest(SEND_REGRET.ON_REQUEST, sendRegretApi);

@@ -87,6 +87,11 @@ const JobApplicants = ({ applicants, jobId }) => {
 
   return (
     <>
+      {applicants.length === 0 && (
+        <Typography variant="subtitle1" color="secondary">
+          No one applied to this job yet.
+        </Typography>
+      )}
       {applicants.map((applicant) => (
         <Card key={applicant._id} elevation={2} className={classes.root}>
           <CardMedia

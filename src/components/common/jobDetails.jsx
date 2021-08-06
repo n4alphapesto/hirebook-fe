@@ -163,6 +163,16 @@ const JobPostDetails = ({
             </Grid>
             <Grid item xs={12}>
               <Typography variant="h5" className={classes.headers}>
+                {`Job Locations`}
+              </Typography>
+              {jobData?.locations?.map((location, i) => (
+                <Chip
+                  className={classes.chip}
+                  key={location}
+                  label={location}
+                />
+              ))}
+              <Typography variant="h5" className={classes.headers}>
                 {`Required Skills`}
               </Typography>
               {jobData?.skills?.map((skill, i) => (

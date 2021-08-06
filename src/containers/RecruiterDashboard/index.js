@@ -6,6 +6,7 @@ import {
   Button,
   Grid,
   makeStyles,
+  TablePagination,
 } from "@material-ui/core";
 import { connect } from "react-redux";
 
@@ -44,16 +45,30 @@ const RecruiterDashboard = ({
   jobsFetching,
   recruitStats,
   isJobPosting,
+  totalJobs,
 }) => {
   const classes = useStyles();
   const history = useHistory();
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, _setPage] = useState(0);
 
   useEffect(() => {
     const payload = {
       postedBy: userDetails._id,
+      limit: rowsPerPage,
+      skip: page * rowsPerPage,
     };
     getJobs(payload);
-  }, []);
+  }, [rowsPerPage, page]);
+
+  const handleChangePage = (event, newPage) => {
+    _setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    _setPage(0);
+  };
 
   const redirect = () => history.push("/recruiter/createNewPost");
 
@@ -70,6 +85,18 @@ const RecruiterDashboard = ({
             </Box>
             <JobList jobsData={jobList} />
           </Grid>
+          <Grid item xs={12}>
+            <Box align="right">
+              <TablePagination
+                component="div"
+                count={totalJobs}
+                page={page}
+                onPageChange={handleChangePage}
+                rowsPerPage={rowsPerPage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </Box>
+          </Grid>
         </Grid>
       </Box>
     </div>
@@ -79,6 +106,7 @@ const RecruiterDashboard = ({
 const mapStateToProps = (state) => ({
   jobList: state.jobs.jobList,
   jobsFetching: state.jobs.jobsFetching,
+  totalJobs: state.jobs.totalJobs,
   recruitStats: state.jobs.recruitStats,
   isJobPosting: state.jobs.isJobPosting,
   userDetails: state.user.userDetails,

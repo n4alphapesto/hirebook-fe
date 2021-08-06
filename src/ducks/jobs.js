@@ -57,6 +57,12 @@ export const SEND_REGRET = {
   ON_ERROR: "SEND_REGRET_ERROR",
 };
 
+export const REMOVE_JOB = {
+  ON_REQUEST: "REMOVE_JOB_REQUEST",
+  ON_SUCCESS: "REMOVE_JOB_SUCCESS",
+  ON_ERROR: "REMOVE_JOB_ERROR",
+};
+
 const initialState = {
   jobList: [],
   jobsFetching: false,
@@ -71,6 +77,7 @@ const initialState = {
   isSchdeulingInterview: false,
   isSendingOffer: false,
   isSendingRegret: false,
+  isRemovingJob: false,
 };
 
 export default function jobReducer(state = initialState, action) {
@@ -184,6 +191,17 @@ export default function jobReducer(state = initialState, action) {
       };
     case SCHEDULE_INTERVIEW.ON_ERROR:
       return { ...state, isSendingRegret: false };
+
+    case REMOVE_JOB.ON_REQUEST:
+      return { ...state, isRemovingJob: true };
+    case REMOVE_JOB.ON_SUCCESS:
+      return {
+        ...state,
+        isRemovingJob: "done",
+        jobList: [...state.jobList.filter((job) => job._id !== payload.jobId)],
+      };
+    case REMOVE_JOB.ON_ERROR:
+      return { ...state, isRemovingJob: false };
     default:
       return { ...state };
   }
@@ -243,6 +261,13 @@ export function sendOffer(payload) {
   };
 }
 export function sendRegret(payload) {
+  return {
+    type: SEND_REGRET.ON_REQUEST,
+    payload,
+  };
+}
+
+export function removeJob(payload) {
   return {
     type: SEND_REGRET.ON_REQUEST,
     payload,
@@ -431,5 +456,22 @@ export function* sendRegretApi({ payload }) {
     });
   } catch (e) {
     yield put({ type: SEND_REGRET.ON_ERROR, payload: e.response });
+  }
+}
+
+export function* removeJobApi({ payload }) {
+  try {
+    const response = yield call(axios, {
+      method: "POST",
+      url: `${CONST.BASE_URL + CONST.JOB_URL.REMOVE_JOB}`,
+      data: payload,
+    });
+    const data = response.data?.data;
+    yield put({
+      type: REMOVE_JOB.ON_SUCCESS,
+      payload: payload.updateId,
+    });
+  } catch (e) {
+    yield put({ type: REMOVE_JOB.ON_ERROR, payload: e.response });
   }
 }

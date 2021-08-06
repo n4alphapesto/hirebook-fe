@@ -1,5 +1,5 @@
 const CONST = {
-  BASE_URL: "http://localhost:3000/api",
+  BASE_URL: "http://192.168.29.215:3000/api",
   DEFAULT_RECRUITER_STATS: [
     {
       title: "Jobs Posted",
@@ -53,6 +53,7 @@ const CONST = {
     SCHEDULE_INTERVIEW: "/job/scheduleInterview",
     SEND_OFFER: "/job/sendOfferLetter",
     SEND_REGRET: "/job/sendRegretLetter",
+    REMOVE_JOB: "/job/remove",
   },
   JOB_ACTION_URL: {
     SCHEDULE: "/job/scheduleInterview",

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import {
   Typography,
@@ -9,8 +9,10 @@ import {
   Button,
   Grid,
   Box,
+  CircularProgress,
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
+import { removeJob } from "../../ducks/jobs";
 
 const useStyles = makeStyles((theme) => ({
   viewButton: {
@@ -42,15 +44,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Jobs = ({ jobsData, userDetails }) => {
+const Jobs = ({ isRemovingJob, jobsData, userDetails, removeJobAction }) => {
   const classes = useStyles();
   const history = useHistory();
+  const [removingJobId, _setRemovingJobId] = useState(null);
   const userType = userDetails.userType;
 
   const viewJobData = (job) => {
     if (userType === "JOBSEEKER") history.push(`/jobseeker/jobs/${job.id}`);
     else history.push(`/recruiter/postedjobs/${job.id}`);
   };
+
+  const removeJob = (jobId) => {
+    _setRemovingJobId(jobId);
+    removeJobAction({ jobId });
+  };
+
+  useEffect(() => {
+    if (!isRemovingJob || (isRemovingJob == "done" && removingJobId))
+      _setRemovingJobId(null);
+  }, [isRemovingJob]);
 
   return (
     <>
@@ -91,11 +104,23 @@ const Jobs = ({ jobsData, userDetails }) => {
                       View Job
                     </Button>
                     {userType === "RECRUITER" ? (
-                      <Button href="#text-buttons" color="primary">
+                      <Button
+                        variant="link"
+                        onClick={() => removeJob(job.id)}
+                        color="primary"
+                        disabled={isRemovingJob}
+                      >
+                        {isRemovingJob && removingJobId === job.id && (
+                          <CircularProgress color="white" size={20} />
+                        )}
                         Delete Job
                       </Button>
                     ) : (
-                      <Button href="#text-buttons" color="primary">
+                      <Button
+                        variant="link"
+                        onClick={() => removeJob()}
+                        color="primary"
+                      >
                         Not Interested
                       </Button>
                     )}
@@ -111,6 +136,12 @@ const Jobs = ({ jobsData, userDetails }) => {
 
 const mapStatToProps = (state) => ({
   userDetails: state.user.userDetails,
+  isRemovingJob: state.jobs.isRemovingJob,
+});
+const mapDispatchToProps = (dispatch) => ({
+  removeJobAction(payload) {
+    removeJob(payload);
+  },
 });
 
-export default connect(mapStatToProps)(Jobs);
+export default connect(mapStatToProps, mapDispatchToProps)(Jobs);
